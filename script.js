@@ -1,11 +1,22 @@
+const user = {
+  userId: "user-1",
+  email: "tomtomhuy2005@gmail.com",
+  password: "123456",
+  role: "admin",
+};
+
 const boards = [
   {
     id: "b1",
     title: "Bảng 1",
+    starred: false,
+    userId: "user-1",
   },
   {
     id: "b2",
     title: "Bảng toi day",
+    starred: false,
+    userId: "user-1",
   },
 ];
 
@@ -226,7 +237,7 @@ const viewState = {
 
 const generateId = (() => {
   let counter = 0;
-  return (prefix) => `${prefix}-${Date.now()}-${++counter}`;
+  return (prefix) => `${prefix}-${Date.now()}`;
 })();
 
 // Theme color mapping - màu đẹp cho các theme
@@ -281,14 +292,20 @@ const themeColors = {
   },
 };
 
-// Board ID mặc định (có thể mở rộng để hỗ trợ nhiều board sau này)
-const DEFAULT_BOARD_ID = "b2";
+// Board ID mặc định 
+let DEFAULT_BOARD_ID = "b2";
+const boardId = new URLSearchParams(window.location.search).get('board');
+if(boardId) {
+  DEFAULT_BOARD_ID = boardId;
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   renderBoard(DEFAULT_BOARD_ID);
   renderInbox(inboxData);
   setupViewSwitch();
+  setupAddBoardButton();
   setupAddListButton();
+  setupStarButton();
   setupAddInboxButton();
   setupCardModal();
   setupHeaderDropdown();
@@ -321,6 +338,9 @@ function renderBoard(boardId) {
   }
 
   document.getElementById("board-title").textContent = board.title;
+
+  // Cập nhật trạng thái starred của button
+  updateStarButton(board.starred);
 
   // Áp dụng theme cho board
   const boardTheme = board.theme || "blue";
@@ -1144,18 +1164,96 @@ function applyViewState(wrapper, boardPanel, inboxPanel, buttons) {
 }
 
 /**
- * Add List / Card handlers
+ * Add Board / List / Card handlers
  */
+function setupAddBoardButton() {
+  const addBoardBtn = document.getElementById("add-board-btn");
+  if (!addBoardBtn) return;
+  addBoardBtn.addEventListener("click", handleAddBoard);
+}
+
 function setupAddListButton() {
   const addListBtn = document.getElementById("add-list-btn");
   if (!addListBtn) return;
   addListBtn.addEventListener("click", handleAddList);
 }
 
+/**
+ * Hàm xử lí cập nhật trạng thái starred của board
+ */
+
+function setupStarButton() {
+  const starBtn = document.getElementById("star-board-btn");
+  if (!starBtn) return;
+  starBtn.addEventListener("click", toggleBoardStar);
+}
+
+function toggleBoardStar() {
+  const board = boards.find((b) => b.id === DEFAULT_BOARD_ID);
+  if (!board) return;
+
+  board.starred = !board.starred;
+  updateStarButton(board.starred);
+  console.log("[BOARD] Board starred:", board.starred);
+  console.log("[BOARD] Boards:", boards);
+}
+
+function updateStarButton(isStarred) {
+  const starBtn = document.getElementById("star-board-btn");
+  if (!starBtn) return;
+
+  const starIcon = starBtn.querySelector(".star-icon");
+  if (!starIcon) return;
+
+  if (isStarred) {
+    starIcon.textContent = "★";
+    starBtn.classList.add("is-starred");
+  } else {
+    starIcon.textContent = "☆";
+    starBtn.classList.remove("is-starred");
+  }
+}
+
+/**
+ * Hàm xử lí thêm thẻ vào inbox
+ */
 function setupAddInboxButton() {
   const addInboxBtn = document.getElementById("add-inbox-card");
   if (!addInboxBtn) return;
   addInboxBtn.addEventListener("click", handleAddInboxCard);
+}
+
+function handleAddBoard() {
+  const title = prompt("Tên bảng mới", "Bảng mới");
+  if (!title) {
+    return;
+  }
+  const normalizedTitle = title.trim();
+  if (!normalizedTitle) return;
+
+  const newBoard = {
+    id: generateId("board"),
+    title: normalizedTitle,
+    starred: false,
+    userId: user.userId,
+  };
+
+  boards.push(newBoard);
+  console.log("[BOARD] Đã thêm bảng:", newBoard);
+  console.log("[BOARD] Danh sách bảng:", boards);
+
+  // Cập nhật URL với query parameter board=boardId
+  updateBoardUrl(newBoard.id);
+
+  // Render board mới
+  DEFAULT_BOARD_ID = newBoard.id;
+  renderBoard(newBoard.id);
+}
+
+function updateBoardUrl(boardId) {
+  const url = new URL(window.location.href);
+  url.searchParams.set("board", boardId);
+  window.history.pushState({ boardId }, "", url);
 }
 
 function handleAddList() {
@@ -1245,7 +1343,7 @@ function promptForCardInput(defaults = {}) {
 }
 
 /**
- * Card modal logic
+ * modal update card
  */
 function setupCardModal() {
   cardModal.element = document.getElementById("card-modal");

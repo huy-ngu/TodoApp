@@ -33,6 +33,7 @@ hr{
   padding: 0.6rem clamp(1rem, 4vw, 3rem);
   background-color: #fffffe;
   border-bottom: 1px solid #e3e7f0;
+  position: relative;
 }
 
 .app-header--compact h1 {
@@ -44,6 +45,17 @@ hr{
   display: flex;
   align-items: center;
   gap: 0.85rem;
+  flex: 1;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .logo-dot {
@@ -58,6 +70,44 @@ hr{
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.star-btn {
+  border: 1px solid #c7d0e4;
+  background: transparent;
+  border-radius: 10px;
+  padding: 0.45rem 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: #3b4d6b;
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+}
+
+.star-btn:hover {
+  background: #f4f6fb;
+  border-color: #a8b5d1;
+}
+
+.star-btn.is-starred {
+  color: #ffa500;
+  border-color: #ffa500;
+}
+
+.star-btn.is-starred:hover {
+  background: #fff8e1;
+  border-color: #ff9800;
+}
+
+.star-icon {
+  font-size: 1.2rem;
+  line-height: 1;
 }
 
 .header-action-wrapper {
@@ -138,6 +188,19 @@ hr{
   cursor: pointer;
   font-weight: 600;
   font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+}
+
+.cta--secondary {
+  background: linear-gradient(120deg, #0066ff, #00c6ff);}
+
+.cta--secondary:hover {
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
 }
 
 .app-main {
