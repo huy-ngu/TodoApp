@@ -1,213 +1,205 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trello clone</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link 
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
-    rel="stylesheet"
-  >
-  </head>
-  <body>
-    <header class="app-header app-header--compact">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrìHoãnPro | Bảng</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="/images/logo.png">
+
+</head>
+
+<body>
+  <header class="app-header app-header--compact">
+    <a href="/ListBoard/boards.html" style="text-decoration: none;">
       <div class="header-left">
-        <span class="logo-dot" aria-hidden="true"></span>
+        <!-- <span class="logo-dot" aria-hidden="true"> -->
+        <img src="/images/logo.png" alt="icon" style="width: 48px; height: 48px; border-radius: 12px;
+">
+        </span>
         <div>
           <h1 id="board-title"></h1>
         </div>
       </div>
-      <div class="header-center">
-        <button class="cta cta--secondary" id="add-board-btn" type="button">+ Thêm mới bảng</button>
-      </div>
-      <div class="header-actions">
-        <button class="star-btn" id="star-board-btn" type="button" aria-label="Đánh dấu sao">
-          <span class="star-icon">☆</span>
-        </button>
-        <button class="cta" id="add-list-btn" type="button">+ Thêm danh sách</button>
-        <div class="header-action-wrapper">
-          <button class="header-action" type="button">⋯</button>
-          <div class="header-dropdown" style="display: none;">
-            <button class="dropdown-item" data-action="settings">Cài đặt</button>
-            <hr>
-            <button class="dropdown-item" data-action="archived">Mục đã lưu trữ</button>
-            <hr>
-            <button class="dropdown-item" data-action="logout">Đăng xuất</button>
-          </div>
+    </a>
+    <div class="header-center">
+      <button class="cta cta--secondary" id="add-board-btn" type="button">+ Thêm mới bảng</button>
+    </div>
+    <div class="header-actions">
+      <button class="star-btn" id="star-board-btn" type="button" aria-label="Đánh dấu sao">
+        <span class="star-icon">☆</span>
+      </button>
+      <button class="cta" id="add-list-btn" type="button">+ Thêm danh sách</button>
+      <div class="header-action-wrapper">
+        <button class="header-action" type="button">⋯</button>
+        <div class="header-dropdown" style="display: none;">
+          <button class="dropdown-item" data-action="settings">Cài đặt</button>
+          <hr>
+          <button class="dropdown-item" data-action="archived">Mục đã lưu trữ</button>
+          <hr>
+          <button class="dropdown-item" data-action="logout">Đăng xuất</button>
         </div>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <main class="app-main">
-      <div class="view-wrapper" id="view-wrapper" data-mode="board">
-        <section class="view-panel view-panel--inbox is-hidden" id="inbox-panel">
-          <header class="inbox-header">
-            <div>
-              <h2 id="inbox-title"></h2>
-              <p id="inbox-description" class="muted"></p>
-            </div>
-            <div class="inbox-header__actions">
-              <div class="inbox-action-wrapper">
-                <button class="inbox-action" type="button">⋯</button>
-                <div class="inbox-dropdown" style="display: none;">
-                  <button class="dropdown-item" data-action="add-inbox-card">+ Thêm thẻ</button>
-                  <div class="dropdown-divider"></div>
-                  <div class="dropdown-theme">
-                    <span class="dropdown-label">Thay đổi theme:</span>
-                    <div class="theme-colors"></div>
-                  </div>
+  <main class="app-main">
+    <div class="view-wrapper" id="view-wrapper" data-mode="board">
+      <section class="view-panel view-panel--inbox is-hidden" id="inbox-panel">
+        <header class="inbox-header">
+          <div>
+            <h2 id="inbox-title"></h2>
+            <p id="inbox-description" class="muted"></p>
+          </div>
+          <div class="inbox-header__actions">
+            <div class="inbox-action-wrapper">
+              <button class="inbox-action" type="button">⋯</button>
+              <div class="inbox-dropdown" style="display: none;">
+                <button class="dropdown-item" data-action="add-inbox-card">+ Thêm thẻ</button>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-theme">
+                  <span class="dropdown-label">Thay đổi theme:</span>
+                  <div class="theme-colors"></div>
                 </div>
               </div>
             </div>
-          </header>
-          <div class="inbox-list" id="inbox-root">
-            <!-- Card inbox -->
           </div>
+        </header>
+        <div class="inbox-list" id="inbox-root">
+          <!-- Card inbox -->
+        </div>
+      </section>
+
+      <section class="view-panel view-panel--board" id="board-panel">
+        <section class="board" id="board-root">
+          <!-- Nội dung sẽ được tạo bằng JavaScript -->
         </section>
+      </section>
+    </div>
+  </main>
 
-        <section class="view-panel view-panel--board" id="board-panel">
-          <section class="board" id="board-root">
-            <!-- Nội dung sẽ được tạo bằng JavaScript -->
-          </section>
-        </section>
-      </div>
-    </main>
+  <nav class="view-switch view-switch--floating" aria-label="Chọn trang hiển thị">
+    <div class="view-switch__options">
+      <button class="view-switch__btn" data-view="inbox" aria-pressed="false" type="button">
+        Hộp thư chung
+      </button>
+      <button class="view-switch__btn is-active" data-view="board" aria-pressed="true" type="button">
+        Bảng thông tin
+      </button>
+    </div>
+  </nav>
 
-    <nav
-      class="view-switch view-switch--floating"
-      aria-label="Chọn trang hiển thị"
-    >
-      <div class="view-switch__options">
-        <button
-          class="view-switch__btn"
-          data-view="inbox"
-          aria-pressed="false"
-          type="button"
-        >
-          Hộp thư chung
-        </button>
-        <button
-          class="view-switch__btn is-active"
-          data-view="board"
-          aria-pressed="true"
-          type="button"
-        >
-          Bảng thông tin
-        </button>
-      </div>
-    </nav>
-
-    <template id="list-template">
-      <article class="list">
-        <header class="list__header">
-          <h2 class="list__title"></h2>
-          <div class="list__action-wrapper">
-            <button class="list__action" type="button">⋯</button>
-            <div class="list__dropdown" style="display: none;">
-              <button class="dropdown-item" data-action="add-list">+ Thêm danh sách</button>
-              <button class="dropdown-item" data-action="add-card">+ Thêm thẻ</button>
-              <hr>
-              <button class="dropdown-item" data-action="store-list">Lưu trữ danh sách</button>
-              <button class="dropdown-item" data-action="store-cards">Lưu trữ toàn bộ thẻ</button>
-              <hr>
-              <div class="dropdown-theme">
-                <span class="dropdown-label">Thay đổi theme:</span>
-                <div class="theme-colors"></div>
-              </div>
+  <template id="list-template">
+    <article class="list">
+      <header class="list__header">
+        <h2 class="list__title"></h2>
+        <div class="list__action-wrapper">
+          <button class="list__action" type="button">⋯</button>
+          <div class="list__dropdown" style="display: none;">
+            <button class="dropdown-item" data-action="add-list">+ Thêm danh sách</button>
+            <button class="dropdown-item" data-action="add-card">+ Thêm thẻ</button>
+            <hr>
+            <button class="dropdown-item" data-action="store-list">Lưu trữ danh sách</button>
+            <button class="dropdown-item" data-action="store-cards">Lưu trữ toàn bộ thẻ</button>
+            <hr>
+            <div class="dropdown-theme">
+              <span class="dropdown-label">Thay đổi theme:</span>
+              <div class="theme-colors"></div>
             </div>
           </div>
-        </header>
-        <div class="list__cards"></div>
-        <button class="list__add-card" type="button">+ Thêm thẻ</button>
-      </article>
-    </template>
+        </div>
+      </header>
+      <div class="list__cards"></div>
+      <button class="list__add-card" type="button">+ Thêm thẻ</button>
+    </article>
+  </template>
 
-    <template id="card-template">
-      <article class="card">
-        <header class="card__header">
-          <span class="card__label"></span>
-          <span class="card__badge"></span>
-        </header>
-        <p class="card__title"></p>
-        <footer class="card__footer"></footer>
-      </article>
-    </template>
+  <template id="card-template">
+    <article class="card">
+      <header class="card__header">
+        <span class="card__label"></span>
+        <span class="card__badge"></span>
+      </header>
+      <p class="card__title"></p>
+      <footer class="card__footer"></footer>
+    </article>
+  </template>
 
-    <section class="modal" id="card-modal" aria-hidden="true">
-      <div class="modal__backdrop" data-modal-close></div>
-      <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="card-modal-title">
-        <header class="modal__header">
-          <h2 id="card-modal-title">Chỉnh sửa thẻ</h2>
-          <button class="modal__close" type="button" data-modal-close aria-label="Đóng">&times;</button>
-        </header>
-        <form id="card-form" class="modal__body">
-          <label class="modal__field">
-            <span>Tiêu đề</span>
-            <input id="card-title-input" name="title" type="text" required />
-          </label>
-          <label class="modal__field">
-            <span>Nhãn</span>
-            <input id="card-label-input" name="label" type="text" />
-          </label>
-          <label class="modal__field">
-            <span>Badge</span>
-            <input id="card-badge-input" name="badge" type="text" />
-          </label>
-          <label class="modal__field">
-            <span>Chú thích</span>
-            <input id="card-footer-input" name="footer" type="text" />
-          </label>
-          <label class="modal__field">
-            <span>Trạng thái</span>
-            <select id="card-status-input" name="status">
-              <option value="pending">Chưa hoàn thành</option>
-              <option value="done">Đã xong</option>
-            </select>
-          </label>
-          <div class="modal__actions">
-            <button class="ghost-btn" type="button" data-modal-close>Hủy</button>
-            <button class="cta" type="submit">Lưu thay đổi</button>
+  <section class="modal" id="card-modal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="card-modal-title">
+      <header class="modal__header">
+        <h2 id="card-modal-title">Chỉnh sửa thẻ</h2>
+        <button class="modal__close" type="button" data-modal-close aria-label="Đóng">&times;</button>
+      </header>
+      <form id="card-form" class="modal__body">
+        <label class="modal__field">
+          <span>Tiêu đề</span>
+          <input id="card-title-input" name="title" type="text" required />
+        </label>
+        <label class="modal__field">
+          <span>Nhãn</span>
+          <input id="card-label-input" name="label" type="text" />
+        </label>
+        <label class="modal__field">
+          <span>Badge</span>
+          <input id="card-badge-input" name="badge" type="text" />
+        </label>
+        <label class="modal__field">
+          <span>Chú thích</span>
+          <input id="card-footer-input" name="footer" type="text" />
+        </label>
+        <label class="modal__field">
+          <span>Trạng thái</span>
+          <select id="card-status-input" name="status">
+            <option value="pending">Chưa hoàn thành</option>
+            <option value="done">Đã xong</option>
+          </select>
+        </label>
+        <div class="modal__actions">
+          <button class="ghost-btn" type="button" data-modal-close>Hủy</button>
+          <button class="cta" type="submit">Lưu thay đổi</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Modal Mục đã lưu trữ -->
+  <div id="archivedModal" class="archived-modal">
+    <div class="archived-modal__backdrop"></div>
+    <div class="archived-modal__dialog">
+      <div class="archived-modal__content">
+        <div class="archived-modal__header">
+          <h5 class="archived-modal__title">Mục đã lưu trữ</h5>
+          <button type="button" class="archived-modal__close" aria-label="Close">&times;</button>
+        </div>
+        <div class="archived-modal__body">
+          <div class="archived-tabs">
+            <button class="archived-tab active" data-tab="cards">Thẻ đã lưu trữ</button>
+            <button class="archived-tab" data-tab="lists">Danh sách đã lưu trữ</button>
           </div>
-        </form>
-      </div>
-    </section>
-
-    <!-- Modal Mục đã lưu trữ -->
-    <div id="archivedModal" class="archived-modal">
-      <div class="archived-modal__backdrop"></div>
-      <div class="archived-modal__dialog">
-        <div class="archived-modal__content">
-          <div class="archived-modal__header">
-            <h5 class="archived-modal__title">Mục đã lưu trữ</h5>
-            <button type="button" class="archived-modal__close" aria-label="Close">&times;</button>
-          </div>
-          <div class="archived-modal__body">
-            <div class="archived-tabs">
-              <button class="archived-tab active" data-tab="cards">Thẻ đã lưu trữ</button>
-              <button class="archived-tab" data-tab="lists">Danh sách đã lưu trữ</button>
-            </div>
-            <div class="archived-tab-content">
-              <div id="archived-cards-panel" class="archived-panel active">
-                <div id="archived-cards-list" class="archived-list">
-                  <!-- Cards đã lưu trữ sẽ được render ở đây -->
-                </div>
+          <div class="archived-tab-content">
+            <div id="archived-cards-panel" class="archived-panel active">
+              <div id="archived-cards-list" class="archived-list">
+                <!-- Cards đã lưu trữ sẽ được render ở đây -->
               </div>
-              <div id="archived-lists-panel" class="archived-panel">
-                <div id="archived-lists-list" class="archived-list">
-                  <!-- Lists đã lưu trữ sẽ được render ở đây -->
-                </div>
+            </div>
+            <div id="archived-lists-panel" class="archived-panel">
+              <div id="archived-lists-list" class="archived-list">
+                <!-- Lists đã lưu trữ sẽ được render ở đây -->
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <script 
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-    </script>
-    <script src="script.js" type="module"></script>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+  </script>
+  <script src="script.js" type="module"></script>
+</body>
+
 </html>
-

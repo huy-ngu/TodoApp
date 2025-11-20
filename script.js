@@ -11,12 +11,15 @@ const boards = [
     title: "Bảng 1",
     starred: false,
     userId: "user-1",
+    theme: "linear-gradient(90deg,rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%)"
   },
   {
     id: "b2",
     title: "Bảng toi day",
     starred: false,
     userId: "user-1",
+    theme: "radial-gradient(circle,rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%)"
+
   },
 ];
 
@@ -338,6 +341,8 @@ function renderBoard(boardId) {
   }
 
   document.getElementById("board-title").textContent = board.title;
+  // set màu body
+  document.body.style.background = board.theme ;
 
   // Cập nhật trạng thái starred của button
   updateStarButton(board.starred);
@@ -1236,6 +1241,7 @@ function handleAddBoard() {
     title: normalizedTitle,
     starred: false,
     userId: user.userId,
+    theme: "white", // Theme mặc định
   };
 
   boards.push(newBoard);

@@ -62,7 +62,8 @@ hr{
   width: 38px;
   height: 38px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #0066ff, #00c6ff);
+  /* background: linear-gradient(135deg, #0066ff, #00c6ff); */
+  background-image: url(/images/icon1.png);
   display: inline-block;
 }
 

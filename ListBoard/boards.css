@@ -1,0 +1,49 @@
+a {
+    color: inherit;          
+    text-decoration: none;   
+    background: none;
+    outline: none;
+}
+
+.main-content {
+    padding: 30px 200px;
+}
+
+#board-list{
+    display: flex;
+    gap: 15px;
+}
+#board-list:hover{
+    cursor: pointer;
+}
+
+.board {
+    width: 200px;
+    height: 112px;
+    border-radius: 10px;
+    margin: 10px;
+    margin-left: -8px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    
+    /* Hiệu ứng nổi */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+
+    /* Làm mượt chuyển động */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+/* Khi hover sẽ nổi mạnh hơn */
+.board:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.board .board-theme{
+    width: 100%;
+    height: 80px;
+    border-radius: 10px 10px 0 0;
+}
+.board .board-title{
+    font-size: 14px;
+    font-weight: 200;
+    padding: 5px 10px;
+}
