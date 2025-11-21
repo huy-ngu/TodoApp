@@ -10,9 +10,25 @@
 </head>
 
 <body>
-    <a href="/index.html">
-        <button>chuyen sang index</button>
-    </a>
+
+
+    <header class="app-header app-header--compact">
+        <a href="/ListBoard/boards.html" style="text-decoration: none;">
+            <div class="header-left">
+                <!-- <span class="logo-dot" aria-hidden="true"> -->
+                <img src="/images/logo.png" alt="icon" style="width: 48px; height: 48px; border-radius: 12px;
+    ">
+                </span>
+                <div>
+                    <h1>TrìHoãnPro</h1>
+                </div>
+            </div>
+        </a>
+        <div class="header-center">
+            <button class="cta cta--secondary" id="add-board-btn" type="button">+ Thêm mới bảng</button>
+        </div>
+    </header>
+
     <div class="main-content">
         <div>
             <h3>Bảng đã gắn sao</h3>
@@ -28,7 +44,7 @@
 
 
 
-    <script src="/ListBoard/boards.js"></script>
+    <script src="/ListBoard/boards.js" type="module"></script>
 </body>
 
 </html>
