@@ -1,0 +1,187 @@
+a {
+    color: inherit;          
+    text-decoration: none;   
+    background: none;
+    outline: none;
+}
+
+/* CSS cho sidebar và header đã được chuyển sang /components/layout.css */
+/* Chỉ giữ lại CSS riêng cho trang boards */
+
+.logo-dot {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  /* background: linear-gradient(135deg, #0066ff, #00c6ff); */
+  background-image: url(/images/icon1.png);
+  display: inline-block;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.star-btn {
+  border: 1px solid #c7d0e4;
+  background: transparent;
+  border-radius: 10px;
+  padding: 0.45rem 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: #3b4d6b;
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+}
+
+.star-btn:hover {
+  background: #f4f6fb;
+  border-color: #a8b5d1;
+}
+
+.star-btn.is-starred {
+  color: #ffa500;
+  border-color: #ffa500;
+}
+
+.star-btn.is-starred:hover {
+  background: #fff8e1;
+  border-color: #ff9800;
+}
+
+.star-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.cta {
+  padding: 0.55rem 0.8rem;
+  border-radius: 5px;
+  border: none;
+  background: linear-gradient(120deg, #0066ff, #00c6ff);
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+}
+
+.cta--secondary {
+  background: linear-gradient(120deg, #0066ff, #00c6ff);
+  min-width: 600px;
+  width: fit-content;
+}
+
+.cta--secondary:hover {
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+  background: linear-gradient(120deg, #0066ff, #00c6ff, #0066ff);
+  background-size: 200% 100%;
+  animation: gradientMove 2s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Padding riêng cho trang boards */
+.main-content {
+    padding: 30px 200px !important;
+}
+
+#board-list{
+    width: 900px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+#board-list:hover{
+    cursor: pointer;
+}
+
+.board {
+    width: 200px;
+    height: 112px;
+    border-radius: 10px;
+    margin: 10px;
+    margin-left: -8px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    
+    /* Hiệu ứng nổi */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+
+    /* Làm mượt chuyển động */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+/* Khi hover sẽ nổi mạnh hơn */
+.board:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.board .board-theme{
+    width: 100%;
+    height: 80px;
+    border-radius: 10px 10px 0 0;
+    text-align: right;
+    position: relative;
+    overflow: hidden;
+}
+.board .board-title{
+    font-size: 14px;
+    font-weight: 200;
+    padding: 5px 10px;
+}
+#board-star-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+    
+.star-icon-board{
+    font-size: 25px;
+    padding: 5px;
+    opacity: 0;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    transform: translate(20px, -20px); /* Vị trí ban đầu: bên ngoài góc trên bên phải */
+    transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s ease;
+    cursor: pointer;
+}
+
+/* Icon ngôi sao màu vàng nếu board đã starred */
+.star-icon-board.starred{
+    color: gold;
+}
+
+/* Khi hover vào board, ngôi sao hiện và di chuyển vào trong góc */
+.board:hover .star-icon-board{
+    opacity: 1;
+    transform: translate(0, 0); /* Di chuyển vào vị trí trong góc trên */
+}
+
+/* Khi hover vào ngôi sao */
+.star-icon-board:hover{
+    color: gold;
+    transform: scale(1.2);
+}
