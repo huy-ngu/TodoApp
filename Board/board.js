@@ -4,7 +4,7 @@ import  {boards, lists, cards, inboxData, cardsInbox, themeColors, baseUrl, boar
 const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
 if (!currentUser) {
     alert("Bạn chưa đăng nhập! Vui lòng quay lại.");
-    window.location.href = `${baseUrl}/Login/login.html`;
+    window.location.href = `${baseUrl}/Login-Register/loginRegister.html`;
 }
 
 const viewState = {
@@ -585,6 +585,7 @@ function restoreCard(cardId, source, listId) {
   } else {
     renderBoard(DEFAULT_BOARD_ID);
   }
+  showToast();
 }
 
 /**
@@ -603,6 +604,8 @@ function restoreList(listId) {
 
   // Render lại board
   renderBoard(DEFAULT_BOARD_ID);
+    showToast();
+
 }
 
 /**
@@ -711,8 +714,9 @@ function deleteList(listId) {
 
 function logout() {
   sessionStorage.removeItem('currentUser');
-  window.location.href = `${baseUrl}/Login/login.html`;
-  alert("Đăng xuất thành công");
+  sessionStorage.setItem("statusLogout", "success");
+
+  window.location.href = `${baseUrl}/Login-Register/loginRegister.html`;
 }
 
 /**
@@ -1541,3 +1545,14 @@ function handleStoreCardFromModal() {
   }
 }
 
+function showToast() {
+  const x = document.getElementById("toast");
+  
+  // Thêm class "show" để kích hoạt CSS hiển thị
+  x.className = "show";
+
+  // Sau 3 giây (3000ms), xóa class "show" để ẩn đi
+  setTimeout(function(){ 
+      x.className = x.className.replace("show", ""); 
+  }, 3000);
+}

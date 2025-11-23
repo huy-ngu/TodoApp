@@ -3,7 +3,7 @@ console.log(boards);
 const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
 if (!currentUser) {
     alert("Bạn chưa đăng nhập! Vui lòng quay lại.");
-    window.location.href = `${baseUrl}/Login/login.html`;
+    window.location.href = `${baseUrl}/Login-Register/loginRegister.html`;
 }
 
 

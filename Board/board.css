@@ -1045,3 +1045,50 @@ hr{
   transform: translateY(0);
 }
 
+#toast {
+    /* Ẩn đi mặc định bằng cách đẩy nó sang phải */
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(100%); 
+    
+    /* Vị trí: Góc phải dưới */
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+
+    /* Giao diện Card đẹp */
+    background-color: #fff; /* Nền trắng */
+    color: #333; /* Chữ màu tối */
+    min-width: 300px;
+    padding: 15px 20px;
+    border-radius: 8px; /* Bo tròn nhẹ */
+    border-left: 6px solid #4CAF50; /* Viền trái màu xanh tạo điểm nhấn */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Đổ bóng để nổi bật */
+    
+    /* Căn chỉnh nội dung bên trong */
+    display: flex;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    transition: all 0.5s ease-in-out; /* Hiệu ứng mượt mà */
+}
+
+/* Icon bên trong */
+#toast .toast-icon {
+    font-size: 24px;
+    color: #4CAF50;
+    margin-right: 15px;
+}
+
+/* Text bên trong */
+#toast .toast-text {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Class kích hoạt hiển thị */
+#toast.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0); /* Trượt vào vị trí cũ */
+}
