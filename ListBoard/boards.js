@@ -115,3 +115,17 @@ function toggleBoardStar(boardId) {
   // Render lại danh sách
   renderBoards();
 }
+
+// Xử lý nút đăng xuất
+const logoutBtn = document.querySelector('.logout-btn');
+if (logoutBtn) {
+    console.log(logoutBtn);
+
+    logoutBtn.addEventListener('click', function(event) {
+        // Ngăn thẻ a chuyển trang theo href="#"
+        event.preventDefault(); 
+        sessionStorage.removeItem('currentUser');
+        window.location.href = '/Index.html'; 
+        
+    });
+}

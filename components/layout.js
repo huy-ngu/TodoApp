@@ -162,9 +162,7 @@ async function setupAddBoardButton() {
             alert('Có lỗi xảy ra khi tạo bảng mới. Vui lòng thử lại.');
         }
     });
-    
-    console.log('Đã setup event listener cho nút add-board-btn');
-}
+    }
 
 /**
  * Load layout components (sidebar + header)
@@ -193,3 +191,16 @@ if (document.readyState === 'loading') {
     loadLayout();
 }
 
+const logoutBtn = document.getElementsByClassName('.logout-btn');
+// Kiểm tra xem nút có tồn tại không để tránh lỗi
+if (logoutBtn) {
+    console.log("1111111111111");
+
+    logoutBtn.addEventListener('click', function(event) {
+        // Ngăn thẻ a chuyển trang theo href="#"
+        event.preventDefault(); 
+        sessionStorage.removeItem('currentUser');
+        window.location.href = '/Index.html'; 
+        
+    });
+}

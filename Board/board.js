@@ -440,7 +440,7 @@ function renderArchivedCards() {
   container.innerHTML = '';
   
   // Lấy tất cả cards có storage: true (từ board và inbox)
-  const archivedBoardCards = cards.filter((card) => card.storage === true);
+  const archivedBoardCards = cards.filter((card) => card.storage === true && card.userId === currentUser.id);
   // Lọc inbox cards theo userId của currentUser và storage: true
   const archivedInboxCards = cardsInbox.filter((card) => 
     card.userId === currentUser.id && card.storage === true
@@ -504,7 +504,7 @@ function renderArchivedLists() {
   container.innerHTML = '';
   
   // Lấy tất cả lists có storage: true
-  const archivedLists = lists.filter((list) => list.storage === true);
+  const archivedLists = lists.filter((list) => list.storage === true && list.boardId === DEFAULT_BOARD_ID);
   
   if (archivedLists.length === 0) {
     container.innerHTML = '<p class="archived-empty">Không có danh sách nào đã lưu trữ</p>';

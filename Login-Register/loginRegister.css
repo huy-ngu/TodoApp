@@ -427,3 +427,35 @@ form.sign-in-form {
     opacity: 1;
     transform: translateX(0); /* Trượt vào vị trí cũ */
 }
+
+.btn-fixed-top-left {
+            /* Giúp nút đứng yên khi cuộn chuột */
+            position: fixed;
+            top: 20px;  /* Cách mép trên 20px */
+            left: 20px; /* Cách mép trái 20px */
+            z-index: 1000; /* Luôn nằm trên cùng */
+
+            /* Trang trí nút */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px; /* Khoảng cách giữa icon và chữ */
+            
+            text-decoration: none; /* Bỏ gạch chân của thẻ a */
+            background-color: #ffffff; /* Nền trắng */
+            color: #0065ff; /* Chữ màu xanh */
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 50px; /* Bo tròn hoàn toàn */
+            
+            /* Hiệu ứng bóng đổ để nút nổi lên */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease; /* Chuyển động mượt mà */
+        }
+
+        /* 3. Hiệu ứng khi di chuột vào (Hover) */
+        .btn-fixed-top-left:hover {
+            background-color: #e6f0ff; /* Đổi màu nền nhẹ */
+            transform: translateY(-2px); /* Nhích lên 1 chút */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Bóng đổ đậm hơn */
+        }
