@@ -4,288 +4,200 @@ a {
     background: none;
     outline: none;
 }
+/* --- 1. CẤU HÌNH CHUNG (VARIABLES) --- */
+:root {
+    --nav-bg: #2563eb;          /* Màu xanh dương chủ đạo (Royal Blue) */
+    --nav-height: 48px;         /* Chiều cao cố định */
+    --text-white: #ffffff;
+    --glass-bg: rgba(255, 255, 255, 0.2); /* Hiệu ứng kính mờ */
+    --glass-hover: rgba(255, 255, 255, 0.3);
+}
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-
-
-
-/* Sidebar Styles */
-.sidebar {
-    position: fixed;
-    left: 0;
+/* --- 2. NAVBAR CONTAINER --- */
+.navbar {
+    background-color: var(--nav-bg);
+    height: var(--nav-height);
+    display: flex;
+    justify-content: space-between; /* Đẩy 3 phần ra xa nhau */
+    align-items: center;            /* Căn giữa theo chiều dọc */
+    padding: 0 20px;
+    color: var(--text-white);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: sticky;
     top: 0;
-    height: 100vh;
-    width: 260px;
-    background: #ffffff;
-    border-right: 1px solid #e3e7f0;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, width 0.3s ease;
     z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
 }
 
-.sidebar--collapsed {
-    width: 60px;
-}
-
-.sidebar-header {
-    padding: 1rem;
-    border-bottom: 1px solid #e3e7f0;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.sidebar-toggle {
-    background: transparent;
-    border: 1px solid #c7d0e4;
-    border-radius: 8px;
-    padding: 0.4rem 0.6rem;
-    cursor: pointer;
-    font-size: 1.2rem;
-    color: #3b4d6b;
-    transition: all 0.2s ease;
-}
-
-.sidebar-toggle:hover {
-    background: #f4f6fb;
-    border-color: #a8b5d1;
-}
-
-.sidebar--collapsed .sidebar-toggle {
-    margin: 0 auto;
-}
-
-.sidebar-nav {
-    padding: 1rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    flex-grow: 1; /* Chiếm hết khoảng trống thừa */
-}
-
-.sidebar-item {
+/* --- 3. PHẦN TRÁI (LOGO) --- */
+.navbar__left .logo-container {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1.5rem;
-    color: #3b4d6b;
-    transition: all 0.2s ease;
+    gap: 10px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+}
+
+/* --- 4. PHẦN GIỮA (SEARCH & ACTION) --- */
+.navbar__center {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;                /* Chiếm khoảng trống còn lại */
+    justify-content: center; /* Căn giữa nội dung bên trong */
+    max-width: 600px;       /* Không cho bè ra quá rộng */
+}
+
+/* Ô tìm kiếm kiểu kính mờ */
+.search-box {
     position: relative;
-    margin: 0 0.5rem;
-    border-radius: 8px;
+    width: 100%;
+    max-width: 300px;
 }
 
-.sidebar-item:hover {
-    background: #f4f6fb;
-    color: #0066ff;
+.search-box input {
+    width: 100%;
+    background: var(--glass-bg);
+    border: none;
+    outline: none;
+    padding: 8px 12px 8px 36px; /* Padding trái để chừa chỗ cho icon */
+    border-radius: 6px;
+    color: var(--text-white);
+    font-size: 0.9rem;
+    transition: 0.2s;
 }
 
-.sidebar-item.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #ffffff;
-    font-weight: 600;
+.search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
 
-.sidebar-item.active::before {
-    content: '';
+.search-box input:focus {
+    background: #fff;
+    color: #333; /* Khi gõ chữ chuyển sang màu đen cho dễ đọc */
+}
+
+.search-box input:focus::placeholder {
+    color: #888;
+}
+
+.search-box i {
     position: absolute;
-    left: 0;
+    left: 10px;
     top: 50%;
     transform: translateY(-50%);
-    width: 4px;
-    height: 70%;
-    background: #ffffff;
-    border-radius: 0 4px 4px 0;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    pointer-events: none; /* Icon không chặn click vào input */
 }
 
-.sidebar-icon {
-    font-size: 1.25rem;
-    min-width: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+/* Logic đổi màu icon khi input focus */
+.search-box input:focus + i { 
+    /* Lưu ý: Để dùng selector này, trong HTML icon phải đặt SAU input, 
+       nhưng ở trên ta đặt TRƯỚC nên CSS này cần chỉnh lại HTML một chút 
+       hoặc dùng JS. Để đơn giản, ta giữ nguyên icon màu trắng */
+} 
 
-.sidebar-text {
-    font-size: 0.95rem;
-    white-space: nowrap;
-    transition: opacity 0.3s ease;
-}
-
-.sidebar--collapsed .sidebar-text {
-    opacity: 0;
-    width: 0;
-    overflow: hidden;
-}
-
-.sidebar--collapsed .sidebar-item {
-    justify-content: center;
-    padding: 0.75rem;
-}
-
-/* Sidebar Overlay (cho mobile) */
-.sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.sidebar-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Header Styles */
-.app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.6rem clamp(1rem, 4vw, 3rem);
-    background-color: #fffffe;
-    border-bottom: 1px solid #e3e7f0;
-    position: relative;
-    margin-left: 260px;
-    transition: margin-left 0.3s ease;
-    z-index: 100;
-}
-
-body.sidebar-collapsed .app-header {
-    margin-left: 60px;
-}
-
-.app-header--compact h1 {
-    margin: 0;
-    font-size: clamp(1.2rem, 2vw, 1.6rem);
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    flex: 1;
-}
-
-.header-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-/* Button styles - dùng chung cho tất cả các trang */
-.cta {
-    padding: 0.55rem 0.8rem;
-    border-radius: 5px;
+/* Nút tạo bảng mới */
+.btn-create {
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--nav-bg); /* Chữ màu xanh cho nổi bật trên nền trắng */
     border: none;
-    background: linear-gradient(120deg, #0066ff, #00c6ff);
-    color: white;
-    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 4px;
     font-weight: 600;
-    font-size: 14px;
-    transition: all 0.2s ease;
-}
-
-.cta:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
-}
-
-.cta--secondary {
-    background: linear-gradient(120deg, #0066ff, #00c6ff);
-    min-width: 600px;
-    width: fit-content;
-}
-
-.cta--secondary:hover {
-    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
-    background: linear-gradient(120deg, #0066ff, #00c6ff, #0066ff);
-    background-size: 200% 100%;
-    animation: gradientMove 2s ease infinite;
-}
-
-@keyframes gradientMove {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-/* Main content adjustment */
-.main-content {
-    transition: margin-left 0.3s ease, padding-left 0.3s ease;
-    margin-left: 260px;
-    padding: 2rem;
-    min-height: calc(100vh - 80px);
-}
-
-body.sidebar-collapsed .main-content {
-    margin-left: 60px;
-}
-
-@media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-100%);
-    }
-    
-    .sidebar:not(.sidebar--collapsed) {
-        transform: translateX(0);
-    }
-    
-    .sidebar-overlay.active {
-        display: block;
-    }
-    
-    .app-header {
-        margin-left: 0 !important;
-    }
-    
-    .main-content {
-        margin-left: 0 !important;
-    }
-}
-
-.menu-bottom {
-    padding: 0 20px; /* Padding 2 bên */
-    margin-bottom: 20px;
-}
-
-.logout-btn {
+    cursor: pointer;
     display: flex;
     align-items: center;
-    text-decoration: none;
-    padding: 12px 16px;
-    border-radius: 8px;
-    color: #718096; /* Màu xám nhạt */
-    transition: all 0.3s ease;
-    border: 1px solid transparent; /* Để khi hover hiện viền không bị nhảy */
+    gap: 8px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
 }
 
-.logout-btn {
-    margin-right: 12px;
-    font-size: 18px;
+.btn-create:hover {
+    background: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-/* Hiệu ứng khi di chuột vào nút Đăng xuất */
-.logout-btn:hover {
-    background-color: #fff5f5; /* Nền đỏ rất nhạt */
-    color: #e53e3e; /* Chữ chuyển màu đỏ báo hiệu 'nguy hiểm/thoát' */
-    border-color: #e53e3e; /* Viền đỏ */
+/* --- 5. PHẦN PHẢI (USER & NOTI) --- */
+.navbar__right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Nút chuông thông báo */
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: var(--text-white);
+    font-size: 1.2rem;
+    cursor: pointer;
+    position: relative;
+    padding: 5px;
+    transition: transform 0.2s;
+}
+
+.btn-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Chấm đỏ số lượng */
+.badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #ef4444;
+    color: white;
+    font-size: 0.6rem;
+    font-weight: bold;
+    height: 16px;
+    width: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: 2px solid var(--nav-bg); /* Viền trùng màu nền để tạo khoảng cách */
+}
+
+/* Avatar User */
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.avatar:hover {
+    border-color: #fff;
+    box-shadow: 0 0 0 4px rgba(255,255,255,0.1);
+}
+
+/* --- 6. RESPONSIVE (MOBILE) --- */
+@media (max-width: 768px) {
+    /* Ẩn text logo, chỉ hiện icon */
+    .logo-text { display: none; }
+    
+    /* Ẩn text nút tạo mới, chỉ hiện dấu + */
+    .btn-create span { display: none; }
+    
+    /* Ẩn input search, hiển thị icon search như một nút bấm (cần JS để xử lý mở rộng) */
+    .search-box input { display: none; }
+    .search-box i {
+        position: static;
+        transform: none;
+        cursor: pointer;
+        padding: 8px;
+    }
 }

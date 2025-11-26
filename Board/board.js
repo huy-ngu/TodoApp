@@ -1,12 +1,16 @@
 import  {boards, lists, cards, inboxData, cardsInbox, themeColors, baseUrl, boardThemeColors}  from "../Entity.js";
 
-
+const DEFAULT_BOARD_ID = new URLSearchParams(window.location.search).get('board');
+const userIdFromBoard = boards.find((b) => b.id === DEFAULT_BOARD_ID)?.userId;
 const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
 if (!currentUser) {
     alert("Bạn chưa đăng nhập! Vui lòng quay lại.");
     window.location.href = `${baseUrl}/Login-Register/loginRegister.html`;
 }
-
+if(userIdFromBoard !== currentUser.id){
+    alert("Bạn không có quyền truy cập!");
+    window.location.href = `${baseUrl}/ListBoard/boards.html`;
+}
 const viewState = {
   board: true,
   inbox: true, // Hộp thư chung hiển thị từ đầu
@@ -16,14 +20,6 @@ const generateId = (() => {
   let counter = 0;
   return (prefix) => `${prefix}-${Date.now()}`;
 })();
-
-
-// Board ID mặc định 
-let DEFAULT_BOARD_ID = "b2";
-const boardId = new URLSearchParams(window.location.search).get('board');
-if(boardId) {
-  DEFAULT_BOARD_ID = boardId;
-}
 
 document.addEventListener("DOMContentLoaded", () => {
   renderBoard(DEFAULT_BOARD_ID);
@@ -439,9 +435,9 @@ function renderArchivedCards() {
   
   container.innerHTML = '';
   
-  // Lấy tất cả cards có storage: true (từ board và inbox)
-  const archivedBoardCards = cards.filter((card) => card.storage === true && card.userId === currentUser.id);
-  // Lọc inbox cards theo userId của currentUser và storage: true
+  // Lấy tất cả cards có storage: true
+  const archivedBoardCards = cards.filter((card) => card.storage === true && card.boardId === DEFAULT_BOARD_ID );
+  // Lọc inbox cards theo userId 
   const archivedInboxCards = cardsInbox.filter((card) => 
     card.userId === currentUser.id && card.storage === true
   );
@@ -714,7 +710,6 @@ function deleteList(listId) {
 
 function logout() {
   sessionStorage.removeItem('currentUser');
-  sessionStorage.setItem("statusLogout", "success");
 
   window.location.href = `${baseUrl}/Login-Register/loginRegister.html`;
 }
@@ -1318,6 +1313,7 @@ function handleAddCard(listId) {
     ...cardInput,
     listId: listId,
     storage: false, // Mặc định không lưu trữ
+    boardId: DEFAULT_BOARD_ID,
   };
 
   cards.push(newCard);
@@ -1352,16 +1348,16 @@ function promptForCardInput(defaults = {}) {
   const title = prompt("Tên thẻ mới", defaults.title || "Nhiệm vụ mới");
   if (!title) return null;
   const normalizedTitle = title.trim();
-  if (!normalizedTitle) return null;
+  if (!normalizedTitle) return;
 
   const label = prompt("Nhãn hiển thị", defaults.label || "Công việc");
-  if (label === null) return null; // User nhấn cancel
+  if (label === null) return; // User nhấn cancel
   
   const badge = prompt("Badge (ví dụ số lượng, trạng thái)", defaults.badge || "Chi tiết");
-  if (badge === null) return null; // User nhấn cancel
+  if (badge === null) return; // User nhấn cancel
   
   const footer = prompt("Chú thích dưới thẻ", defaults.footer || "Hạn: dd/mm");
-  if (footer === null) return null; // User nhấn cancel
+  if (footer === null) return; // User nhấn cancel
 
   return {
     title: normalizedTitle,
@@ -1533,6 +1529,7 @@ function handleStoreCardFromModal() {
     source: currentCardContext.source,
     listId: currentCardContext.listId,
   });
+  renderBoard(DEFAULT_BOARD_ID);
 
   // Đóng modal
   closeCardModal();

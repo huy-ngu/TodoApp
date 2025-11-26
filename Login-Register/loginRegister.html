@@ -31,7 +31,7 @@
                     <h2 class="title">Đăng nhập</h2>
                     <div class="input-field">
                         <i class="fas fa-user"></i>
-                        <input id="login-email" type="text" placeholder="Tên đăng nhập" />
+                        <input id="login-email" type="text" placeholder="Email" />
                     </div>
                     <div class="input-field">
                         <i class="fas fa-lock"></i>
@@ -46,7 +46,7 @@
                         <a href="#" class="social-icon">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a href="#" class="social-icon">
+                        <a href="#" class="social-icon" id="btn-google-login">
                             <i class="fab fa-google"></i>
                         </a>
                         <a href="../" class="social-icon">
@@ -80,7 +80,7 @@
                         <a href="#" class="social-icon">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a href="#" class="social-icon">
+                        <a href="#" class="social-icon" id="btn-google-register">
                             <i class="fab fa-google"></i>
                         </a>
                         <a href="#" class="social-icon">
@@ -129,6 +129,8 @@
         </div>
         <div class="toast-text">Đăng ký thành công!</div>
     </div>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <script src="./loginRegister.js" type="module"></script>
 </body>

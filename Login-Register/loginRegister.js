@@ -32,7 +32,6 @@ registerForm.addEventListener('submit', function(event) {
     console.log("Fullname:", fullnameValue);
     console.log("Pass:", passwordValue);
 
-    // --- Đoạn này áp dụng kiến thức bài trước ---
     // Tạo object user
     const newUser = {
         id : `user-${Date.now()}`,
@@ -75,4 +74,69 @@ loginForm.addEventListener('submit', function(event) {
   }
 });
 
+// đăng nhập bằng google
 
+const YOUR_CLIENT_ID = '236217206978-l0c5ipbl5tklrtok3q32li38amq8se0r.apps.googleusercontent.com';
+let tokenClient;
+        // Hàm lấy thông tin User từ Google API sau khi có Token
+async function fetchUserProfile(accessToken) {
+    try {
+             // Gọi API Google UserInfo
+    const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+    headers: {
+        'Authorization': `Bearer ${accessToken}`
+        }
+    });
+    const data = await response.json();
+    const user = users.find(u => u.email === data.email);
+    console.log("user:", user);
+    if(!user){
+        const newUser = {
+            id : `user-${Date.now()}`,
+            email: data.email,
+            fullname: data.name,
+            password: null,
+            pro: false,
+            avatar: data.picture,
+        };
+        users.push(newUser);
+        localStorage.setItem('users', JSON.stringify(users));
+            showToast();
+            container.classList.remove("sign-up-mode");
+        sessionStorage.setItem('currentUser', JSON.stringify(newUser));
+
+    }
+    sessionStorage.setItem('currentUser', JSON.stringify(user));
+
+    window.location.href = `${baseUrl}/ListBoard/boards.html`;
+    } catch (error) {
+        console.error("Lỗi lấy thông tin user:", error);
+        }
+    }
+
+        // Khởi tạo Token Client khi trang web tải xong
+    window.onload = function () {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+            client_id: YOUR_CLIENT_ID,
+                // Scope: xin quyền truy cập profile và email
+            scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+                // Callback: Chạy hàm này khi Google popup đóng lại và trả về kết quả
+            callback: (tokenResponse) => {
+                if (tokenResponse && tokenResponse.access_token) {
+                    console.log("Access Token:", tokenResponse.access_token);
+                    fetchUserProfile(tokenResponse.access_token);
+
+                }
+            },
+        });
+    };
+
+        // Gán sự kiện click cho nút
+document.getElementById('btn-google-login').addEventListener('click', () => {
+            // Lệnh này kích hoạt Popup
+    tokenClient.requestAccessToken();
+});
+document.getElementById('btn-google-register').addEventListener('click', () => {
+            // Lệnh này kích hoạt Popup
+    tokenClient.requestAccessToken();
+});

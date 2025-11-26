@@ -1,109 +1,20 @@
-/**
- * Load sidebar component
- */
-async function loadSidebar() {
-    try {
-        const response = await fetch('/components/sidebar.html');
-        const html = await response.text();
-        const sidebarContainer = document.getElementById('sidebar-container');
-        if (sidebarContainer) {
-            sidebarContainer.innerHTML = html;
-        } else {
-            // Nếu không có container, thêm vào body
-            document.body.insertAdjacentHTML('afterbegin', html);
-        }
-        setupSidebar();
-    } catch (error) {
-        console.error('Error loading sidebar:', error);
-    }
-}
-
-/**
- * Load header component
- */
-async function loadHeader() {
-    try {
-        const response = await fetch('/components/header.html');
-        const html = await response.text();
-        const headerContainer = document.getElementById('header-container');
-        if (headerContainer) {
-            headerContainer.innerHTML = html;
-        } else {
-            // Tìm sidebar và thêm header sau sidebar
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar) {
-                sidebar.insertAdjacentHTML('afterend', html);
-            } else {
-                document.body.insertAdjacentHTML('afterbegin', html);
-            }
-        }
-        // Dispatch event khi header đã load xong
-        window.dispatchEvent(new CustomEvent('headerLoaded'));
-    } catch (error) {
-        console.error('Error loading header:', error);
-    }
-}
-
-/**
- * Setup sidebar functionality
- */
-function setupSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-    const sidebarOverlay = document.getElementById('sidebar-overlay');
-    const mainContent = document.getElementById('main-content');
-    
-    if (!sidebar || !sidebarToggle) return;
-    
-    // Xác định trang hiện tại và highlight
-    const currentPath = window.location.pathname;
-    const currentPage = currentPath.includes('admin') ? 'admin' : 
-                       currentPath.includes('templates') ? 'templates' : 'boards';
-    
-    // Highlight trang hiện tại
-    const currentItem = document.querySelector(`.sidebar-item[data-page="${currentPage}"]`);
-    if (currentItem) {
-        currentItem.classList.add('active');
-    }
-    
-    // Toggle sidebar
-    function toggleSidebar() {
-        sidebar.classList.toggle('sidebar--collapsed');
-        if (mainContent) {
-            mainContent.classList.toggle('main-content--sidebar-collapsed');
-        }
-        document.body.classList.toggle('sidebar-collapsed');
-        if (sidebarOverlay) {
-            sidebarOverlay.classList.toggle('active');
-        }
-        
-        // Lưu trạng thái vào localStorage
-        const isCollapsed = sidebar.classList.contains('sidebar--collapsed');
-        localStorage.setItem('sidebarCollapsed', isCollapsed);
-    }
-    
-    // Khôi phục trạng thái sidebar từ localStorage
-    const savedState = localStorage.getItem('sidebarCollapsed');
-    if (savedState === 'true') {
-        sidebar.classList.add('sidebar--collapsed');
-        if (mainContent) {
-            mainContent.classList.add('main-content--sidebar-collapsed');
-        }
-        document.body.classList.add('sidebar-collapsed');
-    }
-    
-    // Event listeners
-    sidebarToggle.addEventListener('click', toggleSidebar);
-    if (sidebarOverlay) {
-        sidebarOverlay.addEventListener('click', toggleSidebar);
-    }
-}
 
 /**
  * Setup add board button functionality
  */
+
+  
+document.addEventListener('DOMContentLoaded', () => {
+    setupAddBoardButton();
+}); 
+
 async function setupAddBoardButton() {
-    const addBoardBtn = document.getElementById('add-board-btn');
+    const response = await fetch('../components/header.html');
+    const html = await response.text();
+    document.getElementById('header-placeholder').innerHTML = html;
+
+
+    const addBoardBtn = document.querySelector('.btn-create');
     if (!addBoardBtn) {
         console.warn('Không tìm thấy nút add-board-btn');
         return;
@@ -164,43 +75,4 @@ async function setupAddBoardButton() {
     });
     }
 
-/**
- * Load layout components (sidebar + header)
- */
-async function loadLayout() {
-    await loadSidebar();
-    await loadHeader();
-    
-    // Đợi header load xong rồi setup button
-    window.addEventListener('headerLoaded', () => {
-        setTimeout(() => {
-            setupAddBoardButton();
-        }, 100);
-    });
-    
-    // Fallback: thử setup button sau một chút
-    setTimeout(() => {
-        setupAddBoardButton();
-    }, 300);
-}
 
-// Tự động load layout khi DOM ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadLayout);
-} else {
-    loadLayout();
-}
-
-const logoutBtn = document.getElementsByClassName('.logout-btn');
-// Kiểm tra xem nút có tồn tại không để tránh lỗi
-if (logoutBtn) {
-    console.log("1111111111111");
-
-    logoutBtn.addEventListener('click', function(event) {
-        // Ngăn thẻ a chuyển trang theo href="#"
-        event.preventDefault(); 
-        sessionStorage.removeItem('currentUser');
-        window.location.href = '/Index.html'; 
-        
-    });
-}

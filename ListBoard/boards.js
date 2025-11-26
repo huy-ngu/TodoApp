@@ -6,7 +6,6 @@ if (!currentUser) {
     window.location.href = `${baseUrl}/Login-Register/loginRegister.html`;
 }
 
-
 // Render lại danh sách boards
 function renderBoards() {
   const containerBoard = document.getElementById("board-list");

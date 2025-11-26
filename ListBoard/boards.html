@@ -6,17 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrìHoãnPro | Danh sách bảng</title>
     <link rel="icon" type="image/png" href="/images/logo.png">
-    <link rel="stylesheet" href="/components/layout.css" />
     <link rel="stylesheet" href="/ListBoard/boards.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link rel="stylesheet" href="/components/layout.css">
 </head>
 
 <body>
     <!-- Components sẽ được load tự động -->
-    <div id="sidebar-container"></div>
-    <div id="header-container"></div>
 
+    <div id="header-placeholder"></div>
+
+    <div></div>
     <div class="main-content" id="main-content">
         <div>
             <h3>Bảng đã gắn sao</h3>
@@ -29,11 +29,9 @@
             </div>
         </div>
     </div>
-
-
-
-    <script src="/components/layout.js" type="module"></script>
     <script src="/ListBoard/boards.js" type="module"></script>
+    <script src="/js/loadComponents.js"></script>
+    <script src="/components/layout.js"></script>
 </body>
 
 </html>

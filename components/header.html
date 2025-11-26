@@ -1,14 +1,33 @@
-<header class="app-header app-header--compact">
-    <a href="/ListBoard/boards.html" style="text-decoration: none;">
-        <div class="header-left">
-            <img src="/images/logo.png" alt="icon" style="width: 48px; height: 48px; border-radius: 12px;">
-            <div>
-                <h1>TrìHoãnPro</h1>
+<header class="navbar">
+    <div class="navbar__left">
+        <a href="../ListBoard/boards.html">
+            <div class="logo-container">
+                <i class="fa-solid fa-layer-group"></i>
+                <span class="logo-text">TrìHoãnPro</span>
             </div>
+        </a>
+    </div>
+
+    <div class="navbar__center">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Tìm nhanh bảng...">
         </div>
-    </a>
-    <div class="header-center" id="header-center">
-        <button class="cta cta--secondary" id="add-board-btn" type="button">+ Thêm mới bảng</button>
+
+        <button class="btn-create">
+            <i class="fa-solid fa-plus"></i>
+            <span>Tạo bảng mới</span>
+        </button>
+    </div>
+
+    <div class="navbar__right">
+        <!-- <button class="btn-icon">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge">3</span>
+        </button> -->
+
+        <div class="user-profile">
+            <img src="https://ui-avatars.com/api/?name=User+Name&background=random" alt="Avatar" class="avatar">
+        </div>
     </div>
 </header>
-

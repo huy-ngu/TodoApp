@@ -10,17 +10,22 @@ let lists = JSON.parse(localStorage.getItem('lists')) || [];
 let cards = JSON.parse(localStorage.getItem('cards')) || [];
 
 // InboxData chỉ chứa metadata (title, theme, description), không chứa cards
-let inboxData = JSON.parse(localStorage.getItem('inboxData')) || null;
-// Kiểm tra nếu inboxData là array (dữ liệu cũ) hoặc không phải object, khởi tạo lại
-if (!inboxData || Array.isArray(inboxData) || typeof inboxData !== 'object') {
-  inboxData = {
-    title: "Hộp thư chung",
-    description: "",
-    theme: "green"
-  };
-  // Lưu lại cấu trúc đúng vào localStorage
-  localStorage.setItem('inboxData', JSON.stringify(inboxData));
+// let inboxData = JSON.parse(localStorage.getItem('inboxData')) || null;
+let inboxData = {
+  title : "Hộp thư chung",
+  description: "",
+  theme: "green"
 }
+// Kiểm tra nếu inboxData là array (dữ liệu cũ) hoặc không phải object, khởi tạo lại
+// if (!inboxData || Array.isArray(inboxData) || typeof inboxData !== 'object') {
+//   inboxData = {
+//     title: "Hộp thư chung",
+//     description: "",
+//     theme: "green"
+//   };
+//   // Lưu lại cấu trúc đúng vào localStorage
+//   localStorage.setItem('inboxData', JSON.stringify(inboxData));
+// }
 
 // CardsInbox lưu trữ các cards của inbox, tương tự như cards cho board
 let cardsInbox = JSON.parse(localStorage.getItem('cardsInbox')) || [];
@@ -46,7 +51,7 @@ const boardThemeColors = {
   'b5': "linear-gradient(to right, #5d4157, #a8caba)",
   "b6": "linear-gradient(to right, #8360c3,rgb(15, 100, 73))",
   "b7": "linear-gradient(to right,rgb(212, 207, 219),rgb(132, 41, 41))",
-
+  "b8": "white",
 }
 var baseUrl = window.location.origin;
 export { boards, lists, cards, inboxData, cardsInbox, themeColors, baseUrl, users, boardThemeColors };
