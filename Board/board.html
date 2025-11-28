@@ -16,16 +16,12 @@
   <div id="header-placeholder"></div>
 
   <header class="app-header app-header--compact">
-    <a href="/ListBoard/boards.html" style="text-decoration: none;">
-      <div class="header-left">
-        <!-- <span class="logo-dot" aria-hidden="true"> -->
-        <!-- <img src="/images/logo.png" alt="icon" style="width: 48px; height: 48px; border-radius: 12px;
-"> -->
-        <div>
-          <h2 id="board-title"></h2>
-        </div>
-      </div>
-    </a>
+    <div class="header-left">
+      <!-- <span class="logo-dot" aria-hidden="true"> -->
+      <!-- <img src="/images/logo.png" alt="icon" style="width: 48px; height: 48px; border-radius: 12px;"> -->
+      <span id="board-title"></span>
+      <input type="text" id="input-boardTitle" style="display: none; width: 200px;">
+    </div>
     <div class="header-center">
       <!-- <button class="cta cta--secondary" id="add-board-btn" type="button">+ Thêm mới bảng</button> -->
     </div>
@@ -101,6 +97,7 @@
     <article class="list">
       <header class="list__header">
         <h2 class="list__title"></h2>
+        <input type="text" class="list-title-input" style="display: none;">
         <div class="list__action-wrapper">
           <button class="list__action" type="button">⋯</button>
           <div class="list__dropdown" style="display: none;">
@@ -214,6 +211,8 @@
   <script src="board.js" type="module"></script>
   <script src="/js/loadComponents.js"></script>
   <script src="/components/layout.js"></script>
+  <script src="./changeBoardName.js" type="module"></script>
+  <script src="./changeListTitle.js" type="module"></script>
 </body>
 
 </html>

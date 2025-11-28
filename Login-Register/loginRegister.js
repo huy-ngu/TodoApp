@@ -44,6 +44,9 @@ registerForm.addEventListener('submit', function(event) {
     localStorage.setItem('users', JSON.stringify(users));
     showToast();
     container.classList.remove("sign-up-mode");
+    
+    emailValue.value="";
+    passwordValue.value="";
 });
 
 function showToast() {
@@ -68,6 +71,8 @@ loginForm.addEventListener('submit', function(event) {
   if (foundUser) {
       console.log('Đăng nhập thành công:', foundUser);
       sessionStorage.setItem('currentUser', JSON.stringify(foundUser));
+      loginEmail="";
+      loginPassword="";
       window.location.href = `${baseUrl}/ListBoard/boards.html`;
   } else {
       alert('Email hoặc mật khẩu không đúng. Vui lòng thử lại.');

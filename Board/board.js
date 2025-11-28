@@ -59,7 +59,7 @@ function renderBoard(boardId) {
     return;
   }
 
-  document.getElementById("board-title").textContent = board.title;
+  document.getElementById("board-title").textContent = `${board.title}`;
   // set màu body
   document.body.style.background = board.theme ;
 
@@ -166,6 +166,9 @@ function createList(list) {
   listElement.setAttribute("data-theme", listTheme);
 
   template.querySelector(".list__title").textContent = list.title;
+  template.querySelector(".list__title").id = list.id;
+  template.querySelector(".list-title-input").id = `input-${list.id}`;
+
 
   const cardsContainer = template.querySelector(".list__cards");
   cardsContainer.innerHTML = "";
