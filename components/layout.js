@@ -1,16 +1,11 @@
-
-/**
- * Setup add board button functionality
- */
-
-  
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     setupAddBoardButton();
 }); 
 
 async function setupAddBoardButton() {
     const response = await fetch('../components/header.html');
     const html = await response.text();
+
     document.getElementById('header-placeholder').innerHTML = html;
 
 
@@ -74,5 +69,59 @@ async function setupAddBoardButton() {
         }
     });
     }
+    setTimeout(() => {
+         const userJson = sessionStorage.getItem('currentUser');
+        const avatarImg = document.querySelector('.avatar'); 
+        if (userJson && avatarImg) {
+        // Parse từ chuỗi JSON về Object
+        const user = JSON.parse(userJson);
+        // 2. Thay đổi đường dẫn ảnh
+        avatarImg.src = user.avatar;        
+        console.log(avatarImg.src);
+        } else {
+        // Chưa đăng nhập -> Để ảnh mặc định hoặc ẩn đi
+        if(avatarImg) avatarImg.src = "https://ui-avatars.com/api/?name=Guest";
+        }
+    }, 100);
+   
 
+document.addEventListener('click', function (event) {
+    // 1. Kiểm tra xem người dùng có click vào .avatar không
+    if (event.target.matches('.avatar')) {
+        const dropdown = document.getElementById("myDropdown");
+        if (dropdown) dropdown.classList.toggle("show");
+    } 
+    // 2. Nếu không click vào avatar cũng không click vào menu -> Đóng menu
+    else if (!event.target.closest('.user-menu-container')) {
+        const dropdowns = document.getElementsByClassName("dropdown-menu");
+        for (let i = 0; i < dropdowns.length; i++) {
+            if (dropdowns[i].classList.contains('show')) {
+                dropdowns[i].classList.remove('show');
+            }
+        }
+    }
+});
 
+function logout() {
+    sessionStorage.removeItem('currentUser');
+}
+
+// sidebar
+
+document.addEventListener("DOMContentLoaded", function() {
+        // 1. Lấy phần đường dẫn của trang hiện tại (vd: /UserProfile/userProfile.html)
+        setTimeout(()=>{
+            const currentPath = window.location.pathname;
+        const menuItems = document.querySelectorAll('.sidebar-menu .menu-item');
+        menuItems.forEach(item => {
+            // 2. Lấy đường dẫn của thẻ a trong sidebar
+            // item.pathname sẽ tự động đổi link tương đối thành tuyệt đối để so sánh chuẩn
+            const itemPath = item.pathname; 
+            // 3. So sánh: Nếu đường dẫn giống nhau VÀ không phải là link ảo '#'
+            if (item.getAttribute('href') !== '#' && itemPath === currentPath) {
+                item.classList.add('active');
+            }
+        });
+        }, 100);
+        
+    });

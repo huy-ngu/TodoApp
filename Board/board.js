@@ -1,5 +1,5 @@
 import  {boards, lists, cards, inboxData, cardsInbox, themeColors, baseUrl, boardThemeColors}  from "../Entity.js";
-
+import loadComponent from "../js/loadComponents.js";
 const DEFAULT_BOARD_ID = new URLSearchParams(window.location.search).get('board');
 const userIdFromBoard = boards.find((b) => b.id === DEFAULT_BOARD_ID)?.userId;
 const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
@@ -21,7 +21,7 @@ const generateId = (() => {
   return (prefix) => `${prefix}-${Date.now()}`;
 })();
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   renderBoard(DEFAULT_BOARD_ID);
   renderInbox(inboxData);
   setupViewSwitch();
@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setupAddInboxButton();
   setupCardModal();
   setupHeaderDropdown();
-  
   // Đóng dropdown khi click ra ngoài
   document.addEventListener("click", (e) => {
     if (!e.target.closest(".list__action-wrapper") && 

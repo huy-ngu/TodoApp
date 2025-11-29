@@ -10,22 +10,22 @@ let lists = JSON.parse(localStorage.getItem('lists')) || [];
 let cards = JSON.parse(localStorage.getItem('cards')) || [];
 
 // InboxData chỉ chứa metadata (title, theme, description), không chứa cards
-// let inboxData = JSON.parse(localStorage.getItem('inboxData')) || null;
-let inboxData = {
-  title : "Hộp thư chung",
-  description: "",
-  theme: "green"
-}
-// Kiểm tra nếu inboxData là array (dữ liệu cũ) hoặc không phải object, khởi tạo lại
-// if (!inboxData || Array.isArray(inboxData) || typeof inboxData !== 'object') {
-//   inboxData = {
-//     title: "Hộp thư chung",
-//     description: "",
-//     theme: "green"
-//   };
-//   // Lưu lại cấu trúc đúng vào localStorage
-//   localStorage.setItem('inboxData', JSON.stringify(inboxData));
+let inboxData = JSON.parse(localStorage.getItem('inboxData')) || null;
+// let inboxData = {
+//   title : "Hộp thư chung",
+//   description: "",
+//   theme: "green"
 // }
+// Kiểm tra nếu inboxData là array (dữ liệu cũ) hoặc không phải object, khởi tạo lại
+if (!inboxData || Array.isArray(inboxData) || typeof inboxData !== 'object') {
+  inboxData = {
+    title: "Hộp thư chung",
+    description: "",
+    theme: "green"
+  };
+  // Lưu lại cấu trúc đúng vào localStorage
+  localStorage.setItem('inboxData', JSON.stringify(inboxData));
+}
 
 // CardsInbox lưu trữ các cards của inbox, tương tự như cards cho board
 let cardsInbox = JSON.parse(localStorage.getItem('cardsInbox')) || [];

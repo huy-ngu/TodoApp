@@ -3,221 +3,118 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Drag Drop Board & Cards</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập Facebook - JS Thuần</title>
     <style>
-        body {
-            font-family: sans-serif;
-            padding: 20px;
-            background-color: #333;
-            color: #fff;
+        /* CSS đơn giản cho nút đăng nhập */
+        #loginBtn {
+            background-color: #1877F2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
         }
 
-        /* Container chứa các cột */
-        .board {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            padding-bottom: 20px;
-            min-height: 400px;
+        #loginBtn:hover {
+            background-color: #165eab;
         }
 
-        /* Style cho CỘT */
-        .column {
-            background-color: #ebecf0;
-            color: #333;
-            width: 250px;
-            border-radius: 8px;
-            padding: 10px;
-            flex-shrink: 0;
-            /* Không cho cột bị co lại */
-            cursor: move;
-            /* Con trỏ hình mũi tên 4 chiều */
+        .hidden {
+            display: none;
         }
 
-        .column h3 {
-            margin-top: 0;
-            pointer-events: none;
-        }
-
-        /* Không cho drag khi bấm vào chữ */
-
-        /* Style cho CARD */
-        .card-list {
-            min-height: 50px;
-            /* Đảm bảo luôn có chỗ để thả dù rỗng */
-        }
-
-        .card {
-            background-color: white;
-            padding: 10px;
-            margin-bottom: 8px;
-            border-radius: 4px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-            cursor: grab;
-        }
-
-        /* Hiệu ứng khi đang kéo */
-        .dragging {
-            opacity: 0.5;
-            border: 2px dashed red;
-        }
-
-        /* Hiệu ứng vùng nhận thả */
-        .drag-over {
-            background-color: #dcdcdc;
-            border: 2px dashed #007bff;
+        .profile-info {
+            margin-top: 20px;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="board" id="board">
-        <div class="column" draggable="true" id="col-1">
-            <h3>To Do</h3>
-            <div class="card-list" id="list-1">
-                <div class="card" draggable="true" id="card-1">Card 1</div>
-                <div class="card" draggable="true" id="card-2">Card 2</div>
-            </div>
-        </div>
+    <h2>Demo Đăng nhập Facebook</h2>
 
-        <div class="column" draggable="true" id="col-2">
-            <h3>Doing</h3>
-            <div class="card-list" id="list-2">
-                <div class="card" draggable="true" id="card-3">Card 3</div>
-            </div>
-        </div>
+    <button id="loginBtn" onclick="loginWithFacebook()">Đăng nhập bằng Facebook</button>
 
-        <div class="column" draggable="true" id="col-3">
-            <h3>Done</h3>
-            <div class="card-list" id="list-3"></div>
-        </div>
+    <div id="status" class="hidden">
+        <h3>Xin chào, <span id="userName"></span>!</h3>
+        <p>Email: <span id="userEmail"></span></p>
+        <button onclick="logoutFacebook()">Đăng xuất</button>
     </div>
 
     <script>
-        // --- 1. BIẾN TOÀN CỤC ---
-        const columns = document.querySelectorAll('.column');
-        const cards = document.querySelectorAll('.card');
-        const board = document.getElementById('board');
-        let draggedType = null; // Để biết đang kéo 'column' hay 'card'
-
-        // --- 2. XỬ LÝ SỰ KIỆN CHO CARD (CON) ---
-        cards.forEach(card => {
-            card.addEventListener('dragstart', (e) => {
-                // QUAN TRỌNG: Ngăn sự kiện nổi lên (bubble) tới cột
-                // Nếu không có dòng này, kéo Card sẽ bị tính là kéo Cột
-                e.stopPropagation();
-
-                draggedType = 'card';
-                card.classList.add('dragging');
-                console.log(`[CARD] Start: ${card.id}`);
+        // 1. Khởi tạo Facebook SDK
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '1420411473420001', // THAY THẾ ID CỦA BẠN VÀO ĐÂY
+                cookie: true,  // Cho phép server truy cập session qua cookie
+                xfbml: true,  // Parse các plugin xã hội trên trang
+                version: 'v18.0' // Phiên bản Graph API
             });
 
-            card.addEventListener('dragend', (e) => {
-                e.stopPropagation();
-                card.classList.remove('dragging');
-                draggedType = null;
-                console.log(`[CARD] End: ${card.id}`);
+            // Kiểm tra trạng thái đăng nhập ngay khi tải trang
+            FB.getLoginStatus(function (response) {
+                statusChangeCallback(response);
             });
-        });
+        };
 
-        // Xử lý vùng thả cho Card (là các .card-list)
-        document.querySelectorAll('.card-list').forEach(list => {
-            list.addEventListener('dragover', (e) => {
-                if (draggedType !== 'card') return; // Chỉ nhận nếu đang kéo Card
-                e.preventDefault(); // Cho phép thả
-                // console.log('[CARD-LIST] Over'); // (Tắt log này vì nó chạy liên tục gây lag)
+        // 2. Tải SDK bất đồng bộ (Code chuẩn của Facebook)
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/vi_VN/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
 
-                // Logic sắp xếp Card:
-                const afterElement = getDragAfterElement(list, e.clientY);
-                const draggingCard = document.querySelector('.card.dragging');
-
-                if (afterElement == null) {
-                    list.appendChild(draggingCard);
-                } else {
-                    list.insertBefore(draggingCard, afterElement);
-                }
-            });
-        });
-
-
-        // --- 3. XỬ LÝ SỰ KIỆN CHO COLUMN (CHA) ---
-        columns.forEach(col => {
-            col.addEventListener('dragstart', (e) => {
-                draggedType = 'column';
-                col.classList.add('dragging');
-                console.log(`[COLUMN] Start: ${col.id}`);
-            });
-
-            col.addEventListener('dragend', () => {
-                col.classList.remove('dragging');
-                draggedType = null;
-                console.log(`[COLUMN] End: ${col.id}`);
-
-                // Xóa style drag-over cũ nếu còn sót
-                columns.forEach(c => c.classList.remove('drag-over'));
-            });
-
-            // Khi một cột khác được kéo ngang qua cột này
-            col.addEventListener('dragenter', (e) => {
-                if (draggedType !== 'column') return;
-                e.preventDefault();
-                col.classList.add('drag-over');
-                console.log(`[COLUMN] Enter Zone: ${col.id}`);
-            });
-
-            col.addEventListener('dragleave', (e) => {
-                col.classList.remove('drag-over');
-            });
-
-            col.addEventListener('dragover', (e) => {
-                if (draggedType !== 'column') return;
-                e.preventDefault(); // Bắt buộc để drop
-            });
-
-            col.addEventListener('drop', (e) => {
-                if (draggedType !== 'column') return;
-                console.log(`[COLUMN] Drop vào: ${col.id}`);
-                col.classList.remove('drag-over');
-
-                // Logic đổi chỗ cột
-                const draggingCol = document.querySelector('.column.dragging');
-
-                // Kiểm tra vị trí chuột so với tâm cột để quyết định chèn trước hay sau
-                const bounding = col.getBoundingClientRect();
-                const offset = e.clientX - bounding.left - (bounding.width / 2);
-
-                if (offset > 0) {
-                    // Chuột ở bên phải tâm -> Chèn sau
-                    board.insertBefore(draggingCol, col.nextSibling);
-                    console.log('-> Đổi vị trí: Chèn SAU');
-                } else {
-                    // Chuột ở bên trái tâm -> Chèn trước
-                    board.insertBefore(draggingCol, col);
-                    console.log('-> Đổi vị trí: Chèn TRƯỚC');
-                }
-            });
-        });
-
-
-        // --- HÀM PHỤ TRỢ (Tính toán vị trí card) ---
-        // Hàm này tìm xem con trỏ chuột đang nằm trên đầu card nào để chèn vào giữa
-        function getDragAfterElement(container, y) {
-            const draggableElements = [...container.querySelectorAll('.card:not(.dragging)')];
-
-            return draggableElements.reduce((closest, child) => {
-                const box = child.getBoundingClientRect();
-                const offset = y - box.top - box.height / 2;
-
-                // offset < 0 nghĩa là chuột đang ở phía trên tâm của element con
-                if (offset < 0 && offset > closest.offset) {
-                    return { offset: offset, element: child };
-                } else {
-                    return closest;
-                }
-            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        // 3. Hàm xử lý trạng thái
+        function statusChangeCallback(response) {
+            if (response.status === 'connected') {
+                // Người dùng đã đăng nhập và kết nối với app
+                console.log('Đã kết nối!');
+                fetchUserData(); // Lấy thông tin
+            } else {
+                // Chưa đăng nhập
+                console.log('Chưa đăng nhập.');
+                document.getElementById('status').classList.add('hidden');
+                document.getElementById('loginBtn').classList.remove('hidden');
+            }
         }
 
+        // 4. Hàm kích hoạt khi bấm nút Đăng nhập
+        function loginWithFacebook() {
+            FB.login(function (response) {
+                if (response.authResponse) {
+                    statusChangeCallback(response);
+                } else {
+                    console.log('Người dùng hủy đăng nhập hoặc không cho phép.');
+                }
+            }, { scope: 'public_profile,email' }); // Yêu cầu quyền truy cập email
+        }
+
+        // 5. Hàm lấy thông tin người dùng qua Graph API
+        function fetchUserData() {
+            console.log('Đang lấy thông tin...');
+            FB.api('/me', { fields: 'name, email' }, function (response) {
+                console.log('Kết quả:', response);
+
+                // Hiển thị ra giao diện
+                document.getElementById('loginBtn').classList.add('hidden');
+                document.getElementById('status').classList.remove('hidden');
+                document.getElementById('userName').innerText = response.name;
+                document.getElementById('userEmail').innerText = response.email || 'Không có email';
+            });
+        }
+
+        // 6. Hàm đăng xuất
+        function logoutFacebook() {
+            FB.logout(function (response) {
+                statusChangeCallback(response);
+                location.reload(); // Tải lại trang cho sạch
+            });
+        }
     </script>
 </body>
 

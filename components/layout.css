@@ -4,6 +4,11 @@ a {
     background: none;
     outline: none;
 }
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background-color: #f9fafc; 
+}
 /* --- 1. CẤU HÌNH CHUNG (VARIABLES) --- */
 :root {
     --nav-bg: #2563eb;          /* Màu xanh dương chủ đạo (Royal Blue) */
@@ -201,3 +206,54 @@ a {
         padding: 8px;
     }
 }
+.user-profile {
+    position: relative;
+    display: flex;
+}
+.dropdown-menu {
+        display: none; /* Mặc định ẩn */
+        position: absolute;
+        top: 45px; /* Cách mép trên 45px */
+        right: 0; /* Căn phải thẳng hàng với avatar */
+        background-color: white;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        border-radius: 4px;
+        z-index: 1000;
+        overflow: hidden;
+}
+
+        /* Các mục trong menu */
+        .dropdown-menu a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+        }
+
+        /* Hiệu ứng khi di chuột vào mục menu */
+        .dropdown-menu a:hover {
+            background-color: #f1f1f1;
+            color: #2563eb;
+        }
+
+        /* Class để hiện menu khi click */
+        .show {
+            display: block;
+        }
+
+        /* Đường kẻ ngang phân cách (nếu cần) */
+        .divider {
+            height: 1px;
+            background-color: #e5e5e5;
+            margin: 4px 0;
+        }
+
+
+        /* sidebar*/
+        /* Reset cơ bản */
+* {
+    box-sizing: border-box;
+}
+

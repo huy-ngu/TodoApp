@@ -1,4 +1,5 @@
 import { boards, baseUrl, boardThemeColors } from "../Entity.js";
+import  loadComponent from "../js/loadComponents.js";
 console.log(boards);
 const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
 if (!currentUser) {
@@ -52,6 +53,24 @@ const generateId = (() => {
   let counter = 0;
   return (prefix) => `${prefix}-${Date.now()}`;
 })();
+document.addEventListener("DOMContentLoaded", async () => {
+  // const isHeaderLoaded = await loadComponent("header-placeholder", "../components/header.html");
+  //   if (isHeaderLoaded) {
+  //       const userJson = sessionStorage.getItem('currentUser');
+  //       const avatarImg = document.querySelector('.avatar'); 
+  //       if (userJson && avatarImg) {
+  //       // Parse từ chuỗi JSON về Object
+  //       const user = JSON.parse(userJson);
+  //       // 2. Thay đổi đường dẫn ảnh
+  //       avatarImg.src = user.avatar;        
+  //       console.log(avatarImg.src);
+  //       } else {
+  //       // Chưa đăng nhập -> Để ảnh mặc định hoặc ẩn đi
+  //       if(avatarImg) avatarImg.src = "https://ui-avatars.com/api/?name=Guest";
+  //       }
+  //   }
+  loadComponent("sidebar", "../components/sidebar.html");
+});
 
 
 

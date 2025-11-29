@@ -27,26 +27,30 @@ registerForm.addEventListener('submit', function(event) {
     const emailValue = document.getElementById('register-email').value;
     const passwordValue = document.getElementById('register-password').value;
 
+    const fullname = fullnameValue;
+    const email = emailValue;
+    const password = passwordValue;
+
     // Kiểm tra kết quả
-    console.log("Email:", emailValue);
-    console.log("Fullname:", fullnameValue);
-    console.log("Pass:", passwordValue);
+    console.log("Email:", fullname);
+    console.log("Fullname:", email);
+    console.log("Pass:", password);
 
     // Tạo object user
     const newUser = {
         id : `user-${Date.now()}`,
-        email: emailValue,
-        fullname: fullnameValue,
-        password: passwordValue,
+        email: email,
+        fullname: fullname,
+        password: password,
         pro: false
     };
+    
     users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
     showToast();
     container.classList.remove("sign-up-mode");
-    
-    emailValue.value="";
-    passwordValue.value="";
+    registerForm.reset();
+
 });
 
 function showToast() {
@@ -69,11 +73,9 @@ loginForm.addEventListener('submit', function(event) {
   event.preventDefault();
   const foundUser = users.find(user => user.email === loginEmail && user.password === loginPassword);
   if (foundUser) {
-      console.log('Đăng nhập thành công:', foundUser);
-      sessionStorage.setItem('currentUser', JSON.stringify(foundUser));
-      loginEmail="";
-      loginPassword="";
-      window.location.href = `${baseUrl}/ListBoard/boards.html`;
+    sessionStorage.setItem('currentUser', JSON.stringify(foundUser));
+    window.location.replace(`${baseUrl}/ListBoard/boards.html`);
+
   } else {
       alert('Email hoặc mật khẩu không đúng. Vui lòng thử lại.');
   }
@@ -106,11 +108,10 @@ async function fetchUserProfile(accessToken) {
         };
         users.push(newUser);
         localStorage.setItem('users', JSON.stringify(users));
-            showToast();
-            container.classList.remove("sign-up-mode");
         sessionStorage.setItem('currentUser', JSON.stringify(newUser));
 
     }
+    if(user)
     sessionStorage.setItem('currentUser', JSON.stringify(user));
 
     window.location.href = `${baseUrl}/ListBoard/boards.html`;

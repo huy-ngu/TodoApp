@@ -1,0 +1,83 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background-color: #f9fafc; 
+}
+
+/* Layout Container */
+.app-container {
+    display: flex;
+    padding-top: 48px; /* Đẩy nội dung xuống bằng chiều cao Navbar */
+}
+
+/* --- SIDEBAR STYLING --- */
+.sidebar {
+    width: 260px; /* Độ rộng sidebar */
+    height: calc(100vh - 48px); /* Chiều cao = Toàn màn hình - Navbar */
+    position: fixed; /* Cố định vị trí */
+    top: 48px; /* Cách top đúng 48px */
+    left: 0;
+    background-color: #ffffff;
+    border-right: 1px solid #e0e0e0; /* Đường viền nhẹ bên phải */
+    display: flex;
+    flex-direction: column; /* Để xếp dọc các phần tử */
+    padding: 16px 12px;
+    z-index: 100; /* Nằm dưới navbar (giả sử navbar z-index > 100) */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.02);
+}
+
+.sidebar-menu {
+    flex-grow: 1; /* Chiếm hết khoảng trống để đẩy nút Logout xuống đáy */
+}
+
+/* Style cho từng mục menu */
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    margin-bottom: 4px;
+    text-decoration: none;
+    color: #42526e; /* Màu chữ xám đậm hiện đại */
+    font-weight: 500;
+    font-size: 15px;
+    border-radius: 8px; /* Bo tròn góc */
+    transition: all 0.2s ease; /* Hiệu ứng mượt */
+}
+
+.menu-item i {
+    width: 24px; /* Cố định chiều rộng icon để chữ thẳng hàng */
+    margin-right: 12px;
+    font-size: 16px;
+}
+
+/* Hiệu ứng Hover */
+.menu-item:hover {
+    background-color: #ebecf0; /* Màu nền khi di chuột */
+    color: #172b4d;
+}
+
+/* Trạng thái Active (Đang chọn) */
+.menu-item.active {
+    background-color: #e6fcff; /* Màu nền xanh nhạt (giống theme Trello) */
+    color: #0079bf; /* Màu chữ xanh dương */
+}
+
+.menu-item.active i {
+    color: #0079bf;
+}
+
+/* Phần Footer (Đăng xuất) */
+.sidebar-footer {
+    border-top: 1px solid #ebecf0;
+    padding-top: 10px;
+}
+
+.menu-item.logout:hover {
+    background-color: #ffebee; /* Màu đỏ nhạt khi hover đăng xuất */
+    color: #c92a2a;
+}
+
+/* --- MAIN CONTENT STYLING --- */
+.main-content {
+    margin-left: 260px; /* Đẩy nội dung sang phải bằng width sidebar */
+}

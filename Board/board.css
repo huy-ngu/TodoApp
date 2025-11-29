@@ -47,6 +47,9 @@ hr{
   gap: 0.85rem;
   flex: 1;
 }
+#board-title:hover {
+  cursor: pointer;
+}
 
 .header-center {
   display: flex;
@@ -448,7 +451,9 @@ hr{
   justify-content: space-between;
   align-items: center;
 }
-
+.list__header:hover {
+  cursor: pointer;
+}
 .list__title {
   margin: 0;
   font-size: 1.1rem;
