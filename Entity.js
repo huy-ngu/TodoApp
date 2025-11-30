@@ -3,11 +3,12 @@ let boards = JSON.parse(localStorage.getItem('boards')) || [];
 
 let users = JSON.parse(localStorage.getItem('users')) || [];
 
-
 let lists = JSON.parse(localStorage.getItem('lists')) || [];
 
-
 let cards = JSON.parse(localStorage.getItem('cards')) || [];
+
+let logs = JSON.parse(localStorage.getItem('logs')) || [];
+
 
 // InboxData chỉ chứa metadata (title, theme, description), không chứa cards
 let inboxData = JSON.parse(localStorage.getItem('inboxData')) || null;
@@ -54,4 +55,4 @@ const boardThemeColors = {
   "b8": "white",
 }
 var baseUrl = window.location.origin;
-export { boards, lists, cards, inboxData, cardsInbox, themeColors, baseUrl, users, boardThemeColors };
+export { boards, lists, cards, inboxData, cardsInbox, themeColors, baseUrl, users, boardThemeColors, logs };

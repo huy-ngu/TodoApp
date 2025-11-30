@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupAddBoardButton();
     
 }); 
-
 async function setupAddBoardButton() {
     const response = await fetch('../components/header.html');
     const html = await response.text();
@@ -24,7 +23,7 @@ async function setupAddBoardButton() {
     newBtn.addEventListener('click', async () => {
         try {
             // Import động để tránh lỗi nếu module chưa load
-            const { boards, baseUrl, boardThemeColors } = await import('/Entity.js');
+            const { boards, baseUrl, boardThemeColors, logs } = await import('/Entity.js');
             
             // Lấy currentUser từ sessionStorage
             const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
@@ -44,10 +43,10 @@ async function setupAddBoardButton() {
             
             // Generate ID
             const generateId = (prefix) => `${prefix}-${Date.now()}`;
-            
+            const boardId = generateId("board");
             // Tạo board mới
             const newBoard = {
-                id: generateId("board"),
+                id: boardId,
                 title: normalizedTitle,
                 starred: false,
                 userId: currentUser.id,
@@ -62,6 +61,18 @@ async function setupAddBoardButton() {
             console.log("[BOARD] Đã thêm bảng:", newBoard);
             console.log("[BOARD] Danh sách bảng:", currentBoards);
             
+
+            const newLog = {
+                id: generateId("log"),
+                userId: currentUser.id,
+                userName: currentUser.name,
+                content: `Đã thêm bảng `,
+                objectId: boardId,
+                createAt: Date.now()
+            }
+            logs.push(newLog)
+            localStorage.setItem('logs', JSON.stringify(logs));
+
             // Chuyển đến trang board mới
             window.location.href = `${baseUrl}/board/board.html?board=${newBoard.id}`;
         } catch (error) {

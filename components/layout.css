@@ -11,7 +11,7 @@ body {
 }
 /* --- 1. CẤU HÌNH CHUNG (VARIABLES) --- */
 :root {
-    --nav-bg: #2563eb;          /* Màu xanh dương chủ đạo (Royal Blue) */
+    --nav-bg: #2564ebb9;          /* Màu xanh dương chủ đạo (Royal Blue) */
     --nav-height: 48px;         /* Chiều cao cố định */
     --text-white: #ffffff;
     --glass-bg: rgba(255, 255, 255, 0.2); /* Hiệu ứng kính mờ */

@@ -1,8 +1,9 @@
-import  {boards, lists, cards, inboxData, cardsInbox, themeColors, baseUrl, boardThemeColors}  from "../Entity.js";
+import  {boards, lists, cards, inboxData, cardsInbox, themeColors, baseUrl, boardThemeColors, logs}  from "../Entity.js";
 import loadComponent from "../js/loadComponents.js";
 const DEFAULT_BOARD_ID = new URLSearchParams(window.location.search).get('board');
 const userIdFromBoard = boards.find((b) => b.id === DEFAULT_BOARD_ID)?.userId;
 const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+
 if (!currentUser) {
     alert("Bạn chưa đăng nhập! Vui lòng quay lại.");
     window.location.href = `${baseUrl}/Login-Register/loginRegister.html`;
@@ -13,7 +14,7 @@ if(userIdFromBoard !== currentUser.id){
 }
 const viewState = {
   board: true,
-  inbox: true, // Hộp thư chung hiển thị từ đầu
+  inbox: true, 
 };
 
 const generateId = (() => {
@@ -462,7 +463,6 @@ function renderArchivedCards() {
       <div class="archived-item__content">
         <div class="archived-item__info">
           <h6 class="archived-item__title">${card.title}</h6>
-          <p class="archived-item__meta">${card.label} • ${card.badge}</p>
           <p class="archived-item__footer">${card.footer}</p>
           <span class="archived-item__badge">${source === 'inbox' ? 'Hộp thư' : 'Bảng'}</span>
         </div>
@@ -846,8 +846,8 @@ function createCard(card, context = { source: "board" }) {
     .getElementById("card-template")
     .content.cloneNode(true);
 
-  template.querySelector(".card__label").textContent = card.label;
-  template.querySelector(".card__badge").textContent = card.badge;
+  // template.querySelector(".card__label").textContent = card.label;
+  // template.querySelector(".card__badge").textContent = card.badge;
   template.querySelector(".card__title").textContent = card.title;
   template.querySelector(".card__footer").textContent = card.footer;
 
@@ -1296,6 +1296,20 @@ function handleAddList() {
 
   console.log("[LIST] Đã thêm danh sách:", newList);
   console.log("[LIST] Danh sách:", lists);
+
+  
+
+  const newLog = {
+    id: generateId("log"),
+    userId: currentUser.id,
+    userName: currentUser.name,
+    content: `Đã thêm danh sách vào bảng `,
+    objectId: DEFAULT_BOARD_ID,
+    createAt: Date.now()
+  }
+  logs.push(newLog)
+  localStorage.setItem('logs', JSON.stringify(logs));
+
   renderBoard(DEFAULT_BOARD_ID);
 }
 
@@ -1324,6 +1338,18 @@ function handleAddCard(listId) {
     listId: targetList.id,
     listTitle: targetList.title,
   });
+
+  const newLog = {
+    id: generateId("log"),
+    userId: currentUser.id,
+    userName: currentUser.name,
+    content: "Đã thêm thẻ vào",
+    objectId: listId,
+    createAt: Date.now()
+  }
+  logs.push(newLog)
+  localStorage.setItem('logs', JSON.stringify(logs));
+
   renderBoard(DEFAULT_BOARD_ID);
 }
 
@@ -1351,20 +1377,20 @@ function promptForCardInput(defaults = {}) {
   const normalizedTitle = title.trim();
   if (!normalizedTitle) return;
 
-  const label = prompt("Nhãn hiển thị", defaults.label || "Công việc");
-  if (label === null) return; // User nhấn cancel
+  // const label = prompt("Nhãn hiển thị", defaults.label || "Công việc");
+  // if (label === null) return; // User nhấn cancel
   
-  const badge = prompt("Badge (ví dụ số lượng, trạng thái)", defaults.badge || "Chi tiết");
-  if (badge === null) return; // User nhấn cancel
+  // const badge = prompt("Badge (ví dụ số lượng, trạng thái)", defaults.badge || "Chi tiết");
+  // if (badge === null) return; // User nhấn cancel
   
   const footer = prompt("Chú thích dưới thẻ", defaults.footer || "Hạn: dd/mm");
   if (footer === null) return; // User nhấn cancel
 
   return {
     title: normalizedTitle,
-    label: (label || "General").trim(),
-    badge: (badge || "Chi tiết").trim(),
-    footer: (footer || "Không có hạn").trim(),
+    // label: (label || "General").trim(),
+    // badge: (badge || "Chi tiết").trim(),
+    footer: (footer || "").trim(),
     status: defaults.status || "pending",
   };
 }
@@ -1379,8 +1405,8 @@ function setupCardModal() {
   cardModal.form = document.getElementById("card-form");
   cardModal.inputs = {
     title: document.getElementById("card-title-input"),
-    label: document.getElementById("card-label-input"),
-    badge: document.getElementById("card-badge-input"),
+    // label: document.getElementById("card-label-input"),
+    // badge: document.getElementById("card-badge-input"),
     footer: document.getElementById("card-footer-input"),
     status: document.getElementById("card-status-input"),
   };
@@ -1412,8 +1438,8 @@ function openCardModal(context) {
   currentCardContext = { ...context };
 
   cardModal.inputs.title.value = cardRef.title || "";
-  cardModal.inputs.label.value = cardRef.label || "";
-  cardModal.inputs.badge.value = cardRef.badge || "";
+  // cardModal.inputs.label.value = cardRef.label || "";
+  // cardModal.inputs.badge.value = cardRef.badge || "";
   cardModal.inputs.footer.value = cardRef.footer || "";
   if (cardModal.inputs.status) {
     cardModal.inputs.status.value = cardRef.status || "pending";
@@ -1444,8 +1470,8 @@ function handleCardFormSubmit(event) {
 
   const updatedValues = {
     title: cardModal.inputs.title.value.trim(),
-    label: cardModal.inputs.label.value.trim(),
-    badge: cardModal.inputs.badge.value.trim(),
+    // label: cardModal.inputs.label.value.trim(),
+    // badge: cardModal.inputs.badge.value.trim(),
     footer: cardModal.inputs.footer.value.trim(),
     status: cardModal.inputs.status?.value || undefined,
   };
@@ -1531,7 +1557,7 @@ function handleStoreCardFromModal() {
     listId: currentCardContext.listId,
   });
   renderBoard(DEFAULT_BOARD_ID);
-
+  renderInbox(inboxData);
   // Đóng modal
   closeCardModal();
 

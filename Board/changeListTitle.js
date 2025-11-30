@@ -2,7 +2,6 @@ import { lists } from "../Entity.js";
 setTimeout(() => {
     const list = document.querySelectorAll(".list__title");
     list.forEach((l) => {
-        console.log("listtitle", l.id);
         const labelDisplay = document.getElementById(`${l.id}`);
         const inputEdit = document.getElementById("input-" + l.id);
         // --- GIAI ĐOẠN 1: BẮT ĐẦU SỬA ---
