@@ -54,21 +54,6 @@ const generateId = (() => {
   return (prefix) => `${prefix}-${Date.now()}`;
 })();
 document.addEventListener("DOMContentLoaded", async () => {
-  // const isHeaderLoaded = await loadComponent("header-placeholder", "../components/header.html");
-  //   if (isHeaderLoaded) {
-  //       const userJson = sessionStorage.getItem('currentUser');
-  //       const avatarImg = document.querySelector('.avatar'); 
-  //       if (userJson && avatarImg) {
-  //       // Parse từ chuỗi JSON về Object
-  //       const user = JSON.parse(userJson);
-  //       // 2. Thay đổi đường dẫn ảnh
-  //       avatarImg.src = user.avatar;        
-  //       console.log(avatarImg.src);
-  //       } else {
-  //       // Chưa đăng nhập -> Để ảnh mặc định hoặc ẩn đi
-  //       if(avatarImg) avatarImg.src = "https://ui-avatars.com/api/?name=Guest";
-  //       }
-  //   }
   loadComponent("sidebar", "../components/sidebar.html");
 });
 
@@ -134,16 +119,11 @@ function toggleBoardStar(boardId) {
   renderBoards();
 }
 
-// Xử lý nút đăng xuất
-const logoutBtn = document.querySelector('.logout-btn');
-if (logoutBtn) {
-    console.log(logoutBtn);
+setTimeout(()=>{
+  const logout = document.getElementById("logout2");
+  logout.addEventListener("click", ()=>{
+    sessionStorage.removeItem("currentUser");
+      window.location.href = `../Login-Register/loginRegister.html`;
 
-    logoutBtn.addEventListener('click', function(event) {
-        // Ngăn thẻ a chuyển trang theo href="#"
-        event.preventDefault(); 
-        sessionStorage.removeItem('currentUser');
-        window.location.href = '/Index.html'; 
-        
-    });
-}
+  })
+}, 500);

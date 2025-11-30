@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderBoard(DEFAULT_BOARD_ID);
   renderInbox(inboxData);
   setupViewSwitch();
-  setupAddBoardButton();
   setupAddListButton();
   setupStarButton();
   setupAddInboxButton();
@@ -1121,11 +1120,11 @@ function applyViewState(wrapper, boardPanel, inboxPanel, buttons) {
 /**
  * Add Board / List / Card handlers
  */
-function setupAddBoardButton() {
-  const addBoardBtn = document.getElementById("add-board-btn");
-  if (!addBoardBtn) return;
-  addBoardBtn.addEventListener("click", handleAddBoard);
-}
+// function setupAddBoardButton() {
+//   const addBoardBtn = document.getElementById("add-board-btn");
+//   if (!addBoardBtn) return;
+//   addBoardBtn.addEventListener("click", handleAddBoard);
+// }
 
 function setupAddListButton() {
   const addListBtn = document.getElementById("add-list-btn");
@@ -1240,35 +1239,35 @@ function setupAddInboxButton() {
   addInboxBtn.addEventListener("click", handleAddInboxCard);
 }
 
-function handleAddBoard() {
-  const title = prompt("Tên bảng mới", "Bảng mới");
-  if (!title) {
-    return;
-  }
-  const normalizedTitle = title.trim();
-  if (!normalizedTitle) return;
+// function handleAddBoard() {
+//   const title = prompt("Tên bảng mới", "Bảng mới");
+//   if (!title) {
+//     return;
+//   }
+//   const normalizedTitle = title.trim();
+//   if (!normalizedTitle) return;
 
-  const newBoard = {
-    id: generateId("board"),
-    title: normalizedTitle,
-    starred: false,
-    userId: currentUser.id,
-    theme: `${boardThemeColors.b2}`, // Theme mặc định
-  };
+//   const newBoard = {
+//     id: generateId("board"),
+//     title: normalizedTitle,
+//     starred: false,
+//     userId: currentUser.id,
+//     theme: `${boardThemeColors.b2}`, // Theme mặc định
+//   };
 
-  boards.push(newBoard);
-  localStorage.setItem('boards', JSON.stringify(boards));
+//   boards.push(newBoard);
+//   localStorage.setItem('boards', JSON.stringify(boards));
 
-  console.log("[BOARD] Đã thêm bảng:", newBoard);
-  console.log("[BOARD] Danh sách bảng:", boards);
+//   console.log("[BOARD] Đã thêm bảng:", newBoard);
+//   console.log("[BOARD] Danh sách bảng:", boards);
 
-  // Cập nhật URL với query parameter board=boardId
-  updateBoardUrl(newBoard.id);
+//   // Cập nhật URL với query parameter board=boardId
+//   updateBoardUrl(newBoard.id);
 
-  // Render board mới
-  DEFAULT_BOARD_ID = newBoard.id;
-  renderBoard(newBoard.id);
-}
+//   // Render board mới
+//   DEFAULT_BOARD_ID = newBoard.id;
+//   renderBoard(newBoard.id);
+// }
 
 function updateBoardUrl(boardId) {
   const url = new URL(window.location.href);
