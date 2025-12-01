@@ -42,7 +42,8 @@ registerForm.addEventListener('submit', function(event) {
         email: email,
         fullname: fullname,
         password: password,
-        pro: false
+        pro: false,
+        avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png"
     };
     
     users.push(newUser);

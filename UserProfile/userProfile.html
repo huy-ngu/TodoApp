@@ -8,16 +8,60 @@
     <link rel="stylesheet" href="../components/layout.css">
     <link rel="stylesheet" href="../components/sidebar.css">
     <link rel="icon" type="image/png" href="/images/logo.svg">
-
+    <link rel="stylesheet" href="./userProfile.css">
 </head>
 
 <body>
     <div id="header-placeholder"></div>
     <div id="sidebar"></div>
+
+    <div class="profile-wrapper">
+        <div class="profile-header">
+            <h2>Hồ sơ cá nhân</h2>
+            <p>Quản lý thông tin và cài đặt tài khoản của bạn</p>
+        </div>
+
+        <div class="profile-card">
+            <div class="profile-avatar-section">
+                <div class="avatar-container">
+                    <img id="avatarImg" src="" alt="Avatar" class="avatar-img">
+                    <div id="proBadge" class="pro-badge hidden">PRO</div>
+                </div>
+                <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                <button class="btn-change-avatar" onclick="document.getElementById('avatarInput').click()">
+                    <i class="fa-solid fa-camera"></i> Đổi ảnh
+                </button>
+            </div>
+
+            <div class="profile-info-section">
+                <div class="form-group">
+                    <label for="fullname">Họ và tên đầy đủ</label>
+                    <input type="text" id="fullname" placeholder="Chưa cập nhật tên" autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Địa chỉ Email</label>
+                    <input type="email" id="email" placeholder="email@example.com" disabled>
+                    <small class="note">Email không thể thay đổi</small>
+                </div>
+
+                <div class="form-group status-group">
+                    <label>Trạng thái tài khoản:</label>
+                    <span id="accountType">Free Plan</span>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-save" onclick="saveProfile()">Lưu thay đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script src="./userProfile.js" type="module"></script>
     <script src="../components/layout.js"></script>
     <script src="../components/sidebar.js" type="module"></script>
-
+    <script src="./userProfile.js"> </script>
 </body>
 
 </html>
