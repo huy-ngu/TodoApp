@@ -13,6 +13,7 @@ body {
   min-height: 100vh;
   background-color: #f4f6fb;
   padding-bottom: 5rem;
+  padding-top: 48px;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -32,7 +33,7 @@ hr{
   gap: 1rem;
   padding: 8px 20px;
   background-color: #25baeb3e;
-  /* border-bottom: 1px solid #e3e7f0; */
+
   position: relative;
 }
 
