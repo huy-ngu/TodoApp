@@ -1,8 +1,17 @@
 import loadComponent from "../js/loadComponents.js";
 import { users } from "../Entity.js";
+
+const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+if (!currentUser) {
+  alert("Bạn chưa đăng nhập! Vui lòng quay lại.");
+  window.location.href = `../Login-Register/loginRegister.html`;
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   loadComponent("sidebar", "../components/sidebar.html");
+  loadUserProfile();
 });
+
 setTimeout(() => {
   const logout = document.getElementById("logout2");
   logout.addEventListener("click", () => {
@@ -11,16 +20,15 @@ setTimeout(() => {
   });
 }, 500);
 
-let currentUser = JSON.parse(sessionStorage.getItem("currentUser")) || [];
-console.log(currentUser.avatar);
 const avatarStore = [
-  {
-    avatarURL: currentUser.avatar,
-    description: "My Avatar",
-  },
   {
     avatarURL: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
     description: "Mặc định",
+  },
+  {
+    avatarURL:
+      "https://i.pinimg.com/1200x/23/07/93/230793ccbfc47fcef5e05a91b758763c.jpg",
+    description: "Messi",
   },
   {
     avatarURL: "https://cdn-icons-png.flaticon.com/512/147/147144.png",
@@ -114,8 +122,6 @@ window.onclick = function (event) {
   }
 };
 
-// --- CÁC HÀM CHÍNH (Đã đổi sang currentUser) ---
-
 function loadUserProfile() {
   // [CHANGE]: Đổi user_data -> currentUser
   const storedData = sessionStorage.getItem("currentUser");
@@ -133,7 +139,7 @@ function loadUserProfile() {
   document.getElementById("email").value = userData.email || "";
 
   // Load Avatar
-  const defaultAvatar = avatarStore[0].avatarURL;
+  const defaultAvatar = currentUser.avatar;
   document.getElementById("avatarImg").src = userData.avatar || defaultAvatar;
 
   // Load Pro badge
@@ -154,25 +160,49 @@ function loadUserProfile() {
 document.querySelector(".btn-save").addEventListener("click", saveProfile);
 
 function saveProfile() {
+  let user = users.find((user) => user.id === currentUser.id);
+
   // [CHANGE]: Đổi user_data -> currentUser
   let currentData = JSON.parse(sessionStorage.getItem("currentUser")) || {};
 
   // Cập nhật Tên
   currentData.fullname = document.getElementById("fullname").value;
+  user.fullname = currentData.fullname;
+
+  // Cập nhật Email
+  currentData.email = document.getElementById("email").value;
+  user.email = currentData.email;
 
   // Cập nhật Avatar (Chỉ cập nhật nếu user có chọn ảnh mới)
   if (tempSelectedAvatar) {
     currentData.avatar = tempSelectedAvatar;
+    user.avatar = currentData.avatar;
   }
 
   // [CHANGE]: Lưu lại với key currentUser
   sessionStorage.setItem("currentUser", JSON.stringify(currentData));
+  localStorage.setItem("users", JSON.stringify(users));
+
+  let logs = localStorage.getItem("logs")
+    ? JSON.parse(localStorage.getItem("logs"))
+    : [];
+
+  const newLog = {
+    id: `log-${Date.now()}`,
+    userId: currentUser.id,
+    userName: currentUser.name,
+    content: `Đã chỉnh sửa hồ sơ`,
+    objectId: "",
+    createAt: Date.now(),
+  };
+  logs.push(newLog);
+  localStorage.setItem("logs", JSON.stringify(logs));
+
+  // Thông báo
 
   alert("Đã cập nhật hồ sơ thành công!");
+
   tempSelectedAvatar = null; // Reset
 }
 
 // Khởi chạy
-document.addEventListener("DOMContentLoaded", () => {
-  loadUserProfile();
-});
