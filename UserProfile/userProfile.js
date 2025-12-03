@@ -1,117 +1,178 @@
 import loadComponent from "../js/loadComponents.js";
-
+import { users } from "../Entity.js";
 document.addEventListener("DOMContentLoaded", async () => {
   loadComponent("sidebar", "../components/sidebar.html");
 });
-setTimeout(()=>{
+setTimeout(() => {
   const logout = document.getElementById("logout2");
-  logout.addEventListener("click", ()=>{
+  logout.addEventListener("click", () => {
     sessionStorage.removeItem("currentUser");
-      window.location.href = `../Login-Register/loginRegister.html`;
-
-  })
+    window.location.href = `../Login-Register/loginRegister.html`;
+  });
 }, 500);
 
-// 1. Hàm giả lập dữ liệu (Chạy 1 lần để test nếu chưa có data)
-function seedDummyData() {
-    if (!sessionStorage.getItem('currentUser')) {
-        const dummyUser = {
-            fullname: "Nguyễn Văn A",
-            email: "nguyen.a@trihoanpro.com",
-            avatar: "https://i.pravatar.cc/300", // Link ảnh mẫu
-            pro: true // Thử đổi thành false để test
-        };
-        sessionStorage.setItem('currentUser', JSON.stringify(dummyUser));
-        console.log("Đã tạo dữ liệu mẫu trong sessionStorage");
-    }
+let currentUser = JSON.parse(sessionStorage.getItem("currentUser")) || [];
+console.log(currentUser.avatar);
+const avatarStore = [
+  {
+    avatarURL: currentUser.avatar,
+    description: "My Avatar",
+  },
+  {
+    avatarURL: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+    description: "Mặc định",
+  },
+  {
+    avatarURL: "https://cdn-icons-png.flaticon.com/512/147/147144.png",
+    description: "Nam văn phòng",
+  },
+  {
+    avatarURL: "https://cdn-icons-png.flaticon.com/512/147/147142.png",
+    description: "Nữ văn phòng",
+  },
+  {
+    avatarURL: "https://cdn-icons-png.flaticon.com/512/1999/1999625.png",
+    description: "Ninja",
+  },
+  {
+    avatarURL: "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
+    description: "Doanh nhân",
+  },
+  {
+    avatarURL: "https://cdn-icons-png.flaticon.com/512/4140/4140037.png",
+    description: "Nhà thiết kế",
+  },
+  {
+    avatarURL: "https://cdn-icons-png.flaticon.com/512/4140/4140047.png",
+    description: "Cụ già",
+  },
+  {
+    avatarURL: "https://cdn-icons-png.flaticon.com/512/219/219983.png",
+    description: "Trầm tư",
+  },
+  {
+    avatarURL: "https://cdn-icons-png.flaticon.com/512/4140/4140061.png",
+    description: "Robot",
+  },
+];
+
+// Biến tạm lưu URL ảnh đang chọn (chưa save)
+let tempSelectedAvatar = null;
+
+// --- CÁC HÀM MODAL (Giữ nguyên logic) ---
+document
+  .querySelector(".btn-change-avatar")
+  .addEventListener("click", openAvatarModal);
+function openAvatarModal() {
+  const modal = document.getElementById("avatarModal");
+  const grid = document.getElementById("avatarGrid");
+
+  // Xóa nội dung cũ để render lại
+  grid.innerHTML = "";
+
+  // Render danh sách avatar
+  avatarStore.forEach((item) => {
+    const img = document.createElement("img");
+    img.src = item.avatarURL;
+    img.alt = item.description;
+    img.className = "grid-avatar-item";
+    img.title = item.description;
+
+    // Sự kiện click chọn ảnh
+    img.onclick = function () {
+      selectAvatarFromModal(item.avatarURL);
+    };
+
+    grid.appendChild(img);
+  });
+
+  modal.classList.remove("hidden");
 }
 
-// 2. Hàm Load dữ liệu lên giao diện
+document
+  .querySelector(".close-btn")
+  .addEventListener("click", closeAvatarModal);
+
+function closeAvatarModal() {
+  document.getElementById("avatarModal").classList.add("hidden");
+}
+
+function selectAvatarFromModal(url) {
+  // 1. Cập nhật giao diện ngay
+  document.getElementById("avatarImg").src = url;
+  // 2. Lưu biến tạm
+  tempSelectedAvatar = url;
+  // 3. Đóng modal
+  closeAvatarModal();
+}
+
+// Đóng modal khi click ra ngoài
+window.onclick = function (event) {
+  const modal = document.getElementById("avatarModal");
+  if (event.target == modal) {
+    closeAvatarModal();
+  }
+};
+
+// --- CÁC HÀM CHÍNH (Đã đổi sang currentUser) ---
+
 function loadUserProfile() {
-    // Lấy chuỗi JSON từ storage
-    const storedData = sessionStorage.getItem('currentUser');
-    
-    // Default values nếu null
-    let userData = {
-        fullname: "",
-        email: "",
-        avatar: null,
-        pro: false
-    };
+  // [CHANGE]: Đổi user_data -> currentUser
+  const storedData = sessionStorage.getItem("currentUser");
 
-    if (storedData) {
-        try {
-            userData = JSON.parse(storedData);
-        } catch (e) {
-            console.error("Lỗi parse JSON:", e);
-        }
-    }
+  let userData = { fullname: "", email: "", avatar: null, pro: false };
 
-    // --- DOM Elements ---
-    const elmFullname = document.getElementById('fullname');
-    const elmEmail = document.getElementById('email');
-    const elmAvatar = document.getElementById('avatarImg');
-    const elmProBadge = document.getElementById('proBadge');
-    const elmAccountType = document.getElementById('accountType');
+  if (storedData) {
+    try {
+      userData = JSON.parse(storedData);
+    } catch (e) {}
+  }
 
-    // --- Binding Data ---
-    
-    // 1. Fullname (Check null/undefined)
-    elmFullname.value = userData.fullname || "";
+  // Binding dữ liệu
+  document.getElementById("fullname").value = userData.fullname || "";
+  document.getElementById("email").value = userData.email || "";
 
-    // 2. Email (Check null)
-    elmEmail.value = userData.email || "Chưa có email";
+  // Load Avatar
+  const defaultAvatar = avatarStore[0].avatarURL;
+  document.getElementById("avatarImg").src = userData.avatar || defaultAvatar;
 
-    // 3. Avatar (Check null & Fallback image)
-    // Nếu có avatar thì dùng, không thì dùng ảnh mặc định
-    const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
-    elmAvatar.src = userData.avatar ? userData.avatar : defaultAvatar;
+  // Load Pro badge
+  const elmProBadge = document.getElementById("proBadge");
+  const elmAccountType = document.getElementById("accountType");
 
-    // Xử lý lỗi nếu link avatar hỏng (broken link)
-    elmAvatar.onerror = function() {
-        this.src = defaultAvatar;
-    };
-
-    // 4. Pro Status (True/False check)
-    if (userData.pro === true) {
-        elmProBadge.classList.remove('hidden'); // Hiện badge trên ảnh
-        elmAccountType.textContent = "Thành viên PRO";
-        elmAccountType.classList.add('is-pro');
-    } else {
-        elmProBadge.classList.add('hidden'); // Ẩn badge
-        elmAccountType.textContent = "Tài khoản thường";
-        elmAccountType.classList.remove('is-pro');
-    }
+  if (userData.pro) {
+    elmProBadge.classList.remove("hidden");
+    elmAccountType.textContent = "Thành viên PRO";
+    elmAccountType.classList.add("is-pro");
+  } else {
+    elmProBadge.classList.add("hidden");
+    elmAccountType.textContent = "Tài khoản thường";
+    elmAccountType.classList.remove("is-pro");
+  }
 }
 
-// 3. Xử lý Preview ảnh khi chọn file (Tính năng phụ)
-document.getElementById('avatarInput').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            // Preview ảnh ngay lập tức
-            document.getElementById('avatarImg').src = e.target.result;
-        }
-        reader.readAsDataURL(file);
-    }
-});
+document.querySelector(".btn-save").addEventListener("click", saveProfile);
 
-// 4. Khởi chạy
-document.addEventListener('DOMContentLoaded', () => {
-    loadUserProfile();
-});
-
-// Hàm lưu (Mockup)
 function saveProfile() {
-    // Lấy dữ liệu hiện tại
-    let currentData = JSON.parse(sessionStorage.getItem('currentUser')) || {};
-    
-    // Cập nhật tên mới
-    currentData.fullname = document.getElementById('fullname').value;
-    
-    // Lưu lại vào session
-    sessionStorage.setItem('currentUser', JSON.stringify(currentData));
-    
-    alert("Đã cập nhật thông tin thành công!");
+  // [CHANGE]: Đổi user_data -> currentUser
+  let currentData = JSON.parse(sessionStorage.getItem("currentUser")) || {};
+
+  // Cập nhật Tên
+  currentData.fullname = document.getElementById("fullname").value;
+
+  // Cập nhật Avatar (Chỉ cập nhật nếu user có chọn ảnh mới)
+  if (tempSelectedAvatar) {
+    currentData.avatar = tempSelectedAvatar;
+  }
+
+  // [CHANGE]: Lưu lại với key currentUser
+  sessionStorage.setItem("currentUser", JSON.stringify(currentData));
+
+  alert("Đã cập nhật hồ sơ thành công!");
+  tempSelectedAvatar = null; // Reset
 }
+
+// Khởi chạy
+document.addEventListener("DOMContentLoaded", () => {
+  loadUserProfile();
+});

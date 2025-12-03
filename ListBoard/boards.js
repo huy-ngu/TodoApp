@@ -116,7 +116,7 @@ function toggleBoardStar(boardId) {
   });
   
   // Render lại danh sách
-  renderBoards();
+ renderBoards();
 }
 
 setTimeout(()=>{
