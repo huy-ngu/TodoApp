@@ -1,42 +1,56 @@
 <header class="navbar">
-    <div class="navbar__left">
-        <a href="../ListBoard/boards.html">
-            <div class="logo-container">
-                <i class="fa-solid fa-layer-group"></i>
-                <span class="logo-text">TrìHoãnPro</span>
-            </div>
-        </a>
+  <div class="navbar__left">
+    <a href="../ListBoard/boards.html">
+      <div class="logo-container">
+        <i class="fa-solid fa-layer-group"></i>
+        <span class="logo-text">TrìHoãnPro</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="navbar__center">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" placeholder="Tìm nhanh bảng..." />
     </div>
 
-    <div class="navbar__center">
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Tìm nhanh bảng...">
-        </div>
+    <button class="btn-create">
+      <i class="fa-solid fa-plus"></i>
+      <span>Tạo bảng mới</span>
+    </button>
+  </div>
 
-        <button class="btn-create">
-            <i class="fa-solid fa-plus"></i>
-            <span>Tạo bảng mới</span>
-        </button>
-    </div>
-
-    <div class="navbar__right">
-        <!-- <button class="btn-icon">
+  <div class="navbar__right">
+    <!-- <button class="btn-icon">
             <i class="fa-regular fa-bell"></i>
             <span class="badge">3</span>
         </button> -->
-        <div id="pro" style="background: rgb(219, 224, 225); padding: 4px 8px; color: black;"> PRO</div>
-        <div class="user-profile">
-            <img src="https://ui-avatars.com/api/?name=User+Name&background=random" alt="Avatar" class="avatar">
-            <div id="myDropdown" class="dropdown-menu">
-                <a href="../UserProfile/userProfile.html">Hồ sơ</a>
-                <div class="divider"></div>
-                <div id="logout" onclick="logout()">
-                    <a href="../Login-Register/loginRegister.html" style="color: #ef4444;">Đăng
-                        xuất</a>
-                </div>
-
-            </div>
-        </div>
+    <div
+      id="pro"
+      style="
+        background: rgb(219, 224, 225);
+        padding: 4px 8px;
+        color: black;
+        display: none;
+      "
+    >
+      PRO
     </div>
+    <div class="user-profile">
+      <img
+        src="https://ui-avatars.com/api/?name=User+Name&background=random"
+        alt="Avatar"
+        class="avatar"
+      />
+      <div id="myDropdown" class="dropdown-menu">
+        <a href="../UserProfile/userProfile.html">Hồ sơ</a>
+        <div class="divider"></div>
+        <div id="logout" onclick="logout()">
+          <a href="../Login-Register/loginRegister.html" style="color: #ef4444"
+            >Đăng xuất</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
 </header>

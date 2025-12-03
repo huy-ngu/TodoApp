@@ -1,5 +1,9 @@
+const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+
 document.addEventListener("DOMContentLoaded", async () => {
-  setupAddBoardButton();
+  await setupAddBoardButton();
+  loadAvatar();
+  loadpro();
 });
 async function setupAddBoardButton() {
   const response = await fetch("../components/header.html");
@@ -80,20 +84,23 @@ async function setupAddBoardButton() {
     }
   });
 }
-setTimeout(() => {
-  const userJson = sessionStorage.getItem("currentUser");
-  const avatarImg = document.querySelector(".avatar");
-  if (userJson && avatarImg) {
-    // Parse từ chuỗi JSON về Object
-    const user = JSON.parse(userJson);
-    // 2. Thay đổi đường dẫn ảnh
-    avatarImg.src = user.avatar;
-    console.log(avatarImg.src);
-  } else {
-    // Chưa đăng nhập -> Để ảnh mặc định hoặc ẩn đi
-    if (avatarImg) avatarImg.src = "https://ui-avatars.com/api/?name=Guest";
-  }
-}, 200);
+
+function loadAvatar() {
+  setTimeout(() => {
+    const userJson = sessionStorage.getItem("currentUser");
+    const avatarImg = document.querySelector(".avatar");
+    if (userJson && avatarImg) {
+      // Parse từ chuỗi JSON về Object
+      const user = JSON.parse(userJson);
+      // 2. Thay đổi đường dẫn ảnh
+      avatarImg.src = user.avatar;
+      console.log(avatarImg.src);
+    } else {
+      // Chưa đăng nhập -> Để ảnh mặc định hoặc ẩn đi
+      if (avatarImg) avatarImg.src = "https://ui-avatars.com/api/?name=Guest";
+    }
+  }, 0);
+}
 
 document.addEventListener("click", function (event) {
   // 1. Kiểm tra xem người dùng có click vào .avatar không
@@ -114,4 +121,9 @@ document.addEventListener("click", function (event) {
 
 function logout() {
   sessionStorage.removeItem("currentUser");
+}
+
+function loadpro() {
+  const proele = document.getElementById("pro");
+  if (currentUser.pro) proele.style.display = "block";
 }
