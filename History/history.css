@@ -1,6 +1,17 @@
-#content{
-    margin-left: 400px;
+#content {
+  margin-left: 400px;
 }
-h4{
-    display: inline;
+h4 {
+  display: inline;
+}
+@media (max-width: 1024px) {
+  #content {
+    margin-left: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  #content {
+    margin-left: 100px;
+  }
 }

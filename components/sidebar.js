@@ -1,21 +1,50 @@
 document.addEventListener("DOMContentLoaded", function() {
-        // 1. Lấy phần đường dẫn của trang hiện tại (vd: /UserProfile/userProfile.html)
-        setTimeout(()=>{
-            const currentPath = window.location.pathname;
-        const menuItems = document.querySelectorAll('.sidebar-menu .menu-item');
+    // --- Logic xử lý trạng thái active cho menu item ---
+    setTimeout(() => {
+        const currentPath = window.location.pathname;
+        const menuItems = document.querySelectorAll('.sidebar .menu-item');
         menuItems.forEach(item => {
-            // 2. Lấy đường dẫn của thẻ a trong sidebar
-            // item.pathname sẽ tự động đổi link tương đối thành tuyệt đối để so sánh chuẩn
-            const itemPath = item.pathname; 
-            // 3. So sánh: Nếu đường dẫn giống nhau VÀ không phải là link ảo '#'
+            const itemPath = new URL(item.href).pathname;
             if (item.getAttribute('href') !== '#' && itemPath === currentPath) {
                 item.classList.add('active');
             }
         });
-        }, 100);
-    });
+    }, 100);
 
+    // --- Logic xử lý đóng/mở sidebar trên mobile ---
 
+    const sidebar = document.querySelector('.sidebar');
+    const menuToggleButton = document.querySelector('#menu-toggle'); // Giả định nút này có trong header của bạn
 
+    // 1. Tự động tạo và thêm backdrop vào body
+    const backdrop = document.createElement('div');
+    backdrop.className = 'sidebar-backdrop';
+    document.body.appendChild(backdrop);
 
+    // Hàm để đóng sidebar
+    const closeSidebar = () => {
+        sidebar.classList.remove('is-open');
+        backdrop.classList.remove('is-active');
+    };
 
+    // Hàm để mở sidebar
+    const openSidebar = () => {
+        sidebar.classList.add('is-open');
+        backdrop.classList.add('is-active');
+    };
+
+    // 2. Thêm sự kiện click cho nút hamburger
+    if (menuToggleButton) {
+        menuToggleButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+            if (sidebar.classList.contains('is-open')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        });
+    }
+
+    // 3. Thêm sự kiện click cho backdrop để đóng sidebar
+    backdrop.addEventListener('click', closeSidebar);
+});

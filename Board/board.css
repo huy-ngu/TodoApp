@@ -47,6 +47,14 @@ hr {
   align-items: center;
   gap: 0.85rem;
   flex: 1;
+  min-width: 0; /* Cho phép co lại */
+}
+#board-title {
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Thêm dấu ... nếu tiêu đề quá dài */
 }
 #board-title:hover {
   cursor: pointer;
@@ -60,6 +68,8 @@ hr {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  /* Ẩn đi vì không dùng đến và có thể gây lỗi responsive */
+  display: none;
 }
 
 .logo-dot {
@@ -75,6 +85,7 @@ hr {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-shrink: 0; /* Ngăn không cho co lại */
 }
 
 .star-btn {
@@ -194,6 +205,7 @@ hr {
   font-weight: 600;
   font-size: 14px;
   transition: all 0.2s ease;
+  white-space: nowrap; /* Ngăn text xuống dòng */
 }
 
 .cta:hover {
@@ -770,22 +782,52 @@ hr {
   background-color: transparent;
 }
 
-@media (max-width: 600px) {
+/* --- Responsive Header --- */
+
+/* Tablet & nhỏ hơn */
+@media (max-width: 768px) {
+  .app-header {
+    gap: 0.5rem;
+    padding: 8px 12px;
+  }
+
+  /* Ẩn chữ, chỉ hiện icon cho nút "Thêm danh sách" */
+  #add-list-btn {
+    font-size: 0; /* Ẩn text */
+    padding: 0;
+    width: 36px; /* Kích thước bằng các nút icon khác */
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+  }
+
+  #add-list-btn::before {
+    content: "+";
+    font-size: 1.4rem; /* Kích thước icon */
+  }
+}
+
+/* Chế độ điện thoại */
+@media (max-width: 480px) {
   .app-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch; /* Căn đều theo chiều rộng */
+    gap: 0.75rem;
   }
 
-  .view-wrapper {
-    flex-direction: column;
-  }
-
-  .view-panel {
+  .header-left,
+  .header-actions {
     width: 100%;
+    justify-content: space-between; /* Phân bố đều các item */
   }
 
-  .board {
-    flex-direction: column;
+  .header-actions {
+    flex-wrap: wrap; /* Cho phép các nút xuống dòng */
+    gap: 0.5rem;
+  }
+
+  #add-list-btn {
+    flex-grow: 1; /* Cho phép nút "Thêm" giãn ra */
   }
 }
 

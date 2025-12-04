@@ -1,83 +1,172 @@
 body {
-    margin: 0;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    background-color: #f9fafc; 
+  margin: 0;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  background-color: #f9fafc;
 }
 
 /* Layout Container */
 .app-container {
-    display: flex;
-    padding-top: 48px; /* Đẩy nội dung xuống bằng chiều cao Navbar */
+  display: flex;
+  padding-top: 48px; /* Đẩy nội dung xuống bằng chiều cao Navbar */
 }
 
-/* --- SIDEBAR STYLING --- */
+/* --- SIDEBAR STYLING (Desktop First) --- */
 .sidebar {
-    width: 260px; /* Độ rộng sidebar */
-    height: calc(100vh - 48px); /* Chiều cao = Toàn màn hình - Navbar */
-    position: fixed; /* Cố định vị trí */
-    top: 48px; /* Cách top đúng 48px */
-    left: 0;
-    background-color: #ffffff;
-    border-right: 1px solid #e0e0e0; /* Đường viền nhẹ bên phải */
-    display: flex;
-    flex-direction: column; /* Để xếp dọc các phần tử */
-    padding: 16px 12px;
-    z-index: 100; /* Nằm dưới navbar (giả sử navbar z-index > 100) */
-    box-shadow: 2px 0 5px rgba(0,0,0,0.02);
+  width: 260px; /* Độ rộng mặc định cho desktop */
+  height: calc(100vh - 48px);
+  position: fixed;
+  top: 48px;
+  left: 0;
+  background-color: #ffffff;
+  border-right: 1px solid #e9ecef;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px;
+  z-index: 101; /* Đảm bảo sidebar nằm trên */
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03);
+  transition: width 0.3s ease, transform 0.3s ease; /* Hiệu ứng co dãn */
 }
 
 .sidebar-menu {
-    flex-grow: 1; /* Chiếm hết khoảng trống để đẩy nút Logout xuống đáy */
+  flex-grow: 1;
 }
 
-/* Style cho từng mục menu */
 .menu-item {
-    display: flex;
-    align-items: center;
-    padding: 10px 16px;
-    margin-bottom: 4px;
-    text-decoration: none;
-    color: #42526e; /* Màu chữ xám đậm hiện đại */
-    font-weight: 500;
-    font-size: 15px;
-    border-radius: 8px; /* Bo tròn góc */
-    transition: all 0.2s ease; /* Hiệu ứng mượt */
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  margin-bottom: 4px;
+  text-decoration: none;
+  color: #495057;
+  font-weight: 500;
+  font-size: 15px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  white-space: nowrap; /* Ngăn text bị xuống dòng khi co dãn */
+  overflow: hidden; /* Ẩn text khi co dãn */
 }
 
 .menu-item i {
-    width: 24px; /* Cố định chiều rộng icon để chữ thẳng hàng */
-    margin-right: 12px;
-    font-size: 16px;
+  flex-shrink: 0; /* Không cho icon bị co lại */
+  width: 24px;
+  margin-right: 12px;
+  font-size: 16px;
+  transition: margin 0.3s ease; /* Hiệu ứng cho icon */
 }
 
-/* Hiệu ứng Hover */
 .menu-item:hover {
-    background-color: #ebecf0; /* Màu nền khi di chuột */
-    color: #172b4d;
+  background-color: #f1f3f5;
+  color: #212529;
 }
 
-/* Trạng thái Active (Đang chọn) */
 .menu-item.active {
-    background-color: #e6fcff; /* Màu nền xanh nhạt (giống theme Trello) */
-    color: #0079bf; /* Màu chữ xanh dương */
+  background-color: #e7f5ff;
+  color: #1971c2;
 }
 
 .menu-item.active i {
-    color: #0079bf;
+  color: #1971c2;
 }
 
-/* Phần Footer (Đăng xuất) */
 .sidebar-footer {
-    border-top: 1px solid #ebecf0;
-    padding-top: 10px;
+  border-top: 1px solid #f1f3f5;
+  padding-top: 10px;
 }
 
 .menu-item.logout:hover {
-    background-color: #ffebee; /* Màu đỏ nhạt khi hover đăng xuất */
-    color: #c92a2a;
+  background-color: #fff5f5;
+  color: #e03131;
 }
 
 /* --- MAIN CONTENT STYLING --- */
+/* Mặc định cho desktop */
 .main-content {
-    margin-left: 260px; /* Đẩy nội dung sang phải bằng width sidebar */
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  padding: 24px;
+  transition: margin-left 0.3s ease, width 0.3s ease; /* Hiệu ứng co dãn */
 }
+
+/* === RESPONSIVE STYLES === */
+
+/* ** 1. TABLET MODE - Collapsed Sidebar ** */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 78px; /* Thu nhỏ sidebar */
+    padding: 16px 8px;
+  }
+
+  /* Ẩn chữ, chỉ để lại icon */
+  .sidebar .menu-item span {
+    display: none;
+  }
+
+  .sidebar .menu-item {
+    justify-content: center; /* Căn giữa icon */
+    padding: 12px;
+  }
+
+  .sidebar .menu-item i {
+    margin-right: 0; /* Bỏ khoảng cách của icon */
+    font-size: 20px; /* Cho icon to hơn một chút */
+  }
+
+  .main-content {
+    margin-left: 78px; /* Điều chỉnh lề cho nội dung chính */
+    width: calc(100% - 78px);
+  }
+}
+
+/* ** 2. MOBILE MODE - Hidden Sidebar ** */
+/* @media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%); /* Ẩn sidebar ra khỏi màn hình 
+        z-index: 1001; /* Nằm trên cả backdrop 
+        box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+    }
+
+    /* Class này sẽ được thêm/xóa bằng JavaScript để hiện/ẩn sidebar 
+    .sidebar.is-open {
+        transform: translateX(0);
+        width: 260px; /* Khi mở ra thì hiện đầy đủ 
+    }
+
+    .sidebar.is-open .menu-item span {
+        display: inline; /* Hiện lại chữ khi mở 
+    }
+
+    .sidebar.is-open .menu-item {
+        justify-content: flex-start; /* Trả lại layout như cũ 
+        padding: 10px 16px;
+    }
+
+    .sidebar.is-open .menu-item i {
+        margin-right: 12px;
+        font-size: 16px;
+    }
+
+    .main-content {
+        margin-left: 0; /* Nội dung chiếm toàn bộ màn hình 
+        width: 100%;
+    }
+
+    /* Thêm một lớp phủ mờ khi sidebar mở ra (tùy chọn) 
+    .sidebar-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .sidebar-backdrop.is-active {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+ */
