@@ -1,6 +1,7 @@
 import { boards, lists, cards, inboxData, cardsInbox, themeColors, boardThemeColors } from "../Entity.js";
 import * as Actions from './actions.js';
 import { closeAllDropdowns, showToast } from './utils.js';
+import { initSortable } from "./drag-drop.js";
 
 let cardModal = {};
 let currentCardContext = null;
@@ -52,9 +53,12 @@ function renderBoard() {
     });
 
     boardRoot.innerHTML = "";
-    lists.filter(l => l.boardId === DEFAULT_BOARD_ID && !l.storage).forEach(list => {
-        boardRoot.appendChild(createList(list));
-    });
+    lists
+        .filter(l => l.boardId === DEFAULT_BOARD_ID && !l.storage)
+        .sort((a, b) => a.order - b.order)
+        .forEach(list => {
+            boardRoot.appendChild(createList(list));
+        });
 
     // Restore scroll positions
     boardRoot.querySelectorAll('.list').forEach(listEl => {
@@ -63,6 +67,8 @@ function renderBoard() {
             listEl.querySelector('.list__cards').scrollTop = scrollPositions[listId];
         }
     });
+
+    initSortable(DEFAULT_BOARD_ID);
 }
 
 function renderInbox() {
@@ -122,9 +128,12 @@ function createList(list) {
     // --- End Inline Edit ---
     
     const cardsContainer = template.querySelector(".list__cards");
-    cards.filter(c => c.listId === list.id && !c.storage).forEach(card => {
-        cardsContainer.appendChild(createCard(card, { source: "board", listId: list.id }));
-    });
+    cards
+        .filter(c => c.listId === list.id && !c.storage)
+        .sort((a, b) => a.order - b.order)
+        .forEach(card => {
+            cardsContainer.appendChild(createCard(card, { source: "board", listId: list.id }));
+        });
 
     template.querySelector(".list__add-card").addEventListener("click", () => {
         if (Actions.addCard(list.id, DEFAULT_BOARD_ID, currentUser)) renderBoard();
@@ -137,12 +146,20 @@ function createList(list) {
 function createCard(card, context) {
     const template = document.getElementById("card-template").content.cloneNode(true);
     const cardEl = template.querySelector(".card");
+    cardEl.dataset.cardId = card.id;
     cardEl.querySelector(".card__title").textContent = card.title;
+    
     const footerEl = cardEl.querySelector(".card__footer");
     if (card.dueDate) {
-        footerEl.textContent = `Hạn: ${new Date(card.dueDate).toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}`;
-    } else {
-        footerEl.textContent = '';
+        const dateString = new Date(card.dueDate).toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+        const dateSpan = document.createElement('span');
+        dateSpan.textContent = `Hạn: ${dateString}`;
+        footerEl.appendChild(dateSpan);
+    }
+    
+    const noteIcon = template.querySelector('.card__note-icon');
+    if (card.note && card.note.trim()) {
+        noteIcon.innerHTML = `<i class="fa-solid fa-align-left"></i>`;
     }
 
     cardEl.addEventListener("click", (e) => {
@@ -374,9 +391,18 @@ function setupCardModal() {
     cardModal.form = document.getElementById("card-form");
     cardModal.inputs = {
         title: document.getElementById("card-title-input"),
+        note: document.getElementById("card-note-input"),
         dueDate: document.getElementById("card-dueDate-input"),
         status: document.getElementById("card-status-input"),
     };
+
+    // Auto-resize textarea
+    const noteInput = cardModal.inputs.note;
+    noteInput.addEventListener('input', () => {
+        noteInput.style.height = 'auto';
+        noteInput.style.height = (noteInput.scrollHeight) + 'px';
+    });
+
     cardModal.element.querySelectorAll("[data-modal-close]").forEach(trigger => 
         trigger.addEventListener("click", closeCardModal)
     );
@@ -399,6 +425,13 @@ function openCardModal(context) {
     const cardRef = Actions.findCardReference(context);
     if (!cardRef || !cardModal.element) return;
     cardModal.inputs.title.value = cardRef.title || "";
+    cardModal.inputs.note.value = cardRef.note || "";
+    
+    // Manually trigger input event to set initial height
+    setTimeout(() => {
+        cardModal.inputs.note.dispatchEvent(new Event('input'));
+    }, 10);
+
     if (cardRef.dueDate) {
         // Correctly format the date for datetime-local input, accounting for timezone
         const d = new Date(cardRef.dueDate);
@@ -423,6 +456,7 @@ function handleCardFormSubmit(event) {
     if (!currentCardContext) return;
     const updatedValues = {
         title: cardModal.inputs.title.value.trim(),
+        note: cardModal.inputs.note.value.trim(),
         dueDate: cardModal.inputs.dueDate.value ? new Date(cardModal.inputs.dueDate.value).toISOString() : null,
         status: cardModal.inputs.status.value,
     };

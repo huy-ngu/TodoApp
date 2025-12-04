@@ -1097,3 +1097,47 @@ hr {
   opacity: 1;
   transform: translateX(0); /* Trượt vào vị trí cũ */
 }
+
+/* --- Modal Input & Note Styling --- */
+
+#card-modal .modal__field span {
+  font-size: 0.95rem; /* Increased label font size */
+  font-weight: 500;
+  color: #3b4d6b;
+}
+
+#card-modal input,
+#card-modal select,
+#card-modal textarea {
+  font-size: 1rem;
+  padding: 0.65rem 0.85rem; /* Consistent padding */
+  border: 1px solid #c7d0e4;
+  border-radius: 8px;
+  background-color: #fdfdff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#card-modal input:focus,
+#card-modal select:focus,
+#card-modal textarea:focus {
+  outline: none;
+  border-color: #4a5bdc;
+  box-shadow: 0 0 0 3px rgba(74, 91, 220, 0.2);
+}
+
+#card-modal textarea {
+  font-family: "Segoe UI", sans-serif;
+  resize: vertical; /* Allow vertical resizing */
+  min-height: 80px;
+  line-height: 1.5;
+}
+
+.card__footer {
+  display: flex;
+  align-items: center;
+}
+
+.card__note-icon {
+  font-size: 1rem;
+  color: #5a6a85;
+}

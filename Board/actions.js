@@ -79,6 +79,7 @@ export function addList(DEFAULT_BOARD_ID, currentUser) {
     boardId: DEFAULT_BOARD_ID,
     theme: "blue",
     storage: false,
+    order: lists.filter(list => list.boardId === DEFAULT_BOARD_ID).length,
   };
   lists.push(newList);
   localStorage.setItem("lists", JSON.stringify(lists));
@@ -178,6 +179,8 @@ export function addCard(listId, DEFAULT_BOARD_ID, currentUser) {
     listId: listId,
     storage: false,
     boardId: DEFAULT_BOARD_ID,
+    order: cards.filter(card => card.listId === listId).length,
+    note: "",
   };
   cards.push(newCard);
   localStorage.setItem("cards", JSON.stringify(cards));
