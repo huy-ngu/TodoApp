@@ -1,10 +1,64 @@
+const users = JSON.parse(sessionStorage.getItem("users"));
 const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
 
 document.addEventListener("DOMContentLoaded", async () => {
   await setupAddBoardButton();
   loadAvatar();
   loadpro();
+  setupSearch(); // Thêm hàm tìm kiếm
 });
+
+async function setupSearch() {
+  const { boards, baseUrl } = await import("/Entity.js");
+  const searchInput = document.querySelector(".search-box input");
+  const searchResults = document.getElementById("search-results");
+
+  if (!searchInput || !searchResults) return;
+
+  // Lấy danh sách bảng của người dùng hiện tại
+  const userBoards = boards.filter(
+    (board) => board.userId === (currentUser && currentUser.id)
+  );
+
+  const renderResults = (filteredBoards) => {
+    searchResults.innerHTML = "";
+    if (filteredBoards.length === 0) {
+      searchResults.classList.remove("show");
+      return;
+    }
+
+    filteredBoards.forEach((board) => {
+      const boardLink = document.createElement("a");
+      boardLink.href = `${baseUrl}/Board/board.html?board=${board.id}`;
+      boardLink.textContent = board.title;
+      searchResults.appendChild(boardLink);
+    });
+
+    searchResults.classList.add("show");
+  };
+
+  searchInput.addEventListener("focus", () => {
+    if (!currentUser) return;
+    renderResults(userBoards);
+  });
+
+  searchInput.addEventListener("keyup", () => {
+    if (!currentUser) return;
+    const searchTerm = searchInput.value.toLowerCase();
+    const filteredBoards = userBoards.filter((board) =>
+      board.title.toLowerCase().includes(searchTerm)
+    );
+    renderResults(filteredBoards);
+  });
+
+  searchInput.addEventListener("blur", () => {
+    // Dùng timeout để người dùng có thể click vào kết quả
+    setTimeout(() => {
+      searchResults.classList.remove("show");
+    }, 200);
+  });
+}
+
 async function setupAddBoardButton() {
   const response = await fetch("../components/header.html");
   const html = await response.text();

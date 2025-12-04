@@ -704,7 +704,7 @@ hr {
 
 .inbox-header h2 {
   margin: 0;
-  color: var(--theme-primary, #10b981);
+  color: var(--theme-primary, #0c0d0d);
   font-weight: 600;
 }
 

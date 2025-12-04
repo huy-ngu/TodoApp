@@ -14,7 +14,7 @@ const inputEdit = document.getElementById("input-boardTitle");
 
 // --- GIAI ĐOẠN 1: BẮT ĐẦU SỬA ---
 // Sự kiện nhấp đúp (dblclick) vào chữ để sửa
-labelDisplay.addEventListener("dblclick", function () {
+labelDisplay.addEventListener("click", function () {
   // 1. Lấy nội dung hiện tại gán vào ô input
   inputEdit.value = labelDisplay.innerText;
 
