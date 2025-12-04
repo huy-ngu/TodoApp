@@ -82,9 +82,12 @@ function renderInbox() {
     const inboxRoot = document.getElementById("inbox-root");
     const scrollPosition = inboxRoot.scrollTop;
     inboxRoot.innerHTML = "";
-    cardsInbox.filter(c => c.userId === currentUser.id && !c.storage).forEach(card => {
-        inboxRoot.appendChild(createCard(card, { source: "inbox" }));
-    });
+    cardsInbox
+        .filter(c => c.userId === currentUser.id && !c.storage)
+        .sort((a, b) => a.order - b.order) // Sắp xếp theo thuộc tính order
+        .forEach(card => {
+            inboxRoot.appendChild(createCard(card, { source: "inbox" }));
+        });
     inboxRoot.scrollTop = scrollPosition;
 }
 

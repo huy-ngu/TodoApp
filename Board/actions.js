@@ -200,13 +200,20 @@ export function addCard(listId, DEFAULT_BOARD_ID, currentUser) {
 export function addInboxCard(currentUser) {
   const cardInput = promptForCardInput();
   if (!cardInput) return null;
+
+  // Cập nhật order cho các thẻ hiện có
+  cardsInbox.forEach(card => {
+    card.order = (card.order || 0) + 1;
+  });
+
   const newCard = {
     id: generateId("inbox-card"),
     ...cardInput,
     userId: currentUser.id,
     storage: false,
+    order: 0, // Thẻ mới được thêm vào đầu tiên
   };
-  cardsInbox.unshift(newCard);
+  cardsInbox.unshift(newCard); // Thêm vào đầu mảng
   localStorage.setItem("cardsInbox", JSON.stringify(cardsInbox));
   return newCard;
 }
