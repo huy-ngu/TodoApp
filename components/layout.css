@@ -1,297 +1,283 @@
 a {
-    color: inherit;          
-    text-decoration: none;   
-    background: none;
-    outline: none;
+  color: inherit;
+  text-decoration: none;
+  background: none;
+  outline: none;
 }
 body {
-    margin: 0;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    background-color: #f9fafc; 
+  margin: 0;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  background-color: #f9fafc;
 }
 /* --- 1. CẤU HÌNH CHUNG (VARIABLES) --- */
 :root {
-    --nav-bg: #2564eb;          /* Màu xanh dương chủ đạo (Royal Blue) */
-    --nav-height: 48px;         /* Chiều cao cố định */
-    --text-white: #ffffff;
-    --glass-bg: rgba(255, 255, 255, 0.2); /* Hiệu ứng kính mờ */
-    --glass-hover: rgba(255, 255, 255, 0.3);
+  --nav-bg: #2564eb; /* Màu xanh dương chủ đạo (Royal Blue) */
+  --nav-height: 48px; /* Chiều cao cố định */
+  --text-white: #ffffff;
+  --glass-bg: rgba(255, 255, 255, 0.2); /* Hiệu ứng kính mờ */
+  --glass-hover: rgba(255, 255, 255, 0.3);
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
 }
 
 /* --- 2. NAVBAR CONTAINER --- */
 .navbar {
-    background-color: var(--nav-bg);
-    height: var(--nav-height);
-    display: flex;
-    justify-content: space-between; /* Đẩy 3 phần ra xa nhau */
-    align-items: center;            /* Căn giữa theo chiều dọc */
-    padding: 0 20px;
-    color: var(--text-white);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    position: fixed;
-    top: 0;
-    left: 0;                
-    right: 0;               
-    z-index: 1000;
+  background-color: var(--nav-bg);
+  height: var(--nav-height);
+  display: flex;
+  justify-content: space-between; /* Đẩy 3 phần ra xa nhau */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  padding: 0 20px;
+  color: var(--text-white);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 
 /* --- 3. PHẦN TRÁI (LOGO) --- */
 .navbar__left .logo-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.25rem;
-    font-weight: 700;
-    cursor: pointer;
-    letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.5px;
 }
 
 /* --- 4. PHẦN GIỮA (SEARCH & ACTION) --- */
 .navbar__center {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex: 1;                /* Chiếm khoảng trống còn lại */
-    justify-content: center; /* Căn giữa nội dung bên trong */
-    max-width: 600px;       /* Không cho bè ra quá rộng */
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1; /* Chiếm khoảng trống còn lại */
+  justify-content: center; /* Căn giữa nội dung bên trong */
+  max-width: 600px; /* Không cho bè ra quá rộng */
 }
 
 /* Ô tìm kiếm kiểu kính mờ */
 .search-box {
-    position: relative;
-    width: 100%;
-    max-width: 300px;
+  position: relative;
+  width: 100%;
+  max-width: 300px;
 }
 
 .search-box input {
-    width: 100%;
-    background: var(--glass-bg);
-    border: none;
-    outline: none;
-    padding: 8px 12px 8px 36px; /* Padding trái để chừa chỗ cho icon */
-    border-radius: 6px;
-    color: var(--text-white);
-    font-size: 0.9rem;
-    transition: 0.2s;
+  width: 100%;
+  background: var(--glass-bg);
+  border: none;
+  outline: none;
+  padding: 8px 12px 8px 36px; /* Padding trái để chừa chỗ cho icon */
+  border-radius: 6px;
+  color: var(--text-white);
+  font-size: 0.9rem;
+  transition: 0.2s;
 }
 
 .search-box input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .search-box input:focus {
-    background: #fff;
-    color: #333; /* Khi gõ chữ chuyển sang màu đen cho dễ đọc */
+  background: #fff;
+  color: #333; /* Khi gõ chữ chuyển sang màu đen cho dễ đọc */
 }
 
 .search-box input:focus::placeholder {
-    color: #888;
+  color: #888;
 }
 
 .search-box i {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.8);
-    pointer-events: none; /* Icon không chặn click vào input */
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  pointer-events: none; /* Icon không chặn click vào input */
 }
 
 /* Logic đổi màu icon khi input focus */
-.search-box input:focus + i { 
-    /* Lưu ý: Để dùng selector này, trong HTML icon phải đặt SAU input, 
+.search-box input:focus + i {
+  /* Lưu ý: Để dùng selector này, trong HTML icon phải đặt SAU input, 
        nhưng ở trên ta đặt TRƯỚC nên CSS này cần chỉnh lại HTML một chút 
        hoặc dùng JS. Để đơn giản, ta giữ nguyên icon màu trắng */
-} 
+}
 
 /* Nút tạo bảng mới */
 .btn-create {
-    background: rgba(255, 255, 255, 0.9);
-    color: var(--nav-bg); /* Chữ màu xanh cho nổi bật trên nền trắng */
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s ease;
-    white-space: nowrap;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--nav-bg); /* Chữ màu xanh cho nổi bật trên nền trắng */
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .btn-create:hover {
-    background: #fff;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  background: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* --- 5. PHẦN PHẢI (USER & NOTI) --- */
 .navbar__right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 /* Nút chuông thông báo */
 .btn-icon {
-    background: transparent;
-    border: none;
-    color: var(--text-white);
-    font-size: 1.2rem;
-    cursor: pointer;
-    position: relative;
-    padding: 5px;
-    transition: transform 0.2s;
+  background: transparent;
+  border: none;
+  color: var(--text-white);
+  font-size: 1.2rem;
+  cursor: pointer;
+  position: relative;
+  padding: 5px;
+  transition: transform 0.2s;
 }
 
 .btn-icon:hover {
-    transform: scale(1.1);
-}
-
-/* Chấm đỏ số lượng */
-.badge {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: #ef4444;
-    color: white;
-    font-size: 0.6rem;
-    font-weight: bold;
-    height: 16px;
-    width: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    border: 2px solid var(--nav-bg); /* Viền trùng màu nền để tạo khoảng cách */
+  transform: scale(1.1);
 }
 
 /* Avatar User */
 .avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid rgba(255,255,255,0.6);
-    cursor: pointer;
-    transition: 0.2s;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .avatar:hover {
-    border-color: #fff;
-    box-shadow: 0 0 0 4px rgba(255,255,255,0.1);
+  border-color: #fff;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
 }
 
 /* --- 6. RESPONSIVE (MOBILE) --- */
 @media (max-width: 768px) {
-    /* Ẩn text logo, chỉ hiện icon */
-    .logo-text { display: none; }
-    
-    /* Ẩn text nút tạo mới, chỉ hiện dấu + */
-    .btn-create span { display: none; }
-    
-    /* Ẩn input search, hiển thị icon search như một nút bấm (cần JS để xử lý mở rộng) */
-    .search-box input { display: none; }
-    .search-box i {
-        position: static;
-        transform: none;
-        cursor: pointer;
-        padding: 8px;
-    }
+  /* Ẩn text logo, chỉ hiện icon */
+  .logo-text {
+    display: none;
+  }
+
+  /* Ẩn text nút tạo mới, chỉ hiện dấu + */
+  .btn-create span {
+    display: none;
+  }
+
+  /* Ẩn input search, hiển thị icon search như một nút bấm (cần JS để xử lý mở rộng) */
+  .search-box input {
+    display: none;
+  }
+  .search-box i {
+    position: static;
+    transform: none;
+    cursor: pointer;
+    padding: 8px;
+  }
 }
 .user-profile {
-    position: relative;
-    display: flex;
+  position: relative;
+  display: flex;
 }
 .dropdown-menu {
-        display: none; /* Mặc định ẩn */
-        position: absolute;
-        top: 45px; /* Cách mép trên 45px */
-        right: 0; /* Căn phải thẳng hàng với avatar */
-        background-color: white;
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        border-radius: 4px;
-        z-index: 1000;
-        overflow: hidden;
+  display: none; /* Mặc định ẩn */
+  position: absolute;
+  top: 45px; /* Cách mép trên 45px */
+  right: 0; /* Căn phải thẳng hàng với avatar */
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  z-index: 1000;
+  overflow: hidden;
 }
 
-        /* Các mục trong menu */
-        .dropdown-menu a {
-            color: #333;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            font-size: 14px;
-        }
+/* Các mục trong menu */
+.dropdown-menu a {
+  color: #333;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+}
 
-        /* Hiệu ứng khi di chuột vào mục menu */
-        .dropdown-menu a:hover {
-            background-color: #f1f1f1;
-            color: #2563eb;
-        }
+/* Hiệu ứng khi di chuột vào mục menu */
+.dropdown-menu a:hover {
+  background-color: #f1f1f1;
+  color: #2563eb;
+}
 
-        /* Class để hiện menu khi click */
-        .show {
-            display: block;
-        }
+/* Class để hiện menu khi click */
+.show {
+  display: block;
+}
 
-        /* Đường kẻ ngang phân cách (nếu cần) */
-        .divider {
-            height: 1px;
-            background-color: #e5e5e5;
-            margin: 4px 0;
-        }
+/* Đường kẻ ngang phân cách (nếu cần) */
+.divider {
+  height: 1px;
+  background-color: #e5e5e5;
+  margin: 4px 0;
+}
 
-
-        /* sidebar*/
-        /* Reset cơ bản */
+/* sidebar*/
+/* Reset cơ bản */
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .search-results-dropdown {
-    display: none;
-    position: absolute;
-    top: calc(100% + 5px);
-    left: 0;
-    right: 0;
-    background-color: white;
-    border-radius: 4px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    z-index: 1001;
-    max-height: 300px;
-    overflow-y: auto;
-    border: 1px solid #ddd;
+  display: none;
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
 }
 
 .search-results-dropdown a {
-    display: block;
-    padding: 10px 15px;
-    color: #333;
-    text-decoration: none;
-    font-size: 14px;
-    border-bottom: 1px solid #f0f0f0;
+  display: block;
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .search-results-dropdown a:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .search-results-dropdown a:hover {
-    background-color: #f5f5f5;
+  background-color: #f5f5f5;
 }
 
 .search-results-dropdown.show {
-    display: block;
+  display: block;
 }
-

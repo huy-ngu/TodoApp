@@ -1,0 +1,99 @@
+body {
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f6f8;
+}
+.container {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  width: 380px;
+  margin-top: 60px;
+}
+h2 {
+  text-align: center;
+  color: #1a1a1a;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Style cho input bị khóa để nhìn khác biệt chút */
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+input:read-only {
+  background-color: #e9ecef;
+  color: #495057;
+  cursor: not-allowed;
+  border-color: #ced4da;
+}
+input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Nút bấm nổi bật hơn */
+#generateBtn {
+  width: 100%;
+  padding: 14px;
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+#generateBtn:hover {
+  background-color: #004494;
+}
+
+#qr-result {
+  margin-top: 1.5rem;
+  text-align: center;
+  display: none;
+}
+#qr-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  margin-top: 10px;
+}
+
+#timer {
+  font-size: 1.1rem;
+  color: #d9534f;
+  font-weight: bold;
+  margin: 10px 0;
+}
+.note {
+  font-size: 0.85rem;
+  color: #666;
+  text-align: center;
+  margin-top: 10px;
+  font-style: italic;
+}

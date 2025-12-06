@@ -1,0 +1,218 @@
+:root {
+  --primary-blue: #0055cc; /* Màu xanh của header bạn cung cấp */
+  --light-blue-bg: #f4f5f7;
+  --white: #ffffff;
+  --text-dark: #172b4d;
+  --text-gray: #5e6c84;
+  --border-color: #dfe1e6;
+  --highlight-border: #00c7e5; /* Màu nhấn cho gói Pro */
+  --btn-hover: #0047b3;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: var(--white);
+  color: var(--text-dark);
+}
+
+/* Layout chính */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.pricing-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.pricing-header h1 {
+  font-size: 2.5rem;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.pricing-header p {
+  font-size: 1.2rem;
+  color: var(--text-gray);
+}
+
+/* Grid hệ thống */
+.pricing-grid {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: stretch; /* Để các thẻ bằng nhau về chiều cao */
+  flex-wrap: wrap;
+}
+
+/* Style chung cho Card */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 24px;
+  flex: 1;
+  min-width: 300px;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+}
+
+/* Header của Card */
+.card-header {
+  text-align: center;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 24px;
+}
+
+.card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--text-gray);
+  margin-bottom: 20px;
+  min-height: 40px; /* Giữ đều dòng */
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+}
+
+.period {
+  font-size: 1rem;
+  font-weight: normal;
+  color: var(--text-gray);
+}
+
+/* Buttons */
+.btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s;
+}
+
+.btn-outline {
+  background: #ebecf0;
+  color: var(--text-dark);
+}
+
+.btn-primary {
+  background: var(--primary-blue);
+  color: white;
+}
+.btn-primary:hover {
+  background: var(--btn-hover);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid var(--primary-blue);
+  color: var(--primary-blue);
+}
+.btn-secondary:hover {
+  background: #e6effc;
+}
+
+/* Danh sách tính năng */
+.card-features ul {
+  list-style: none;
+  padding: 0;
+}
+
+.card-features li {
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+}
+
+.check {
+  color: #00875a; /* Màu xanh lá tích v */
+  font-weight: bold;
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+.disabled {
+  color: #b3bac5;
+  text-decoration: line-through;
+}
+.disabled span {
+  color: #b3bac5;
+  margin-right: 14px; /* Căn chỉnh với dấu check */
+}
+
+/* Tùy chỉnh riêng cho gói PRO (Điểm nhấn) */
+.card-pro {
+  border-top: 4px solid var(--primary-blue); /* Viền trên màu xanh đậm */
+  background-color: #fafbfc;
+  transform: scale(1.02); /* To hơn một chút */
+  box-shadow: 0 4px 12px rgba(0, 85, 204, 0.15);
+  position: relative;
+  z-index: 1;
+}
+
+.card-pro .card-header {
+  border-bottom-color: #dfe1e6;
+}
+
+.best-value-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #00c7e5; /* Màu xanh cyan sáng tạo điểm nhấn */
+  color: #172b4d;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Mobile */
+@media (max-width: 768px) {
+  .pricing-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .card-pro {
+    transform: none; /* Tắt phóng to trên mobile */
+  }
+}

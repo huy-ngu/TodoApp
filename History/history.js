@@ -8,7 +8,7 @@ if (!currentUser) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  loadComponent("sidebar", "../components/sidebar.html");
+  await loadComponent("sidebar", "../components/sidebar.html");
 });
 setTimeout(() => {
   const logout = document.getElementById("logout2");
