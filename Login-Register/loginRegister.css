@@ -428,6 +428,41 @@ form.sign-in-form {
     transform: translateX(0); /* Trượt vào vị trí cũ */
 }
 
+/* Inline field error */
+.error-text {
+    color: #e74c3c;
+    background: rgba(231,76,60,0.06);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-top: 6px;
+    display: inline-block;
+    transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.input-field input.input-error {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(231,76,60,0.08) inset;
+}
+
+.input-field input.input-error::placeholder {
+    color: #e74c3c;
+    opacity: 1;
+    font-style: italic;
+}
+
+/* Toast variants */
+#toast.error {
+    border-left-color: #e74c3c;
+}
+#toast.error .toast-icon {
+    color: #e74c3c;
+}
+
+#toast.error {
+    background-color: #fff6f6;
+}
+
 .btn-fixed-top-left {
             /* Giúp nút đứng yên khi cuộn chuột */
             position: fixed;
