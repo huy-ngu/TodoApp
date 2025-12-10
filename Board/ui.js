@@ -154,7 +154,15 @@ function createCard(card, context) {
     
     const footerEl = cardEl.querySelector(".card__footer");
     if (card.dueDate) {
-        const dateString = new Date(card.dueDate).toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+        const dueDate = new Date(card.dueDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Set to start of today for comparison
+
+        if (dueDate < today) {
+            footerEl.classList.add("card__footer--expired");
+        }
+
+        const dateString = dueDate.toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
         const dateSpan = document.createElement('span');
         dateSpan.textContent = `Hạn: ${dateString}`;
         footerEl.appendChild(dateSpan);

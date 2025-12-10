@@ -89,41 +89,37 @@ hr {
 }
 
 .star-btn {
-  border: 1px solid #c7d0e4;
-  background: transparent;
+  background: #091e420a;
+  border: 1px solid transparent;
   border-radius: 10px;
-  padding: 0.45rem 0.75rem;
   cursor: pointer;
-  font-weight: 600;
-  color: #3b4d6b;
-  font-size: 1.1rem;
-  line-height: 1;
-  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   min-width: 36px;
   height: 36px;
+  transition: all 0.2s ease;
 }
 
 .star-btn:hover {
-  background: #f4f6fb;
-  border-color: #a8b5d1;
+  background: #091e4214;
 }
 
 .star-btn.is-starred {
-  color: #ffa500;
-  border-color: #ffa500;
+  background-color: #fffae6;
+  border-color: #ffc400;
 }
 
-.star-btn.is-starred:hover {
-  background: #fff8e1;
-  border-color: #ff9800;
+.star-btn.is-starred .star-icon {
+  color: #ffc400;
+  transform: scale(1.2);
 }
 
 .star-icon {
   font-size: 1.2rem;
   line-height: 1;
+  color: #44546f;
+  transition: all 0.2s ease;
 }
 
 .header-action-wrapper {
@@ -1182,4 +1178,12 @@ hr {
 .card__note-icon {
   font-size: 1rem;
   color: #5a6a85;
+}
+
+.card__footer--expired {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  font-weight: bold;
 }
