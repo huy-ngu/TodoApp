@@ -100,6 +100,61 @@ form.sign-in-form {
     font-weight: 500;
 }
 
+/* placeholder style when input flagged as error by markFieldInvalid */
+.input-field input.input-error::placeholder {
+    color: #e74c3c;
+    font-style: italic;
+    opacity: 1;
+}
+
+/* Ensure input text color stays the same even when input has error class */
+.input-field input.input-error {
+    color: #333 !important;
+}
+
+/* toggle eye inside input-field */
+.toggle-password {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    cursor: pointer;
+    font-size: 16px;
+}
+.toggle-password:hover { color: #374151 }
+
+/* Inline error box shown under the input */
+.error-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: absolute;
+    left: 12px;
+    bottom: -36px; /* float below the input */
+    background: #fff5f5; /* very light red/pink */
+    color: #b91c1c; /* dark red text */
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    border: 1px solid rgba(220,38,38,0.12);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    z-index: 10;
+}
+
+/* Icon inside error pill */
+.error-text .error-icon {
+    color: #ef4444;
+    font-size: 14px;
+    line-height: 1;
+}
+.error-text .error-message { font-size: 12px; color: #7f1d1d }
+
+/* Highlight the pill when there is an error */
+.input-field.field-error {
+    box-shadow: inset 0 0 0 2px rgba(239,68,68,0.06);
+}
+
 .social-text {
     padding: 0.7rem 0;
     font-size: 1rem;
@@ -426,41 +481,6 @@ form.sign-in-form {
     visibility: visible;
     opacity: 1;
     transform: translateX(0); /* Trượt vào vị trí cũ */
-}
-
-/* Inline field error */
-.error-text {
-    color: #e74c3c;
-    background: rgba(231,76,60,0.06);
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    margin-top: 6px;
-    display: inline-block;
-    transition: opacity 0.2s ease, transform 0.15s ease;
-}
-
-.input-field input.input-error {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(231,76,60,0.08) inset;
-}
-
-.input-field input.input-error::placeholder {
-    color: #e74c3c;
-    opacity: 1;
-    font-style: italic;
-}
-
-/* Toast variants */
-#toast.error {
-    border-left-color: #e74c3c;
-}
-#toast.error .toast-icon {
-    color: #e74c3c;
-}
-
-#toast.error {
-    background-color: #fff6f6;
 }
 
 .btn-fixed-top-left {

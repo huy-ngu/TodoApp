@@ -32,12 +32,24 @@ function showFieldError(inputEl, message) {
     clearFieldError(inputEl);
     const err = document.createElement('div');
     err.className = 'error-text';
-    err.style.color = 'red';
-    err.style.fontSize = '12px';
-    err.style.marginTop = '4px';
-    err.textContent = message;
+    // build icon + text for compact horizontal pill
+    const icon = document.createElement('i');
+    icon.className = 'fas fa-exclamation-circle error-icon';
+    const txt = document.createElement('span');
+    txt.className = 'error-message';
+    txt.textContent = message;
+    err.appendChild(icon);
+    err.appendChild(txt);
+    // append as positioned element inside parent .input-field
     inputEl.parentNode.appendChild(err);
     inputEl.classList.add('input-error');
+    if (inputEl.parentNode && inputEl.parentNode.classList) inputEl.parentNode.classList.add('field-error');
+        // Remove error pill when user types in the input
+        function handleInput() {
+            clearFieldError(inputEl);
+            inputEl.removeEventListener('input', handleInput);
+        }
+        inputEl.addEventListener('input', handleInput);
 }
 
 function clearFieldError(inputEl) {
@@ -46,6 +58,7 @@ function clearFieldError(inputEl) {
     const parent = inputEl.parentNode;
     const existing = parent.querySelector('.error-text');
     if (existing) parent.removeChild(existing);
+    if (parent && parent.classList) parent.classList.remove('field-error');
 }
 
 function clearAllErrors(form) {
@@ -186,16 +199,16 @@ loginForm.addEventListener('submit', function(event) {
     let hasError = false;
     let firstInvalid = null;
     if (!loginEmail) {
-        markFieldInvalid(loginEmailInput, 'Email không được để trống.');
+        showFieldError(loginEmailInput, 'Email không được để trống.');
         hasError = true;
         firstInvalid = firstInvalid || loginEmailInput;
     } else if (!isValidEmail(loginEmail)) {
-        markFieldInvalid(loginEmailInput, 'Email không hợp lệ.');
+        showFieldError(loginEmailInput, 'Email không hợp lệ.');
         hasError = true;
         firstInvalid = firstInvalid || loginEmailInput;
     }
     if (!loginPassword) {
-        markFieldInvalid(loginPasswordInput, 'Mật khẩu không được để trống.');
+        showFieldError(loginPasswordInput, 'Mật khẩu không được để trống.');
         hasError = true;
         firstInvalid = firstInvalid || loginPasswordInput;
     }
@@ -209,8 +222,10 @@ loginForm.addEventListener('submit', function(event) {
         sessionStorage.setItem('currentUser', JSON.stringify(foundUser));
         window.location.replace(`${baseUrl}/ListBoard/boards.html`);
     } else {
-        // hiển thị lỗi chung bằng toast
-        showToast('Email hoặc mật khẩu không đúng. Vui lòng thử lại.', 'error');
+        // hiển thị lỗi chung inline cho cả 2 ô
+        showFieldError(loginEmailInput, 'Email hoặc mật khẩu không đúng.');
+        showFieldError(loginPasswordInput, 'Email hoặc mật khẩu không đúng.');
+        if (loginPasswordInput) loginPasswordInput.focus();
     }
 });
 
@@ -279,3 +294,28 @@ document.getElementById('btn-google-register').addEventListener('click', () => {
             // Lệnh này kích hoạt Popup
     tokenClient.requestAccessToken();
 });
+
+// Password show/hide toggles for both forms
+function attachToggle(toggleId, inputId) {
+    const toggle = document.getElementById(toggleId);
+    const input = document.getElementById(inputId);
+    if (!toggle || !input) return;
+    toggle.addEventListener('click', () => {
+        const isHidden = input.type === 'password';
+        input.type = isHidden ? 'text' : 'password';
+        // swap icon classes
+        if (isHidden) {
+            toggle.classList.remove('fa-eye');
+            toggle.classList.add('fa-eye-slash');
+            toggle.title = 'Ẩn mật khẩu';
+        } else {
+            toggle.classList.remove('fa-eye-slash');
+            toggle.classList.add('fa-eye');
+            toggle.title = 'Hiện mật khẩu';
+        }
+        input.focus();
+    });
+}
+
+attachToggle('toggle-login-password', 'login-password');
+attachToggle('toggle-register-password', 'register-password');
