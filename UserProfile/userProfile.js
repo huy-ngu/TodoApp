@@ -198,11 +198,36 @@ function saveProfile() {
   logs.push(newLog);
   localStorage.setItem("logs", JSON.stringify(logs));
 
-  // Thông báo
-
-  alert("Đã cập nhật hồ sơ thành công!");
-
+  // alert("Đã cập nhật hồ sơ thành công!");
+  showToast("Sửa thành công!", "success");
   tempSelectedAvatar = null; // Reset
 }
 
-// Khởi chạy
+function showToast(message = "Hoàn tất", type = "success") {
+  const x = document.getElementById("toast");
+  if (!x) return;
+  const textEl = x.querySelector(".toast-text");
+  const iconEl = x.querySelector(".toast-icon");
+
+  // Set text
+  if (textEl) textEl.textContent = message;
+
+  // Set variant (error / success)
+  x.classList.remove("error");
+  if (type === "error") {
+    x.classList.add("error");
+    if (iconEl) iconEl.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+  } else {
+    // success
+    if (iconEl) iconEl.innerHTML = '<i class="fas fa-check-circle"></i>';
+  }
+
+  // Show
+  x.classList.add("show");
+
+  // Hide after 3s
+  setTimeout(() => {
+    x.classList.remove("show");
+    x.classList.remove("error");
+  }, 3000);
+}
