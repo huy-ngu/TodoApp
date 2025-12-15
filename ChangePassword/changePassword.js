@@ -62,9 +62,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      // 4. Lưu dữ liệu
-      // Tìm user trong danh sách tổng (LocalStorage)
       const userIndex = users.findIndex((u) => u.id === currentUser.id);
+
+      let logs = localStorage.getItem("logs")
+        ? JSON.parse(localStorage.getItem("logs"))
+        : [];
+
+      const newLog = {
+        id: `log-${Date.now()}`,
+        userId: currentUser.id,
+        userName: currentUser.name,
+        content: `Đã đổi mật khẩu`,
+        objectId: "",
+        createAt: Date.now(),
+      };
+      logs.push(newLog);
+      localStorage.setItem("logs", JSON.stringify(logs));
 
       if (userIndex !== -1) {
         // Cập nhật LocalStorage (Database giả)
@@ -120,10 +133,14 @@ function showToast(message = "Hoàn tất", type) {
     x.classList.add("error");
     if (iconEl) {
       iconEl.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+      iconEl.style.color = "#ff4444";
     }
   } else {
     // success
-    if (iconEl) iconEl.innerHTML = '<i class="fas fa-check-circle"></i>';
+    if (iconEl) {
+      iconEl.innerHTML = '<i class="fas fa-check-circle"></i>';
+      iconEl.style.color = "#00C851";
+    }
   }
 
   // Show

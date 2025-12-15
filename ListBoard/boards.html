@@ -1,39 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TrìHoãnPro | Danh sách bảng</title>
-    <link rel="icon" type="image/png" href="/images/logo.png">
+    <link rel="icon" type="image/png" href="/images/logo.png" />
     <link rel="stylesheet" href="/ListBoard/boards.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/components/layout.css">
-    <link rel="stylesheet" href="/components/sidebar.css">
-    <link rel="icon" type="image/png" href="/images/logo.svg">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/components/layout.css" />
+    <link rel="stylesheet" href="/components/sidebar.css" />
+    <link rel="icon" type="image/png" href="/images/logo.svg" />
+  </head>
 
-</head>
-
-<body>
+  <body>
     <!-- Components sẽ được load tự động -->
 
     <div id="header-placeholder"></div>
     <div id="sidebar"></div>
     <div class="main-content" id="main-content">
-        <div>
-            <h3>Bảng đã gắn sao</h3>
-            <div id="board-star-list">
-            </div>
-        </div>
-        <div>
-            <h3>Bảng của bạn</h3>
-            <div id="board-list">
-            </div>
-        </div>
+      <div>
+        <h4>
+          <i class="fa-solid fa-meteor" style="margin-right: 4px"></i>
+          <span> Bảng đã gắn sao</span>
+        </h4>
+        <div id="board-star-list"></div>
+      </div>
+      <div style="margin-top: 20px">
+        <h4>
+          <i class="fa-solid fa-globe" style="margin-right: 4px"></i>
+          <span>Bảng của bạn</span>
+        </h4>
+        <div id="board-list"></div>
+      </div>
     </div>
     <script src="/ListBoard/boards.js" type="module"></script>
     <script src="/components/layout.js" type="module"></script>
     <script src="../components/sidebar.js" type="module"></script>
-</body>
-
+  </body>
 </html>
