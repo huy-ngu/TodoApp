@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slide 1 – TrìhoãnPro Intro</title>
+    <link rel="stylesheet" href="slide1.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="logo">TrìhoãnPro</div>
+    </header>
+
+    <div class="container">
+      
+      <div class="top-mascot-area">
+        <div class="mascot-container">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/616/616408.png"
+            alt="Mascot"
+            class="mascot-img"
+          />
+          <div class="speech-bubble">
+            Chào mừng đến với TrìhoãnPro
+          </div>
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        
+        <div class="left">
+          <h1>Điều gì đưa bạn đến đây hôm nay?</h1>
+
+          <div class="option" onclick="selectOption(1)">
+            <span class="icon">📝</span>
+            <span>Sắp xếp công việc cá nhân</span>
+          </div>
+
+          <div class="option" onclick="selectOption(2)">
+            <span class="icon">🤝</span>
+            <span>Theo dõi công việc nhóm</span>
+          </div>
+
+          <div class="option" onclick="selectOption(3)">
+            <span class="icon">📊</span>
+            <span>Quản lý dự án đơn giản</span>
+          </div>
+
+          <div class="option" onclick="selectOption(4)">
+            <span class="icon">⚙️</span>
+            <span>Tạo workflow tự động</span>
+          </div>
+
+          <button class="continue-btn hidden" id="continue-btn">Tiếp tục</button>
+          <button class="skip-btn">Bỏ qua</button>
+        </div>
+
+        <div class="right">
+          <div id="preview-area" class="preview-box">
+            <img src="../../images/s11.png" alt="preview" id="preview-img">
+          </div>
+        </div>
+
+      </div> </div>
+
+    <script src="slide1.js"></script>
+  </body>
+</html>

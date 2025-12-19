@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slide 2 – Hộp thư đến</title>
+    <link rel="stylesheet" href="slide2.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">TrìhoãnPro</div>
+    </header>
+
+    <div class="intro-slide">
+      <main class="main-content">
+        <h1 class="headline">Thêm việc cần làm vào Hộp thư chung</h1>
+        <p class="sub-headline">
+          Hãy bắt đầu bằng cách thêm một vài việc cần làm vào
+          <strong>Hộp thư chung</strong> của bạn dưới dạng thẻ.
+        </p>
+
+        <div class="inbox-card">
+          <div class="card-header">
+            <h2>Hộp thư chung</h2>
+            <span class="more-options" id="moreOptionsBtn">...</span>
+          </div>
+
+          <div class="task-list" id="taskList"></div>
+
+          <div class="control-panel" id="controlPanel">
+            <button class="add-card-btn" id="openDialogBtn">+ Thêm thẻ</button>
+
+            <div class="theme-selector">
+              <span class="theme-label">THAY ĐỔI THEME:</span>
+              <div class="color-grid">
+                <div
+                  class="color-swatch"
+                  style="background-color: #89bdf6"
+                  data-color="#89bdf6"
+                ></div>
+                <div
+                  class="color-swatch"
+                  style="background-color: #ff9f1a"
+                  data-color="#ff9f1a"
+                ></div>
+                <div
+                  class="color-swatch"
+                  style="background-color: #eb5a46"
+                  data-color="#eb5a46"
+                ></div>
+                <div
+                  class="color-swatch"
+                  style="background-color: #f2d600"
+                  data-color="#f2d600"
+                ></div>
+                <div
+                  class="color-swatch"
+                  style="background-color: #61bd4f"
+                  data-color="#61bd4f"
+                ></div>
+                <div
+                  class="color-swatch"
+                  style="background-color: #c377e0"
+                  data-color="#c377e0"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="navigation-buttons">
+          <button class="nav-link prev-link">Bỏ qua</button>
+          <button class="nav-link next-link hidden" id="nextBtn">
+            Tiếp tục
+          </button>
+        </div>
+
+        <div class="mascot-container">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/616/616408.png"
+            alt="Mascot"
+            class="mascot-img"
+          />
+          <div class="speech-bubble">
+            Hãy thử thêm thẻ cho hộp thư chung nhé!
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal-overlay" id="addCardModal">
+      <div class="modal-box">
+        <h3>Thêm thẻ mới</h3>
+        <input
+          type="text"
+          id="taskInput"
+          placeholder="Nhập tên công việc cần làm..."
+          autocomplete="off"
+        />
+        <div class="modal-actions">
+          <button class="btn-cancel" id="cancelBtn">Hủy</button>
+          <button class="btn-confirm" id="confirmBtn">Thêm thẻ</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="slide2.js"></script>
+  </body>
+</html>

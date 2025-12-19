@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slide 3 – Sắp xếp công việc</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+
+    <link rel="stylesheet" href="../slide2/slide2.css" />
+    <link rel="stylesheet" href="slide3.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">TrìhoãnPro</div>
+    </header>
+
+    <div class="board-intro-text center-top">
+      <h1>
+        Bây giờ, đây là <strong>bảng</strong> đầu tiên để bạn sắp xếp việc cần
+        làm
+      </h1>
+      <p>
+        Hãy bắt đầu với ba <strong>danh sách</strong> này: "Hôm nay", "Tuần
+        này", "Sau này".
+      </p>
+      <button class="btn-finish">Tiếp tục</button>
+    </div>
+
+    <div class="main-container" id="mainContainer">
+      <div class="panel-left">
+        <div class="inbox-card small-version disable-menu" id="inboxCard">
+          <div class="card-header">
+            <h2>Hộp thư chung</h2>
+            <span class="more-options">...</span>
+          </div>
+
+          <div class="task-list sortable-list" id="list-inbox"></div>
+        </div>
+      </div>
+
+      <div class="panel-right">
+        <div class="lists-wrapper">
+          <div class="list">
+            <div class="list-header">
+              <span>Hôm nay</span>
+              <span class="more">...</span>
+            </div>
+            <div class="list-content sortable-list" id="list-today">
+              <div class="task-item">Tập thể dục 30p</div>
+            </div>
+            <div class="list-footer" onclick="openModal('list-today')">
+              + Thêm thẻ
+            </div>
+          </div>
+
+          <div class="list">
+            <div class="list-header">
+              <span>Tuần này</span>
+              <span class="more">...</span>
+            </div>
+            <div class="list-content sortable-list" id="list-week"></div>
+            <div class="list-footer" onclick="openModal('list-week')">
+              + Thêm thẻ
+            </div>
+          </div>
+
+          <div class="list">
+            <div class="list-header">
+              <span>Sau này</span>
+              <span class="more">...</span>
+            </div>
+            <div class="list-content sortable-list" id="list-later"></div>
+            <div class="list-footer" onclick="openModal('list-later')">
+              + Thêm thẻ
+            </div>
+          </div>
+        </div>
+
+        <div class="mascot-container3">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/616/616408.png"
+            alt="Mascot"
+            class="mascot-img3"
+          />
+          <div class="speech-bubble3">
+            Kéo thẻ từ Hộp thư sang các danh sách và thêm thẻ cho danh sách nhé!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="addCardModal">
+      <div class="modal-box">
+        <h3>Thêm thẻ mới</h3>
+        <input
+          type="text"
+          id="taskInput"
+          placeholder="Nhập tên công việc..."
+          autocomplete="off"
+        />
+        <div class="modal-actions">
+          <button class="btn-cancel" id="cancelBtn">Hủy</button>
+          <button class="btn-confirm" id="confirmBtn">Thêm thẻ</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="slide3.js"></script>
+  </body>
+</html>
