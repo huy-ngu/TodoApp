@@ -55,7 +55,7 @@ const generateId = (() => {
 })();
 document.addEventListener("DOMContentLoaded", async () => {
   loadComponent("sidebar", "../components/sidebar.html");
-  Logout();
+  // Logout();
 });
 
 // xu li them bang - đã được xử lý trong layout.js
@@ -126,10 +126,10 @@ function toggleBoardStar(boardId) {
 //   });
 // }, 500);
 
-function Logout() {
-  const logout = document.getElementById("logout2");
-  logout.addEventListener("click", () => {
-    sessionStorage.removeItem("currentUser");
-    window.location.href = `../Login-Register/loginRegister.html`;
-  });
-}
+// function Logout() {
+//   const logout = document.getElementById("logout2");
+//   logout.addEventListener("click", () => {
+//     sessionStorage.removeItem("currentUser");
+//     window.location.href = `../Login-Register/loginRegister.html`;
+//   });
+// }
