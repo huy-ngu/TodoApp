@@ -79,7 +79,7 @@ async function setupAddBoardButton() {
     try {
       // Import động để tránh lỗi nếu module chưa load
       const { boards, baseUrl, boardThemeColors, logs } = await import(
-        "/Entity.js"
+        "../Entity.js"
       );
 
       // Lấy currentUser từ sessionStorage
