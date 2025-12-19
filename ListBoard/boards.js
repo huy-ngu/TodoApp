@@ -1,28 +1,28 @@
 import { boards, baseUrl, boardThemeColors } from "../Entity.js";
-import  loadComponent from "../js/loadComponents.js";
+import loadComponent from "../js/loadComponents.js";
 console.log(boards);
-const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
 if (!currentUser) {
-    alert("Bạn chưa đăng nhập! Vui lòng quay lại.");
-    window.location.href = `${baseUrl}/Login-Register/loginRegister.html`;
+  alert("Bạn chưa đăng nhập! Vui lòng quay lại.");
+  window.location.href = `../Login-Register/loginRegister.html`;
 }
 
 // Render lại danh sách boards
 function renderBoards() {
   const containerBoard = document.getElementById("board-list");
   const containerStarBoard = document.getElementById("board-star-list");
-  
+
   // Xóa nội dung cũ
-  containerBoard.innerHTML = '';
-  containerStarBoard.innerHTML = '';
-  
+  containerBoard.innerHTML = "";
+  containerStarBoard.innerHTML = "";
+
   // Render tất cả boards của user
-  boards.forEach(board => {
-    if(board.userId === currentUser.id) {
+  boards.forEach((board) => {
+    if (board.userId === currentUser.id) {
       // Icon ngôi sao: ★ nếu starred, ☆ nếu không
-      const starIcon = board.starred ? '★' : '☆';
-      const starClass = board.starred ? 'starred' : '';
-      
+      const starIcon = board.starred ? "★" : "☆";
+      const starClass = board.starred ? "starred" : "";
+
       const boardHTML = `
         <a href="/board/board.html?board=${board.id}">
           <div class="board">
@@ -32,16 +32,16 @@ function renderBoards() {
             <div class="board-title">${board.title}</div>
           </div>
         </a>`;
-      
+
       containerBoard.innerHTML += boardHTML;
-      
+
       // Nếu starred, thêm vào danh sách starred
-      if(board.starred === true) {
+      if (board.starred === true) {
         containerStarBoard.innerHTML += boardHTML;
       }
     }
   });
-  
+
   // Setup event listeners cho các ngôi sao
   setupStarButtons();
 }
@@ -57,8 +57,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   loadComponent("sidebar", "../components/sidebar.html");
 });
 
-
-
 // xu li them bang - đã được xử lý trong layout.js
 // Logic xử lý nút "Thêm mới bảng" đã được chuyển vào components/layout.js
 // để có thể dùng chung cho tất cả các trang (boards, admin, templates)
@@ -73,19 +71,19 @@ function updateBoardUrl(boardId) {
  * Setup event listeners cho các nút ngôi sao
  */
 function setupStarButtons() {
-  const starButtons = document.querySelectorAll('.star-icon-board');
-  
-  starButtons.forEach(starBtn => {
+  const starButtons = document.querySelectorAll(".star-icon-board");
+
+  starButtons.forEach((starBtn) => {
     // Xóa event listener cũ nếu có
     const newStarBtn = starBtn.cloneNode(true);
     starBtn.parentNode.replaceChild(newStarBtn, starBtn);
-    
+
     // Thêm event listener mới
-    newStarBtn.addEventListener('click', (e) => {
+    newStarBtn.addEventListener("click", (e) => {
       e.preventDefault(); // Ngăn chặn chuyển trang khi click vào ngôi sao
       e.stopPropagation(); // Ngăn chặn event bubbling
-      
-      const boardId = newStarBtn.getAttribute('data-board-id');
+
+      const boardId = newStarBtn.getAttribute("data-board-id");
       if (boardId) {
         toggleBoardStar(boardId);
       }
@@ -102,28 +100,27 @@ function toggleBoardStar(boardId) {
     console.warn("[BOARD] Không tìm thấy board với id:", boardId);
     return;
   }
-  
+
   // Đổi trạng thái starred
   board.starred = !board.starred;
-  
+
   // Lưu vào localStorage
-  localStorage.setItem('boards', JSON.stringify(boards));
-  
+  localStorage.setItem("boards", JSON.stringify(boards));
+
   console.log("[BOARD] Đã toggle starred:", {
     boardId: board.id,
     boardTitle: board.title,
     starred: board.starred,
   });
-  
+
   // Render lại danh sách
- renderBoards();
+  renderBoards();
 }
 
-setTimeout(()=>{
+setTimeout(() => {
   const logout = document.getElementById("logout2");
-  logout.addEventListener("click", ()=>{
+  logout.addEventListener("click", () => {
     sessionStorage.removeItem("currentUser");
-      window.location.href = `../Login-Register/loginRegister.html`;
-
-  })
+    window.location.href = `../Login-Register/loginRegister.html`;
+  });
 }, 500);
