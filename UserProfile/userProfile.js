@@ -26,21 +26,24 @@ const avatarStore = [
     description: "Mặc định",
   },
   {
-    avatarURL:
-      "https://i.pinimg.com/1200x/23/07/93/230793ccbfc47fcef5e05a91b758763c.jpg",
+    avatarURL: "https://4kwallpapers.com/images/walls/thumbs_3t/23966.jpg",
     description: "Messi",
   },
   {
-    avatarURL: "https://cdn-icons-png.flaticon.com/512/147/147144.png",
-    description: "Nam văn phòng",
+    avatarURL: "https://4kwallpapers.com/images/walls/thumbs_3t/6979.jpg",
+    description: "Ronaldo",
   },
   {
-    avatarURL: "https://cdn-icons-png.flaticon.com/512/147/147142.png",
-    description: "Nữ văn phòng",
+    avatarURL: "https://4kwallpapers.com/images/walls/thumbs_3t/23494.jpg",
+    description: "avatar1",
   },
   {
-    avatarURL: "https://cdn-icons-png.flaticon.com/512/1999/1999625.png",
-    description: "Ninja",
+    avatarURL: "https://4kwallpapers.com/images/walls/thumbs_3t/8719.jpg",
+    description: "avatar2",
+  },
+  {
+    avatarURL: "https://images2.alphacoders.com/134/thumb-1920-1347655.jpeg",
+    description: "yasuo",
   },
   {
     avatarURL: "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",

@@ -230,7 +230,7 @@ loginForm.addEventListener("submit", function (event) {
   );
   if (foundUser) {
     sessionStorage.setItem("currentUser", JSON.stringify(foundUser));
-    window.location.replace(`${baseUrl}/ListBoard/boards.html`);
+    window.location.replace(`../ListBoard/boards.html`);
   } else {
     // hiển thị lỗi chung inline cho cả 2 ô
     showFieldError(loginEmailInput, "Email hoặc mật khẩu không đúng.");
@@ -274,7 +274,7 @@ async function fetchUserProfile(accessToken) {
     }
     if (user) sessionStorage.setItem("currentUser", JSON.stringify(user));
 
-    window.location.href = `${baseUrl}/ListBoard/boards.html`;
+    window.location.replace(`../ListBoard/boards.html`);
   } catch (error) {
     console.error("Lỗi lấy thông tin user:", error);
   }

@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Nếu không có user đăng nhập, đá về trang login (cậu tự thay link)
   if (!currentUser) {
     alert("Bạn chưa đăng nhập!");
-    window.location.href = "index.html";
+    window.location.href = `../Login-Register/loginRegister.html`;
     return;
   }
 

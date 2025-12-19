@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   await setupAddBoardButton();
   loadAvatar();
   loadpro();
-  setupSearch(); // Thêm hàm tìm kiếm
+  setupSearch();
 });
 
 async function setupSearch() {
@@ -15,7 +15,6 @@ async function setupSearch() {
 
   if (!searchInput || !searchResults) return;
 
-  // Lấy danh sách bảng của người dùng hiện tại
   const userBoards = boards.filter(
     (board) => board.userId === (currentUser && currentUser.id)
   );
@@ -153,7 +152,7 @@ function loadAvatar() {
       // Chưa đăng nhập -> Để ảnh mặc định hoặc ẩn đi
       if (avatarImg) avatarImg.src = "https://ui-avatars.com/api/?name=Guest";
     }
-  }, 0);
+  }, 200);
 }
 
 document.addEventListener("click", function (event) {

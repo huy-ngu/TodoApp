@@ -53,7 +53,7 @@ const boardTemplate = [
     description: "Lộ trình học ReactJS từ cơ bản đến nâng cao",
     theme: boardThemeColors.b1,
     starred: false,
-    lists: [],
+    lists: [{}],
     cards: [],
     userId: null,
   },
@@ -84,12 +84,12 @@ userId: "user-1765537904527";
 ]
 
 lists 
-boardId: "board-1765641884401"
-id: "list-1765641949253-3"
-orde:0
-storage: false
-theme: "blue"
-title: "CLI Tools"
+boardId: "board-1765641884401",
+id: "list-1765641949253-3",
+orde:0,
+storage: false,
+theme: "blue",
+title: "CLI Tools",
 
 cards
 
