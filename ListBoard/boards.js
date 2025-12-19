@@ -117,11 +117,3 @@ function toggleBoardStar(boardId) {
   // Render lại danh sách
   renderBoards();
 }
-
-// setTimeout(() => {
-//   const logout = document.getElementById("logout2");
-//   logout.addEventListener("click", () => {
-//     sessionStorage.removeItem("currentUser");
-//     window.location.href = `../Login-Register/loginRegister.html`;
-//   });
-// }, 500);
