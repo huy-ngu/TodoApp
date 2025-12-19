@@ -12,6 +12,7 @@ import { closeAllDropdowns, showToast } from "./utils.js";
 import { initSortable } from "./drag-drop.js";
 
 let cardModal = {};
+let calendar = null;
 let currentCardContext = null;
 let viewState = { board: true, inbox: true };
 let DEFAULT_BOARD_ID = "";
@@ -29,11 +30,12 @@ export function initializeUI(boardId, user) {
   setupViewBoardDropdown();
   setupInboxDropdown();
   setupArchivedModal();
+  setupFullCalendar();
 
   document.addEventListener("click", (e) => {
     if (
       !e.target.closest(
-        ".list__action-wrapper, .inbox-action-wrapper, .header-action-wrapper"
+        ".list__action-wrapper, .inbox-action-wrapper, .header-action-wrapper, .view-board"
       )
     ) {
       closeAllDropdowns();
@@ -47,6 +49,9 @@ export function initializeUI(boardId, user) {
 function renderAll() {
   renderBoard();
   renderInbox();
+  if (calendar) {
+    calendar.refetchEvents();
+  }
 }
 
 function renderBoard() {
@@ -448,22 +453,119 @@ function setupHeaderDropdown() {
     });
 }
 function setupViewBoardDropdown() {
-  const viewBoardBtn = document.getElementById('view-board-btn');
-  const viewBoardDropdown = document.querySelector('.view-board-dropdown');
+  const viewBoardBtn = document.getElementById("view-board-btn");
+  const viewBoardDropdown = document.querySelector(".view-board-dropdown");
+  const viewIcon = document.getElementById("view-icon");
+  const boardPanel = document.getElementById("board-panel");
+  const boardCalendar = document.getElementById("board-calendar");
 
-  viewBoardBtn.addEventListener('click', function(event) {
+  // Default state is set in HTML, this just ensures it on script load.
+  boardPanel.style.display = "block";
+  boardCalendar.style.display = "none";
+
+  viewBoardBtn.addEventListener("click", (event) => {
     event.stopPropagation();
-    const isVisible = viewBoardDropdown.style.display === 'block';
-    viewBoardDropdown.style.display = isVisible ? 'none' : 'block';
-  });
-
-  document.addEventListener('click', function(event) {
-    if (!viewBoardBtn.contains(event.target)) {
-      viewBoardDropdown.style.display = 'none';
+    const isVisible = viewBoardDropdown.style.display === "block";
+    // Use the global closer function which now knows about this dropdown
+    closeAllDropdowns();
+    if (!isVisible) {
+      viewBoardDropdown.style.display = "block";
     }
   });
+
+  document
+    .querySelectorAll(".view-board-dropdown .dropdown-item")
+    .forEach((button) => {
+      button.addEventListener("click", (event) => {
+        const view = event.currentTarget.dataset.view;
+
+        if (view === "panel") {
+          boardPanel.style.display = "block";
+          boardCalendar.style.display = "none";
+          viewIcon.className = "fa-solid fa-chart-simple";
+        } else if (view === "calendar") {
+          boardPanel.style.display = "none";
+          boardCalendar.style.display = "block";
+          viewIcon.className = "fa-solid fa-calendar-days";
+          if (calendar) {
+            calendar.updateSize(); // Adjust calendar size when its container is shown
+          }
+        }
+        closeAllDropdowns();
+      });
+    });
 }
 
+// --- FULL CALENDAR ---
+
+function getCalendarEvents() {
+  const boardCards = cards.filter(
+    (c) => c.boardId === DEFAULT_BOARD_ID && c.dueDate && !c.storage
+  );
+  const inboxCards = cardsInbox.filter(
+    (c) => c.userId === currentUser.id && c.dueDate && !c.storage
+  );
+
+  const allCards = [...boardCards, ...inboxCards];
+  console.log("Calendar Events:", allCards);
+  return allCards.map((card) => ({
+    id: card.id,
+    title: card.title,
+    start: card.dueDate,
+    // Use extendedProps to store metadata
+    extendedProps: {
+      source: "userId" in card ? "inbox" : "board",
+      listId: card.listId,
+    },
+  }));
+}
+
+function setupFullCalendar() {
+  const calendarEl = document.getElementById("board-calendar");
+  if (!calendarEl) return;
+
+  calendar = new FullCalendar.Calendar(calendarEl, {
+    height: "100%",
+    contentHeight: "auto",
+
+    locale: "vi", // Set language to Vietnamese
+    headerToolbar: {
+      left: "prev,next today",
+      center: "title",
+      right: "dayGridMonth,timeGridWeek,timeGridDay",
+    },
+
+    initialView: "dayGridMonth",
+    editable: true, // Allow events to be dragged and resized
+    events: getCalendarEvents(),
+    eventClick: function (info) {
+      // When a calendar event is clicked, open the corresponding card modal
+      const cardId = info.event.id;
+      const { source, listId } = info.event.extendedProps;
+      const context = { source, cardId, listId };
+      openCardModal(context);
+    },
+    eventDrop: function (info) {
+      // When an event is dropped, update the card's due date
+      const cardId = info.event.id;
+      const { source, listId } = info.event.extendedProps;
+      const newDueDate = info.event.start.toISOString();
+
+      const context = { source, cardId, listId };
+      const updatedValues = { dueDate: newDueDate };
+
+      if (Actions.updateCard(context, updatedValues)) {
+        renderAll(); // Re-render board to reflect date changes
+        showToast("Ngày hết hạn đã được cập nhật!");
+      } else {
+        info.revert(); // Revert the change if the update fails
+        alert("Không thể cập nhật ngày. Vui lòng thử lại.");
+      }
+    },
+  });
+
+  calendar.render();
+}
 
 // --- MODALS ---
 function setupCardModal() {

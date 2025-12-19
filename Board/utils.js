@@ -4,7 +4,7 @@ export const generateId = (() => {
 })();
 
 export function closeAllDropdowns() {
-    document.querySelectorAll(".list__dropdown, .inbox-dropdown, .header-dropdown").forEach((dropdown) => {
+    document.querySelectorAll(".list__dropdown, .inbox-dropdown, .header-dropdown, .view-board-dropdown").forEach((dropdown) => {
         dropdown.style.display = "none";
     });
 }

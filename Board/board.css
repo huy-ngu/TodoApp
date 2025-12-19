@@ -1240,3 +1240,22 @@ hr {
 .view-board:hover .view-board-dropdown {
   display: block;
 }
+
+/* --- Calendar View --- */
+#board-calendar {
+  flex: 1; /* Make it fill available space */
+  min-width: 0; /* Important for flex items */
+  padding: 20px;
+  background-color: white;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgb(15 31 56 / 8%);
+  border: 1px solid #e3e7f0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make the calendar instance grow to fill the container */
+#board-calendar .fc {
+  flex-grow: 1;
+  min-height: 0;
+}

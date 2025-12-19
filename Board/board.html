@@ -37,13 +37,17 @@
       </div>
       <div class="header-actions">
         <div class="view-board">
-          <button id="view-board-btn">
-            <i class="fa-solid fa-chart-simple"></i>
-            <span>Dạng xem</span>
+          <button id="view-board-btn" class="dropdown-toggle">
+            <i id="view-icon" class="fa-solid fa-chart-simple"></i>
+            <span id="view-text">Dạng xem</span>
           </button>
-          <div class="view-board-dropdown" style="display: none;">
-            <a href="#" id="board-view-btn"><i class="fa-solid fa-chart-simple"></i> Bảng</a>
-            <a href="calendar.html" id="calendar-view-btn"><i class="fa-solid fa-calendar-days"></i> Lịch</a>
+          <div class="view-board-dropdown" style="display: none">
+            <button class="dropdown-item" data-view="panel">
+              <i class="fa-solid fa-chart-simple"></i> Bảng
+            </button>
+            <button class="dropdown-item" data-view="calendar">
+              <i class="fa-solid fa-calendar-days"></i> Lịch
+            </button>
           </div>
         </div>
         <button
@@ -114,6 +118,7 @@
             <!-- Nội dung sẽ được tạo bằng JavaScript -->
           </section>
         </section>
+        <section id="board-calendar" style="display: none;"></section>
       </div>
     </main>
 
@@ -304,6 +309,7 @@
       </div>
       <div class="toast-text">Khôi phục thành công!</div>
     </div>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./board.js" type="module"></script>
