@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function setupSearch() {
-  const { boards, baseUrl } = await import("/Entity.js");
+  const { boards, baseUrl } = await import("../Entity.js");
   const searchInput = document.querySelector(".search-box input");
   const searchResults = document.getElementById("search-results");
 
@@ -28,7 +28,7 @@ async function setupSearch() {
 
     filteredBoards.forEach((board) => {
       const boardLink = document.createElement("a");
-      boardLink.href = `${baseUrl}/Board/board.html?board=${board.id}`;
+      boardLink.href = `../Board/board.html?board=${board.id}`;
       boardLink.textContent = board.title;
       searchResults.appendChild(boardLink);
     });
@@ -86,7 +86,7 @@ async function setupAddBoardButton() {
       const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
       if (!currentUser) {
         alert("Bạn chưa đăng nhập! Vui lòng quay lại.");
-        window.location.href = `${baseUrl}/Login/login.html`;
+        window.location.href = `../Login/login.html`;
         return;
       }
 
@@ -130,7 +130,7 @@ async function setupAddBoardButton() {
       localStorage.setItem("logs", JSON.stringify(logs));
 
       // Chuyển đến trang board mới
-      window.location.href = `${baseUrl}/board/board.html?board=${newBoard.id}`;
+      window.location.href = `../board/board.html?board=${newBoard.id}`;
     } catch (error) {
       console.error("Lỗi khi thêm bảng mới:", error);
       alert("Có lỗi xảy ra khi tạo bảng mới. Vui lòng thử lại.");
