@@ -213,14 +213,14 @@ export function addCard(listId, DEFAULT_BOARD_ID, currentUser, titleInput) {
   return newCard;
 }
 
-export function addInboxCard(currentUser, titleInput) {
+export function addInboxCard(currentUser, titleInput, dueDate = null) {
   let cardInput;
   if (titleInput !== undefined) {
     if (!titleInput || !titleInput.trim()) return null;
-    const defaultDueDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
     cardInput = {
       title: titleInput.trim(),
-      dueDate: defaultDueDate.toISOString(),
+      // Set dueDate only if it's passed, otherwise it's undefined and won't be in the object
+      ...(dueDate && { dueDate: new Date(dueDate).toISOString() }),
       status: "pending",
     };
   } else {

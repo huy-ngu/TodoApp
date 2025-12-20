@@ -11,6 +11,7 @@ import * as Actions from "./actions.js";
 import { closeAllDropdowns, showToast } from "./utils.js";
 import { initSortable } from "./drag-drop.js";
 
+console.log("cardsInbox:", cardsInbox);
 let cardModal = {};
 let calendar = null;
 let currentCardContext = null;
@@ -603,6 +604,21 @@ function setupFullCalendar() {
         alert("Không thể cập nhật ngày. Vui lòng thử lại.");
       }
     },
+    dayCellDidMount: function (arg) {
+      const addButton = document.createElement("button");
+      addButton.className = "add-card-calendar-btn";
+      addButton.innerHTML = `<i class="fa-solid fa-plus"></i>`;
+      addButton.setAttribute("title", "Thêm thẻ mới");
+      addButton.onclick = (e) => {
+        e.stopPropagation();
+        openCreateInboxCardModal(arg.date);
+      };
+      // Using querySelector to be safer, though fc-daygrid-day-frame should exist
+      const frame = arg.el.querySelector(".fc-daygrid-day-frame");
+      if (frame) {
+        frame.appendChild(addButton);
+      }
+    },
   });
 
   calendar.render();
@@ -906,7 +922,7 @@ function setupCreateCardModal() {
         <div style="background: white; padding: 24px; border-radius: 8px; width: 320px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
           <h3 style="margin-top: 0; margin-bottom: 16px; font-size: 18px; color: #172b4d;">Thêm thẻ mới</h3>
           <input type="text" id="new-card-title" placeholder="Nhập tên thẻ..." style="width: 100%; padding: 8px 12px; margin-bottom: 20px; border: 2px solid #dfe1e6; border-radius: 4px; outline: none; font-size: 14px; box-sizing: border-box;">
-          <div style="display: flex; justify-content: flex-end; gap: 8px;">
+          <div style="display: flex; justify-content: flex-start; gap: 8px;">
             <button id="cancel-create-card" style="padding: 8px 12px; border: none; background: #091e420f; color: #172b4d; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.1s;">Hủy</button>
             <button id="submit-create-card" style="padding: 8px 12px; border: none; background: #0052cc; color: white; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.1s;">Thêm</button>
           </div>
@@ -976,7 +992,7 @@ function setupCreateInboxCardModal() {
         <div style="background: white; padding: 24px; border-radius: 8px; width: 320px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
           <h3 style="margin-top: 0; margin-bottom: 16px; font-size: 18px; color: #172b4d;">Thêm thẻ vào Hộp thư</h3>
           <input type="text" id="new-inbox-card-title" placeholder="Nhập tên thẻ..." style="width: 100%; padding: 8px 12px; margin-bottom: 20px; border: 2px solid #dfe1e6; border-radius: 4px; outline: none; font-size: 14px; box-sizing: border-box;">
-          <div style="display: flex; justify-content: flex-end; gap: 8px;">
+          <div style="display: flex; justify-content: flex-start; gap: 8px;">
             <button id="cancel-create-inbox-card" style="padding: 8px 12px; border: none; background: #091e420f; color: #172b4d; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.1s;">Hủy</button>
             <button id="submit-create-inbox-card" style="padding: 8px 12px; border: none; background: #0052cc; color: white; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.1s;">Thêm</button>
           </div>
@@ -996,6 +1012,7 @@ function setupCreateInboxCardModal() {
     createInboxCardModal.element.style.display = "none";
     createInboxCardModal.input.value = "";
     createInboxCardModal.input.style.borderColor = "#dfe1e6";
+    createInboxCardModal.dueDate = null; // Reset date
   };
 
   const handleSubmit = () => {
@@ -1005,7 +1022,9 @@ function setupCreateInboxCardModal() {
       createInboxCardModal.input.focus();
       return;
     }
-    if (Actions.addInboxCard(currentUser, title)) {
+    if (
+      Actions.addInboxCard(currentUser, title, createInboxCardModal.dueDate)
+    ) {
       renderInbox();
       calendar?.refetchEvents();
       closeModal();
@@ -1023,8 +1042,18 @@ function setupCreateInboxCardModal() {
   };
 }
 
-function openCreateInboxCardModal() {
+function openCreateInboxCardModal(date = null) {
   if (createInboxCardModal.element) {
+    createInboxCardModal.dueDate = date;
+    const modalTitle = createInboxCardModal.element.querySelector("h3");
+    if (date) {
+      modalTitle.textContent = `Thêm thẻ cho ngày ${date.toLocaleDateString(
+        "vi-VN"
+      )}`;
+    } else {
+      modalTitle.textContent = "Thêm thẻ vào Hộp thư";
+    }
+
     createInboxCardModal.element.style.display = "flex";
     createInboxCardModal.input.focus();
   }

@@ -277,12 +277,11 @@ async function fetchUserProfile(accessToken) {
       users.push(newUser);
       localStorage.setItem("users", JSON.stringify(users));
       sessionStorage.setItem("currentUser", JSON.stringify(newUser));
-    }
-    if (user) sessionStorage.setItem("currentUser", JSON.stringify(user));
-    if (user && !user.intro) {
       window.location.replace(`../Intro/slide1/slide1.html`);
       return;
     }
+    if (user) sessionStorage.setItem("currentUser", JSON.stringify(user));
+
     window.location.replace(`../ListBoard/boards.html`);
   } catch (error) {
     console.error("Lỗi lấy thông tin user:", error);

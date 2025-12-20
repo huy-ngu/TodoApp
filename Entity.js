@@ -30,18 +30,21 @@ const themeColors = {
   blue: "#E3F2FD",
   mint: "#E0F2F1",
   sand: "#FDF4E3",
-  lavender: "#F3E5F5",
-  rose: "#FCE4EC",
   grey: "#F5F5F5",
+  yellow: "#FEF08A",
+  green: "#34D399",
+  orange: "#FF6B6B",
 };
 
 const boardThemeColors = {
-  b1: "linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)",
-  b2: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-  b3: "linear-gradient(to right, #ffecd2 0%, #fcb69f 100%)",
-  b4: "linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%)",
-  b5: "linear-gradient(to right, #e0c3fc 0%, #8ec5fc 100%)",
-  b6: "linear-gradient(to right, #faaca8 0%, #ddd6f3 100%)",
+  b1: "linear-gradient(to right, #4facfe 0%, #00f2fe 100%)",
+  b2: "linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%)",
+  b4: "linear-gradient(to top, #209cff 0%, #68e0cf 100%)",
+  b5: "#38BDF8",
+  b6: "linear-gradient(to right, #1CD8D2 0%, #93EDC7 100%)",
+  b7: "linear-gradient(to right, #243949 0%, #517fa4 100%)",
+  b3: "linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%)",
+  b8: "#E5E7EB",
 };
 
 var baseUrl = window.location.origin;

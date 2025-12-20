@@ -1272,3 +1272,36 @@ hr {
   width: 100%;
   min-height: 0;
 }
+
+/* Add Card Button in Calendar View */
+.fc-daygrid-day-frame {
+  position: relative;
+}
+
+.add-card-calendar-btn {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  display: none; /* Hidden by default */
+  background-color: rgba(9, 30, 66, 0.08);
+  color: #42526e;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.fc-daygrid-day:hover .add-card-calendar-btn {
+  display: block; /* Show on hover over the day cell */
+}
+
+.add-card-calendar-btn:hover {
+  background-color: rgba(9, 30, 66, 0.13);
+  color: #172b4d;
+  transform: scale(1.1);
+}

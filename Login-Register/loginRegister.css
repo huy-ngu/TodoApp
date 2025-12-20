@@ -432,6 +432,18 @@ form.sign-in-form {
         bottom: 28%;
         left: 50%;
     }
+
+    .btn-fixed-top-left {
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        left: 15px;
+        top: 15px;
+    }
+
+    .btn-fixed-top-left span {
+        display: none;
+    }
 }
 
 

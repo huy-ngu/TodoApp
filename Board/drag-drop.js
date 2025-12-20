@@ -81,6 +81,10 @@ export function initSortable(boardId) {
           if (cardIndex > -1) {
             const [movedCard] = cards.splice(cardIndex, 1);
             delete movedCard.listId;
+            const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+            if (currentUser) {
+              movedCard.userId = currentUser.id;
+            }
             cardsInbox.push(movedCard);
           }
         } 
