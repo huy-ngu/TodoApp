@@ -130,7 +130,7 @@ async function setupAddBoardButton() {
       localStorage.setItem("logs", JSON.stringify(logs));
 
       // Chuyển đến trang board mới
-      window.location.href = `../board/board.html?board=${newBoard.id}`;
+      window.location.href = `../Board/board.html?board=${newBoard.id}`;
     } catch (error) {
       console.error("Lỗi khi thêm bảng mới:", error);
       alert("Có lỗi xảy ra khi tạo bảng mới. Vui lòng thử lại.");

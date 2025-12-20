@@ -79,7 +79,7 @@ export function addList(DEFAULT_BOARD_ID, currentUser) {
     boardId: DEFAULT_BOARD_ID,
     theme: "blue",
     storage: false,
-    order: lists.filter(list => list.boardId === DEFAULT_BOARD_ID).length,
+    order: lists.filter((list) => list.boardId === DEFAULT_BOARD_ID).length,
   };
   lists.push(newList);
   localStorage.setItem("lists", JSON.stringify(lists));
@@ -179,7 +179,7 @@ export function addCard(listId, DEFAULT_BOARD_ID, currentUser) {
     listId: listId,
     storage: false,
     boardId: DEFAULT_BOARD_ID,
-    order: cards.filter(card => card.listId === listId).length,
+    order: cards.filter((card) => card.listId === listId).length,
     note: "",
   };
   cards.push(newCard);
@@ -194,6 +194,7 @@ export function addCard(listId, DEFAULT_BOARD_ID, currentUser) {
   };
   logs.push(newLog);
   localStorage.setItem("logs", JSON.stringify(logs));
+  console.log("[CARD] Đã thêm thẻ:", newCard);
   return newCard;
 }
 
@@ -202,7 +203,7 @@ export function addInboxCard(currentUser) {
   if (!cardInput) return null;
 
   // Cập nhật order cho các thẻ hiện có
-  cardsInbox.forEach(card => {
+  cardsInbox.forEach((card) => {
     card.order = (card.order || 0) + 1;
   });
 
@@ -215,6 +216,7 @@ export function addInboxCard(currentUser) {
   };
   cardsInbox.unshift(newCard); // Thêm vào đầu mảng
   localStorage.setItem("cardsInbox", JSON.stringify(cardsInbox));
+  console.log("[INBOX CARD] Đã thêm thẻ inbox:", newCard);
   return newCard;
 }
 

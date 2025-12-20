@@ -49,9 +49,9 @@ export function initializeUI(boardId, user) {
 function renderAll() {
   renderBoard();
   renderInbox();
-  if (calendar) {
-    calendar.refetchEvents();
-  }
+  // if (calendar) {
+  //   calendar.refetchEvents();
+  // }
 }
 
 function renderBoard() {
@@ -161,7 +161,9 @@ function createList(list) {
     });
 
   template.querySelector(".list__add-card").addEventListener("click", () => {
-    if (Actions.addCard(list.id, DEFAULT_BOARD_ID, currentUser)) renderBoard();
+    if (Actions.addCard(list.id, DEFAULT_BOARD_ID, currentUser)) {
+      renderBoard();
+    }
   });
 
   setupListDropdown(template, list);
@@ -283,17 +285,23 @@ function setupViewSwitch() {
 
 function setupMainButtons() {
   document.getElementById("add-list-btn")?.addEventListener("click", () => {
-    if (Actions.addList(DEFAULT_BOARD_ID, currentUser)) renderBoard();
+    if (Actions.addList(DEFAULT_BOARD_ID, currentUser)) {
+      renderBoard();
+      if (calendar) calendar.refetchEvents();
+    }
   });
   document.getElementById("star-board-btn")?.addEventListener("click", () => {
+    console.log("Đánh dấu sao");
     if (Actions.toggleBoardStar(DEFAULT_BOARD_ID)) renderBoard();
   });
   document.getElementById("add-inbox-card")?.addEventListener("click", () => {
-    if (Actions.addInboxCard(currentUser)) renderInbox();
+    if (Actions.addInboxCard(currentUser)) {
+      renderInbox();
+    }
   });
-  document.getElementById("calendar")?.addEventListener("click", () => {
-    window.location.href = `./calendar.html?board=${DEFAULT_BOARD_ID}`;
-  });
+  // document.getElementById("calendar")?.addEventListener("click", () => {
+  //   window.location.href = `./calendar.html?board=${DEFAULT_BOARD_ID}`;
+  // });
 }
 
 function updateStarButton(isStarred) {
@@ -537,7 +545,11 @@ function setupFullCalendar() {
 
     initialView: "dayGridMonth",
     editable: true, // Allow events to be dragged and resized
-    events: getCalendarEvents(),
+    events: function (info, successCallback, failureCallback) {
+      // Mỗi khi refetchEvents được gọi, dòng này sẽ chạy lại để lấy dữ liệu mới nhất
+      const events = getCalendarEvents();
+      successCallback(events);
+    },
     eventClick: function (info) {
       // When a calendar event is clicked, open the corresponding card modal
       const cardId = info.event.id;

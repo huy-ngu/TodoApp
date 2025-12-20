@@ -24,7 +24,7 @@ function renderBoards() {
       const starClass = board.starred ? "starred" : "";
 
       const boardHTML = `
-        <a href="/board/board.html?board=${board.id}">
+        <a href="../board/board.html?board=${board.id}">
           <div class="board">
             <div class="board-theme" style="background: ${board.theme};">
               <span class="star-icon-board ${starClass}" data-board-id="${board.id}">${starIcon}</span>
@@ -61,12 +61,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 // xu li them bang - đã được xử lý trong layout.js
 // Logic xử lý nút "Thêm mới bảng" đã được chuyển vào components/layout.js
 // để có thể dùng chung cho tất cả các trang (boards, admin, templates)
-
-function updateBoardUrl(boardId) {
-  const url = new URL(window.location.href);
-  url.searchParams.set("board", boardId);
-  window.history.pushState({ boardId }, "", url);
-}
 
 /**
  * Setup event listeners cho các nút ngôi sao
