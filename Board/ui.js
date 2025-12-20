@@ -49,9 +49,9 @@ export function initializeUI(boardId, user) {
 function renderAll() {
   renderBoard();
   renderInbox();
-  // if (calendar) {
-  //   calendar.refetchEvents();
-  // }
+  if (calendar) {
+    calendar.refetchEvents();
+  }
 }
 
 function renderBoard() {
@@ -163,6 +163,7 @@ function createList(list) {
   template.querySelector(".list__add-card").addEventListener("click", () => {
     if (Actions.addCard(list.id, DEFAULT_BOARD_ID, currentUser)) {
       renderBoard();
+      calendar?.refetchEvents();
     }
   });
 
@@ -289,7 +290,6 @@ function setupMainButtons() {
   document.getElementById("add-list-btn")?.addEventListener("click", () => {
     if (Actions.addList(DEFAULT_BOARD_ID, currentUser)) {
       renderBoard();
-      if (calendar) calendar.refetchEvents();
     }
   });
   document.getElementById("star-board-btn")?.addEventListener("click", () => {
@@ -298,7 +298,9 @@ function setupMainButtons() {
   });
   document.getElementById("add-inbox-card")?.addEventListener("click", () => {
     if (Actions.addInboxCard(currentUser)) {
+      console.log("Thêm thẻ hộp thư");
       renderInbox();
+      calendar?.refetchEvents();
     }
   });
   // document.getElementById("calendar")?.addEventListener("click", () => {
@@ -363,6 +365,7 @@ function setupListDropdown(template, list) {
       e.stopPropagation();
       if (Actions.addCard(list.id, DEFAULT_BOARD_ID, currentUser)) {
         renderBoard();
+        calendar?.refetchEvents();
       }
       closeAllDropdowns();
     });
@@ -408,7 +411,10 @@ function setupInboxDropdown() {
     .querySelector('[data-action="add-inbox-card"]')
     ?.addEventListener("click", (e) => {
       e.stopPropagation();
-      if (Actions.addInboxCard(currentUser)) renderInbox();
+      if (Actions.addInboxCard(currentUser)) {
+        renderInbox();
+        calendar?.refetchEvents();
+      }
       closeAllDropdowns();
     });
 }
@@ -522,16 +528,31 @@ function getCalendarEvents() {
 
   const allCards = [...boardCards, ...inboxCards];
   console.log("Calendar Events:", allCards);
-  return allCards.map((card) => ({
-    id: card.id,
-    title: card.title,
-    start: card.dueDate,
-    // Use extendedProps to store metadata
-    extendedProps: {
-      source: "userId" in card ? "inbox" : "board",
-      listId: card.listId,
-    },
-  }));
+  const now = new Date();
+
+  return allCards.map((card) => {
+    let color;
+    const dueDate = new Date(card.dueDate);
+
+    if (card.status === "done") {
+      color = "#28a745"; // Màu xanh lá (đã hoàn thành)
+    } else if (dueDate < now) {
+      color = "#dc3545"; // Màu đỏ (hết hạn và chưa hoàn thành)
+    }
+
+    return {
+      id: card.id,
+      title: card.title,
+      start: card.dueDate,
+      backgroundColor: color,
+      borderColor: color,
+      // Use extendedProps to store metadata
+      extendedProps: {
+        source: "userId" in card ? "inbox" : "board",
+        listId: card.listId,
+      },
+    };
+  });
 }
 
 function setupFullCalendar() {
@@ -541,15 +562,26 @@ function setupFullCalendar() {
   calendar = new FullCalendar.Calendar(calendarEl, {
     height: "100%",
     contentHeight: "auto",
-
     locale: "vi", // Set language to Vietnamese
     headerToolbar: {
       left: "prev,next today",
       center: "title",
-      right: "dayGridMonth,timeGridWeek,timeGridDay",
+      right: "dayGridMonth",
     },
 
     initialView: "dayGridMonth",
+
+    nowIndicator: true, // Hiển thị đường kẻ đỏ chỉ thời gian hiện tại
+    slotMinTime: "06:00:00", // Giờ bắt đầu hiển thị trong ngày (6h sáng)
+    slotMaxTime: "24:00:00", // Giờ kết thúc hiển thị (12h đêm)
+    allDayText: "Cả ngày",
+    slotLabelFormat: {
+      // Định dạng giờ cột bên trái (VD: 13:00)
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    },
+
     editable: true, // Allow events to be dragged and resized
     events: function (info, successCallback, failureCallback) {
       // Mỗi khi refetchEvents được gọi, dòng này sẽ chạy lại để lấy dữ liệu mới nhất
@@ -574,7 +606,6 @@ function setupFullCalendar() {
 
       if (Actions.updateCard(context, updatedValues)) {
         renderAll(); // Re-render board to reflect date changes
-        showToast("Ngày hết hạn đã được cập nhật!");
       } else {
         info.revert(); // Revert the change if the update fails
         alert("Không thể cập nhật ngày. Vui lòng thử lại.");
@@ -614,8 +645,10 @@ function setupCardModal() {
     if (cardRef) {
       cardRef.status = "done"; // Force status to done to allow storing
       if (Actions.moveCardToStorage(currentCardContext)) {
+        calendar?.refetchEvents();
         renderAll();
         closeCardModal();
+        console.log("store card");
       }
     }
   });
@@ -667,6 +700,7 @@ function handleCardFormSubmit(event) {
 
   if (Actions.updateCard(currentCardContext, updatedValues)) {
     renderAll();
+    calendar?.refetchEvents();
     closeCardModal();
   }
 }
