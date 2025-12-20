@@ -1262,7 +1262,7 @@ hr {
   border: 1px solid #e3e7f0;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(100vh - 192px);
   min-height: 0;
 }
 
