@@ -425,6 +425,34 @@ body {
     }
 }
 
+/* ===============================
+   STATS SECTION
+================================ */
+.stats .section-title {
+    margin-bottom: 3rem;
+}
+
+.stats {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, #eef2ff, #fdf2f8);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    text-align: center;
+    gap: 3rem;
+}
+
+.stat-item h3 {
+    font-size: 3rem;
+    color: var(--primary-color);
+}
+
+.stat-item p {
+    color: var(--text-light);
+    font-weight: 600;
+}
 
 /* Footer */
 .footer {
