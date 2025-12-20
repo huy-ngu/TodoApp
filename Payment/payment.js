@@ -2,7 +2,16 @@ const generateBtn = document.getElementById("generateBtn");
 const qrResult = document.getElementById("qr-result");
 const qrImage = document.getElementById("qr-image");
 const timerDisplay = document.getElementById("timer");
+const confirmPaymentBtn = document.getElementById("confirm-payment-btn");
+const toastPayment = document.getElementById("toast-payment");
 let countdown;
+
+// --- KIỂM TRA TRẠNG THÁI VIP ---
+const currentUserCheck = JSON.parse(sessionStorage.getItem("currentUser"));
+if (currentUserCheck && currentUserCheck.pro) {
+  alert("Bạn đã là VIP!");
+  window.location.href = "../ListBoard/boards.html";
+}
 
 generateBtn.addEventListener("click", function () {
   // Lấy dữ liệu
@@ -29,6 +38,7 @@ generateBtn.addEventListener("click", function () {
   // Hiển thị
   qrImage.src = qrUrl;
   qrResult.style.display = "block";
+  if (confirmPaymentBtn) confirmPaymentBtn.style.display = "block";
 
   // Reset và chạy lại Timer
   clearInterval(countdown);
@@ -99,4 +109,36 @@ if (priceDisplay) {
     style: "currency",
     currency: "VND",
   }).format(selectedProduct.amount);
+}
+
+// --- PHẦN 2: XỬ LÝ XÁC NHẬN THANH TOÁN ---
+if (confirmPaymentBtn) {
+  confirmPaymentBtn.addEventListener("click", function () {
+    const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+    if (currentUser) {
+      // 1. Cập nhật trong sessionStorage
+      currentUser.pro = true;
+      sessionStorage.setItem("currentUser", JSON.stringify(currentUser));
+
+      // 2. Cập nhật trong localStorage (danh sách users)
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const userIndex = users.findIndex((u) => u.id === currentUser.id);
+      if (userIndex !== -1) {
+        users[userIndex].pro = true;
+        localStorage.setItem("users", JSON.stringify(users));
+      }
+
+      // Hiển thị Toast
+      if (toastPayment) {
+        toastPayment.className = "show";
+      }
+
+      // Chuyển trang sau 2 giây
+      setTimeout(() => {
+        window.location.href = "../ListBoard/boards.html";
+      }, 2000);
+    } else {
+      alert("Không tìm thấy thông tin người dùng. Vui lòng đăng nhập lại.");
+    }
+  });
 }

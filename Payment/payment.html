@@ -7,6 +7,79 @@
     <link rel="stylesheet" href="../components/layout.css" />
 
     <link rel="stylesheet" href="./payment.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* CSS cho nút xác nhận */
+      .btn-confirm {
+        display: none; /* Ẩn mặc định */
+        margin-top: 20px;
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(
+          135deg,
+          #11998e,
+          #38ef7d
+        ); /* Gradient xanh hiện đại */
+        color: white;
+        border: none;
+        border-radius: 50px; /* Bo tròn hình viên thuốc */
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 4px 15px rgba(56, 239, 125, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .btn-confirm:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(56, 239, 125, 0.6);
+      }
+
+      .btn-confirm:active {
+        transform: translateY(1px);
+      }
+
+      /* CSS cho Toast thông báo */
+      #toast-payment {
+        visibility: hidden;
+        min-width: 280px;
+        background-color: #fff;
+        color: #333;
+        text-align: center;
+        border-radius: 12px;
+        padding: 16px 24px;
+        position: fixed;
+        z-index: 9999;
+        right: 30px;
+        bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        font-size: 16px;
+        font-weight: 500;
+        opacity: 0;
+        transition: opacity 0.3s, bottom 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        border-left: 5px solid #38ef7d;
+      }
+
+      #toast-payment.show {
+        visibility: visible;
+        opacity: 1;
+        bottom: 50px;
+      }
+
+      #toast-payment i {
+        color: #38ef7d;
+        font-size: 20px;
+      }
+    </style>
   </head>
   <body>
     <div id="header-placeholder"></div>
@@ -52,7 +125,15 @@
         <div id="timer">05:00</div>
         <img id="qr-image" src="" alt="Đang tải mã QR..." />
         <p class="note">Vui lòng quét mã bằng ứng dụng ngân hàng</p>
+        <button id="confirm-payment-btn" class="btn-confirm">
+          <i class="fa-solid fa-check-circle"></i> Xác nhận đã thanh toán
+        </button>
       </div>
+    </div>
+    <!-- Toast thông báo -->
+    <div id="toast-payment">
+      <i class="fa-solid fa-circle-check"></i>
+      <span>Nâng cấp VIP thành công!</span>
     </div>
     <script src="./payment.js"></script>
     <script src="../components/layout.js" type="module"></script>

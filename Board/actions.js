@@ -69,8 +69,11 @@ export function logout() {
 
 // --- List Actions ---
 
-export function addList(DEFAULT_BOARD_ID, currentUser) {
-  const title = prompt("Tên danh sách mới", "Danh sách mới");
+export function addList(DEFAULT_BOARD_ID, currentUser, titleInput) {
+  let title = titleInput;
+  if (title === undefined) {
+    title = prompt("Tên danh sách mới", "Danh sách mới");
+  }
   if (!title || !title.trim()) return null;
 
   const newList = {
@@ -170,8 +173,20 @@ function promptForCardInput(defaults = {}) {
   };
 }
 
-export function addCard(listId, DEFAULT_BOARD_ID, currentUser) {
-  const cardInput = promptForCardInput();
+export function addCard(listId, DEFAULT_BOARD_ID, currentUser, titleInput) {
+  let cardInput;
+  if (titleInput !== undefined) {
+    if (!titleInput || !titleInput.trim()) return null;
+    const defaultDueDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    cardInput = {
+      title: titleInput.trim(),
+      dueDate: defaultDueDate.toISOString(),
+      status: "pending",
+    };
+  } else {
+    cardInput = promptForCardInput();
+  }
+
   if (!cardInput) return null;
   const newCard = {
     id: generateId("card"),
@@ -198,8 +213,20 @@ export function addCard(listId, DEFAULT_BOARD_ID, currentUser) {
   return newCard;
 }
 
-export function addInboxCard(currentUser) {
-  const cardInput = promptForCardInput();
+export function addInboxCard(currentUser, titleInput) {
+  let cardInput;
+  if (titleInput !== undefined) {
+    if (!titleInput || !titleInput.trim()) return null;
+    const defaultDueDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    cardInput = {
+      title: titleInput.trim(),
+      dueDate: defaultDueDate.toISOString(),
+      status: "pending",
+    };
+  } else {
+    cardInput = promptForCardInput();
+  }
+
   if (!cardInput) return null;
 
   // Cập nhật order cho các thẻ hiện có

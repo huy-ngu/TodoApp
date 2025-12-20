@@ -64,6 +64,23 @@ async function setupAddBoardButton() {
 
   document.getElementById("header-placeholder").innerHTML = html;
 
+  // --- TẠO MODAL HTML (Inject vào body) ---
+  if (!document.getElementById("create-board-modal")) {
+    const modalHtml = `
+      <div id="create-board-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 24px; border-radius: 8px; width: 320px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+          <h3 style="margin-top: 0; margin-bottom: 16px; font-size: 18px; color: #172b4d;">Tạo bảng mới</h3>
+          <input type="text" id="new-board-title" placeholder="Nhập tên bảng..." style="width: 100%; padding: 8px 12px; margin-bottom: 20px; border: 2px solid #dfe1e6; border-radius: 4px; outline: none; font-size: 14px; box-sizing: border-box;">
+          <div style="display: flex; justify-content: flex-end; gap: 8px;">
+            <button id="cancel-create-board" style="padding: 8px 12px; border: none; background: #091e420f; color: #172b4d; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.1s;">Hủy</button>
+            <button id="submit-create-board" style="padding: 8px 12px; border: none; background: #0052cc; color: white; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.1s;">Tạo bảng</button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML("beforeend", modalHtml);
+  }
+
   const addBoardBtn = document.querySelector(".btn-create");
   if (!addBoardBtn) {
     console.warn("Không tìm thấy nút add-board-btn");
@@ -74,49 +91,46 @@ async function setupAddBoardButton() {
   const newBtn = addBoardBtn.cloneNode(true);
   addBoardBtn.parentNode.replaceChild(newBtn, addBoardBtn);
 
-  // Thêm event listener mới
-  newBtn.addEventListener("click", async () => {
+  // --- XỬ LÝ LOGIC MODAL ---
+  const modal = document.getElementById("create-board-modal");
+  const input = document.getElementById("new-board-title");
+  const cancelBtn = document.getElementById("cancel-create-board");
+  const submitBtn = document.getElementById("submit-create-board");
+
+  const closeModal = () => {
+    modal.style.display = "none";
+    input.value = "";
+    input.style.borderColor = "#dfe1e6";
+  };
+
+  const handleCreate = async () => {
+    const title = input.value.trim();
+    if (!title) {
+      input.style.borderColor = "#ff5630"; // Báo lỗi đỏ nếu rỗng
+      input.focus();
+      return;
+    }
+
     try {
-      // Import động để tránh lỗi nếu module chưa load
       const { boards, baseUrl, boardThemeColors, logs } = await import(
         "../Entity.js"
       );
-
-      // Lấy currentUser từ sessionStorage
       const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
-      if (!currentUser) {
-        alert("Bạn chưa đăng nhập! Vui lòng quay lại.");
-        window.location.href = `../Login/login.html`;
-        return;
-      }
 
-      // Hỏi tên bảng mới
-      const title = prompt("Tên bảng mới", "Bảng mới");
-      if (!title) {
-        return;
-      }
-      const normalizedTitle = title.trim();
-      if (!normalizedTitle) return;
-
-      // Generate ID
       const generateId = (prefix) => `${prefix}-${Date.now()}`;
       const boardId = generateId("board");
-      // Tạo board mới
+
       const newBoard = {
         id: boardId,
-        title: normalizedTitle,
+        title: title,
         starred: false,
         userId: currentUser.id,
-        theme: boardThemeColors.b1, // Theme mặc định
+        theme: boardThemeColors.b1,
       };
 
-      // Lấy boards hiện tại từ localStorage và cập nhật
       let currentBoards = JSON.parse(localStorage.getItem("boards")) || [];
       currentBoards.push(newBoard);
       localStorage.setItem("boards", JSON.stringify(currentBoards));
-
-      console.log("[BOARD] Đã thêm bảng:", newBoard);
-      console.log("[BOARD] Danh sách bảng:", currentBoards);
 
       const newLog = {
         id: generateId("log"),
@@ -129,12 +143,36 @@ async function setupAddBoardButton() {
       logs.push(newLog);
       localStorage.setItem("logs", JSON.stringify(logs));
 
-      // Chuyển đến trang board mới
       window.location.href = `../Board/board.html?board=${newBoard.id}`;
+      closeModal();
     } catch (error) {
       console.error("Lỗi khi thêm bảng mới:", error);
-      alert("Có lỗi xảy ra khi tạo bảng mới. Vui lòng thử lại.");
+      alert("Có lỗi xảy ra. Vui lòng thử lại.");
     }
+  };
+
+  // Gán sự kiện cho các nút trong modal
+  cancelBtn.onclick = closeModal;
+  submitBtn.onclick = handleCreate;
+  input.onkeydown = (e) => {
+    if (e.key === "Enter") handleCreate();
+    if (e.key === "Escape") closeModal();
+  };
+  modal.onclick = (e) => {
+    if (e.target === modal) closeModal();
+  };
+
+  // Thêm event listener mới
+  newBtn.addEventListener("click", async () => {
+    const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+    if (!currentUser) {
+      alert("Bạn chưa đăng nhập! Vui lòng quay lại.");
+      window.location.href = `../Login/login.html`;
+      return;
+    }
+    modal.style.display = "flex";
+    input.value = "";
+    input.focus();
   });
 }
 

@@ -154,6 +154,7 @@ registerForm.addEventListener("submit", function (event) {
     fullname: fullname,
     password: password,
     pro: false,
+    intro: false,
     avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
   };
 
@@ -230,6 +231,10 @@ loginForm.addEventListener("submit", function (event) {
   );
   if (foundUser) {
     sessionStorage.setItem("currentUser", JSON.stringify(foundUser));
+    if (!foundUser.intro) {
+      window.location.replace(`../Intro/slide1/slide1.html`);
+      return;
+    }
     window.location.replace(`../ListBoard/boards.html`);
   } else {
     // hiển thị lỗi chung inline cho cả 2 ô
@@ -266,6 +271,7 @@ async function fetchUserProfile(accessToken) {
         fullname: data.name,
         password: null,
         pro: false,
+        intro: false,
         avatar: data.picture,
       };
       users.push(newUser);
@@ -273,7 +279,10 @@ async function fetchUserProfile(accessToken) {
       sessionStorage.setItem("currentUser", JSON.stringify(newUser));
     }
     if (user) sessionStorage.setItem("currentUser", JSON.stringify(user));
-
+    if (user && !user.intro) {
+      window.location.replace(`../Intro/slide1/slide1.html`);
+      return;
+    }
     window.location.replace(`../ListBoard/boards.html`);
   } catch (error) {
     console.error("Lỗi lấy thông tin user:", error);

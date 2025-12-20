@@ -17,6 +17,9 @@ let currentCardContext = null;
 let viewState = { board: true, inbox: true };
 let DEFAULT_BOARD_ID = "";
 let currentUser = null;
+let addListModal = {};
+let createCardModal = {};
+let createInboxCardModal = {};
 
 // --- INITIALIZER ---
 export function initializeUI(boardId, user) {
@@ -24,6 +27,9 @@ export function initializeUI(boardId, user) {
   currentUser = user;
 
   setupViewSwitch();
+  setupAddListModal();
+  setupCreateCardModal();
+  setupCreateInboxCardModal();
   setupMainButtons();
   setupCardModal();
   setupHeaderDropdown();
@@ -161,10 +167,7 @@ function createList(list) {
     });
 
   template.querySelector(".list__add-card").addEventListener("click", () => {
-    if (Actions.addCard(list.id, DEFAULT_BOARD_ID, currentUser)) {
-      renderBoard();
-      calendar?.refetchEvents();
-    }
+    openCreateCardModal(list.id);
   });
 
   setupListDropdown(template, list);
@@ -288,20 +291,17 @@ function setupViewSwitch() {
 
 function setupMainButtons() {
   document.getElementById("add-list-btn")?.addEventListener("click", () => {
-    if (Actions.addList(DEFAULT_BOARD_ID, currentUser)) {
-      renderBoard();
-    }
+    // if (Actions.addList(DEFAULT_BOARD_ID, currentUser)) {
+    //   renderBoard();
+    // }
+    openAddListModal();
   });
   document.getElementById("star-board-btn")?.addEventListener("click", () => {
     console.log("Đánh dấu sao");
     if (Actions.toggleBoardStar(DEFAULT_BOARD_ID)) renderBoard();
   });
   document.getElementById("add-inbox-card")?.addEventListener("click", () => {
-    if (Actions.addInboxCard(currentUser)) {
-      console.log("Thêm thẻ hộp thư");
-      renderInbox();
-      calendar?.refetchEvents();
-    }
+    openCreateInboxCardModal();
   });
   // document.getElementById("calendar")?.addEventListener("click", () => {
   //   window.location.href = `./calendar.html?board=${DEFAULT_BOARD_ID}`;
@@ -363,10 +363,7 @@ function setupListDropdown(template, list) {
     .querySelector('[data-action="add-card"]')
     ?.addEventListener("click", (e) => {
       e.stopPropagation();
-      if (Actions.addCard(list.id, DEFAULT_BOARD_ID, currentUser)) {
-        renderBoard();
-        calendar?.refetchEvents();
-      }
+      openCreateCardModal(list.id);
       closeAllDropdowns();
     });
 
@@ -374,9 +371,7 @@ function setupListDropdown(template, list) {
     .querySelector('[data-action="add-list"]')
     ?.addEventListener("click", (e) => {
       e.stopPropagation();
-      if (Actions.addList(DEFAULT_BOARD_ID, currentUser)) {
-        renderBoard();
-      }
+      openAddListModal();
       closeAllDropdowns();
     });
 }
@@ -411,10 +406,7 @@ function setupInboxDropdown() {
     .querySelector('[data-action="add-inbox-card"]')
     ?.addEventListener("click", (e) => {
       e.stopPropagation();
-      if (Actions.addInboxCard(currentUser)) {
-        renderInbox();
-        calendar?.refetchEvents();
-      }
+      openCreateInboxCardModal();
       closeAllDropdowns();
     });
 }
@@ -845,4 +837,195 @@ function createArchivedItem(title, meta, onRestore, onDelete, badgeText) {
     .querySelector(".archived-item__delete")
     .addEventListener("click", onDelete);
   return itemEl;
+}
+
+function setupAddListModal() {
+  if (document.getElementById("add-list-modal")) return;
+
+  const modalHtml = `
+      <div id="add-list-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 24px; border-radius: 8px; width: 320px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+          <h3 style="margin-top: 0; margin-bottom: 16px; font-size: 18px; color: #172b4d;">Thêm danh sách mới</h3>
+          <input type="text" id="new-list-title" placeholder="Nhập tên danh sách..." style="width: 100%; padding: 8px 12px; margin-bottom: 20px; border: 2px solid #dfe1e6; border-radius: 4px; outline: none; font-size: 14px; box-sizing: border-box;">
+          <div style="display: flex; justify-content: flex-end; gap: 8px;">
+            <button id="cancel-add-list" style="padding: 8px 12px; border: none; background: #091e420f; color: #172b4d; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.1s;">Hủy</button>
+            <button id="submit-add-list" style="padding: 8px 12px; border: none; background: #0052cc; color: white; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.1s;">Thêm</button>
+          </div>
+        </div>
+      </div>
+    `;
+  document.body.insertAdjacentHTML("beforeend", modalHtml);
+
+  addListModal.element = document.getElementById("add-list-modal");
+  addListModal.input = document.getElementById("new-list-title");
+  const cancelBtn = document.getElementById("cancel-add-list");
+  const submitBtn = document.getElementById("submit-add-list");
+
+  const closeModal = () => {
+    addListModal.element.style.display = "none";
+    addListModal.input.value = "";
+    addListModal.input.style.borderColor = "#dfe1e6";
+  };
+
+  const handleSubmit = () => {
+    const title = addListModal.input.value.trim();
+    if (!title) {
+      addListModal.input.style.borderColor = "#ff5630";
+      addListModal.input.focus();
+      return;
+    }
+    if (Actions.addList(DEFAULT_BOARD_ID, currentUser, title)) {
+      renderBoard();
+      closeModal();
+    }
+  };
+
+  cancelBtn.onclick = closeModal;
+  submitBtn.onclick = handleSubmit;
+  addListModal.input.onkeydown = (e) => {
+    if (e.key === "Enter") handleSubmit();
+    if (e.key === "Escape") closeModal();
+  };
+  addListModal.element.onclick = (e) => {
+    if (e.target === addListModal.element) closeModal();
+  };
+}
+
+function openAddListModal() {
+  if (addListModal.element) {
+    addListModal.element.style.display = "flex";
+    addListModal.input.focus();
+  }
+}
+
+function setupCreateCardModal() {
+  if (document.getElementById("create-card-modal")) return;
+
+  const modalHtml = `
+      <div id="create-card-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 24px; border-radius: 8px; width: 320px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+          <h3 style="margin-top: 0; margin-bottom: 16px; font-size: 18px; color: #172b4d;">Thêm thẻ mới</h3>
+          <input type="text" id="new-card-title" placeholder="Nhập tên thẻ..." style="width: 100%; padding: 8px 12px; margin-bottom: 20px; border: 2px solid #dfe1e6; border-radius: 4px; outline: none; font-size: 14px; box-sizing: border-box;">
+          <div style="display: flex; justify-content: flex-end; gap: 8px;">
+            <button id="cancel-create-card" style="padding: 8px 12px; border: none; background: #091e420f; color: #172b4d; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.1s;">Hủy</button>
+            <button id="submit-create-card" style="padding: 8px 12px; border: none; background: #0052cc; color: white; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.1s;">Thêm</button>
+          </div>
+        </div>
+      </div>
+    `;
+  document.body.insertAdjacentHTML("beforeend", modalHtml);
+
+  createCardModal.element = document.getElementById("create-card-modal");
+  createCardModal.input = document.getElementById("new-card-title");
+  const cancelBtn = document.getElementById("cancel-create-card");
+  const submitBtn = document.getElementById("submit-create-card");
+
+  const closeModal = () => {
+    createCardModal.element.style.display = "none";
+    createCardModal.input.value = "";
+    createCardModal.input.style.borderColor = "#dfe1e6";
+    createCardModal.listId = null;
+  };
+
+  const handleSubmit = () => {
+    const title = createCardModal.input.value.trim();
+    if (!title) {
+      createCardModal.input.style.borderColor = "#ff5630";
+      createCardModal.input.focus();
+      return;
+    }
+    if (
+      createCardModal.listId &&
+      Actions.addCard(
+        createCardModal.listId,
+        DEFAULT_BOARD_ID,
+        currentUser,
+        title
+      )
+    ) {
+      renderBoard();
+      calendar?.refetchEvents();
+      closeModal();
+    }
+  };
+
+  cancelBtn.onclick = closeModal;
+  submitBtn.onclick = handleSubmit;
+  createCardModal.input.onkeydown = (e) => {
+    if (e.key === "Enter") handleSubmit();
+    if (e.key === "Escape") closeModal();
+  };
+  createCardModal.element.onclick = (e) => {
+    if (e.target === createCardModal.element) closeModal();
+  };
+}
+
+function openCreateCardModal(listId) {
+  if (createCardModal.element) {
+    createCardModal.listId = listId;
+    createCardModal.element.style.display = "flex";
+    createCardModal.input.focus();
+  }
+}
+
+function setupCreateInboxCardModal() {
+  if (document.getElementById("create-inbox-card-modal")) return;
+
+  const modalHtml = `
+      <div id="create-inbox-card-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 24px; border-radius: 8px; width: 320px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+          <h3 style="margin-top: 0; margin-bottom: 16px; font-size: 18px; color: #172b4d;">Thêm thẻ vào Hộp thư</h3>
+          <input type="text" id="new-inbox-card-title" placeholder="Nhập tên thẻ..." style="width: 100%; padding: 8px 12px; margin-bottom: 20px; border: 2px solid #dfe1e6; border-radius: 4px; outline: none; font-size: 14px; box-sizing: border-box;">
+          <div style="display: flex; justify-content: flex-end; gap: 8px;">
+            <button id="cancel-create-inbox-card" style="padding: 8px 12px; border: none; background: #091e420f; color: #172b4d; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.1s;">Hủy</button>
+            <button id="submit-create-inbox-card" style="padding: 8px 12px; border: none; background: #0052cc; color: white; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.1s;">Thêm</button>
+          </div>
+        </div>
+      </div>
+    `;
+  document.body.insertAdjacentHTML("beforeend", modalHtml);
+
+  createInboxCardModal.element = document.getElementById(
+    "create-inbox-card-modal"
+  );
+  createInboxCardModal.input = document.getElementById("new-inbox-card-title");
+  const cancelBtn = document.getElementById("cancel-create-inbox-card");
+  const submitBtn = document.getElementById("submit-create-inbox-card");
+
+  const closeModal = () => {
+    createInboxCardModal.element.style.display = "none";
+    createInboxCardModal.input.value = "";
+    createInboxCardModal.input.style.borderColor = "#dfe1e6";
+  };
+
+  const handleSubmit = () => {
+    const title = createInboxCardModal.input.value.trim();
+    if (!title) {
+      createInboxCardModal.input.style.borderColor = "#ff5630";
+      createInboxCardModal.input.focus();
+      return;
+    }
+    if (Actions.addInboxCard(currentUser, title)) {
+      renderInbox();
+      calendar?.refetchEvents();
+      closeModal();
+    }
+  };
+
+  cancelBtn.onclick = closeModal;
+  submitBtn.onclick = handleSubmit;
+  createInboxCardModal.input.onkeydown = (e) => {
+    if (e.key === "Enter") handleSubmit();
+    if (e.key === "Escape") closeModal();
+  };
+  createInboxCardModal.element.onclick = (e) => {
+    if (e.target === createInboxCardModal.element) closeModal();
+  };
+}
+
+function openCreateInboxCardModal() {
+  if (createInboxCardModal.element) {
+    createInboxCardModal.element.style.display = "flex";
+    createInboxCardModal.input.focus();
+  }
 }
