@@ -24,7 +24,7 @@ function renderBoards() {
       const starClass = board.starred ? "starred" : "";
 
       const boardHTML = `
-        <a href="../board/board.html?board=${board.id}">
+        <a href="../Board/board.html?board=${board.id}">
           <div class="board">
             <div class="board-theme" style="background: ${board.theme};">
               <span class="star-icon-board ${starClass}" data-board-id="${board.id}">${starIcon}</span>

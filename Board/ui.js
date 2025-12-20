@@ -259,6 +259,7 @@ function setupViewSwitch() {
   const wrapper = document.getElementById("view-wrapper");
   const boardPanel = document.getElementById("board-panel");
   const inboxPanel = document.getElementById("inbox-panel");
+
   document.querySelectorAll(".view-switch__btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const view = btn.dataset.view;
@@ -279,6 +280,7 @@ function setupViewSwitch() {
         .forEach((b) =>
           b.classList.toggle("is-active", viewState[b.dataset.view])
         );
+      if (calendar) calendar.updateSize();
     });
   });
 }
@@ -491,10 +493,14 @@ function setupViewBoardDropdown() {
           boardPanel.style.display = "block";
           boardCalendar.style.display = "none";
           viewIcon.className = "fa-solid fa-chart-simple";
+          calendar.refetchEvents();
+          console.log("Kích hoạt bảng");
         } else if (view === "calendar") {
           boardPanel.style.display = "none";
           boardCalendar.style.display = "block";
           viewIcon.className = "fa-solid fa-calendar-days";
+          calendar.refetchEvents();
+          console.log("Kích hoạt lịch");
           if (calendar) {
             calendar.updateSize(); // Adjust calendar size when its container is shown
           }
