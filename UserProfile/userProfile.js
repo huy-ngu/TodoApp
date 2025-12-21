@@ -45,26 +45,6 @@ const avatarStore = [
     avatarURL: "https://images2.alphacoders.com/134/thumb-1920-1347655.jpeg",
     description: "yasuo",
   },
-  {
-    avatarURL: "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
-    description: "Doanh nhân",
-  },
-  {
-    avatarURL: "https://cdn-icons-png.flaticon.com/512/4140/4140037.png",
-    description: "Nhà thiết kế",
-  },
-  {
-    avatarURL: "https://cdn-icons-png.flaticon.com/512/4140/4140047.png",
-    description: "Cụ già",
-  },
-  {
-    avatarURL: "https://cdn-icons-png.flaticon.com/512/219/219983.png",
-    description: "Trầm tư",
-  },
-  {
-    avatarURL: "https://cdn-icons-png.flaticon.com/512/4140/4140061.png",
-    description: "Robot",
-  },
 ];
 
 // Biến tạm lưu URL ảnh đang chọn (chưa save)

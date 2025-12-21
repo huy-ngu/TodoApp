@@ -47,14 +47,14 @@ hr {
   align-items: center;
   gap: 0.85rem;
   flex: 1;
-  min-width: 0; /* Cho phép co lại */
+  min-width: 0;
 }
 #board-title {
   font-weight: 600;
   color: white;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* Thêm dấu ... nếu tiêu đề quá dài */
+  text-overflow: ellipsis;
 }
 #board-title:hover {
   cursor: pointer;
@@ -68,7 +68,6 @@ hr {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  /* Ẩn đi vì không dùng đến và có thể gây lỗi responsive */
   display: none;
 }
 
@@ -85,7 +84,7 @@ hr {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex-shrink: 0; /* Ngăn không cho co lại */
+  flex-shrink: 0;
 }
 
 .star-btn {
@@ -201,7 +200,7 @@ hr {
   font-weight: 600;
   font-size: 14px;
   transition: all 0.2s ease;
-  white-space: nowrap; /* Ngăn text xuống dòng */
+  white-space: nowrap;
 }
 
 .cta:hover {
@@ -781,18 +780,16 @@ hr {
 
 /* --- Responsive Header --- */
 
-/* Tablet & nhỏ hơn */
 @media (max-width: 768px) {
   .app-header {
     gap: 0.5rem;
     padding: 8px 12px;
   }
 
-  /* Ẩn chữ, chỉ hiện icon cho nút "Thêm danh sách" */
   #add-list-btn {
-    font-size: 0; /* Ẩn text */
+    font-size: 0;
     padding: 0;
-    width: 36px; /* Kích thước bằng các nút icon khác */
+    width: 36px;
     height: 36px;
     line-height: 36px;
     text-align: center;
@@ -800,7 +797,7 @@ hr {
 
   #add-list-btn::before {
     content: "+";
-    font-size: 1.4rem; /* Kích thước icon */
+    font-size: 1.4rem;
   }
 }
 
@@ -808,23 +805,23 @@ hr {
 @media (max-width: 480px) {
   .app-header {
     flex-direction: column;
-    align-items: stretch; /* Căn đều theo chiều rộng */
+    align-items: stretch;
     gap: 0.75rem;
   }
 
   .header-left,
   .header-actions {
     width: 100%;
-    justify-content: space-between; /* Phân bố đều các item */
+    justify-content: space-between;
   }
 
   .header-actions {
-    flex-wrap: wrap; /* Cho phép các nút xuống dòng */
+    flex-wrap: wrap;
     gap: 0.5rem;
   }
 
   #add-list-btn {
-    flex-grow: 1; /* Cho phép nút "Thêm" giãn ra */
+    flex-grow: 1;
   }
 }
 
@@ -1090,57 +1087,50 @@ hr {
 }
 
 #toast {
-  /* Ẩn đi mặc định bằng cách đẩy nó sang phải */
   visibility: hidden;
   opacity: 0;
   transform: translateX(100%);
 
-  /* Vị trí: Góc phải dưới */
   position: fixed;
   bottom: 30px;
   right: 30px;
   z-index: 1000;
 
-  /* Giao diện Card đẹp */
-  background-color: #fff; /* Nền trắng */
-  color: #333; /* Chữ màu tối */
+  background-color: #fff;
+  color: #333;
   min-width: 300px;
   padding: 15px 20px;
-  border-radius: 8px; /* Bo tròn nhẹ */
-  border-left: 6px solid #4caf50; /* Viền trái màu xanh tạo điểm nhấn */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Đổ bóng để nổi bật */
+  border-radius: 8px;
+  border-left: 6px solid #4caf50;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 
-  /* Căn chỉnh nội dung bên trong */
   display: flex;
   align-items: center;
   font-family: "Arial", sans-serif;
-  transition: all 0.5s ease-in-out; /* Hiệu ứng mượt mà */
+  transition: all 0.5s ease-in-out;
 }
 
-/* Icon bên trong */
 #toast .toast-icon {
   font-size: 24px;
   color: #4caf50;
   margin-right: 15px;
 }
 
-/* Text bên trong */
 #toast .toast-text {
   font-size: 16px;
   font-weight: 500;
 }
 
-/* Class kích hoạt hiển thị */
 #toast.show {
   visibility: visible;
   opacity: 1;
-  transform: translateX(0); /* Trượt vào vị trí cũ */
+  transform: translateX(0);
 }
 
-/* --- Modal Input & Note Styling --- */
+/* Modal Input */
 
 #card-modal .modal__field span {
-  font-size: 0.95rem; /* Increased label font size */
+  font-size: 0.95rem;
   font-weight: 500;
   color: #3b4d6b;
 }
@@ -1149,7 +1139,7 @@ hr {
 #card-modal select,
 #card-modal textarea {
   font-size: 1rem;
-  padding: 0.65rem 0.85rem; /* Consistent padding */
+  padding: 0.65rem 0.85rem;
   border: 1px solid #c7d0e4;
   border-radius: 8px;
   background-color: #fdfdff;
@@ -1166,7 +1156,7 @@ hr {
 
 #card-modal textarea {
   font-family: "Segoe UI", sans-serif;
-  resize: vertical; /* Allow vertical resizing */
+  resize: vertical;
   min-height: 80px;
   line-height: 1.5;
 }
@@ -1252,10 +1242,9 @@ hr {
 
 #board-calendar {
   flex: 1;
-  min-width: 0; /* Important for flex items */
+  min-width: 0;
   padding: 20px;
   box-sizing: border-box;
-
   background-color: white;
   border-radius: 18px;
   box-shadow: 0 12px 30px rgb(15 31 56 / 8%);
@@ -1264,11 +1253,12 @@ hr {
   flex-direction: column;
   height: calc(100vh - 192px);
   min-height: 0;
+  overflow-y: auto;
 }
 
 /* Tinh chỉnh nhỏ cho FullCalendar để đẹp hơn trong khung flex */
 #board-calendar .fc {
-  height: 100%; /* Lịch chiếm hết không gian bên trong padding */
+  height: 100%;
   width: 100%;
   min-height: 0;
 }
@@ -1282,7 +1272,7 @@ hr {
   position: absolute;
   top: 2px;
   left: 2px;
-  display: none; /* Hidden by default */
+  display: none;
   background-color: rgba(9, 30, 66, 0.08);
   color: #42526e;
   border: none;
@@ -1297,7 +1287,7 @@ hr {
 }
 
 .fc-daygrid-day:hover .add-card-calendar-btn {
-  display: block; /* Show on hover over the day cell */
+  display: block;
 }
 
 .add-card-calendar-btn:hover {

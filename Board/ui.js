@@ -384,7 +384,7 @@ function setupInboxDropdown() {
   if (!actionBtn || !dropdown) return;
 
   const themeContainer = dropdown.querySelector(".theme-colors");
-  themeContainer.innerHTML = ""; // Clear old
+  themeContainer.innerHTML = "";
   Object.keys(themeColors).forEach((themeKey) => {
     const colorItem = document.createElement("div");
     colorItem.className = "theme-color-item";
@@ -477,14 +477,12 @@ function setupViewBoardDropdown() {
   const boardPanel = document.getElementById("board-panel");
   const boardCalendar = document.getElementById("board-calendar");
 
-  // Default state is set in HTML, this just ensures it on script load.
   boardPanel.style.display = "block";
   boardCalendar.style.display = "none";
 
   viewBoardBtn.addEventListener("click", (event) => {
     event.stopPropagation();
     const isVisible = viewBoardDropdown.style.display === "block";
-    // Use the global closer function which now knows about this dropdown
     closeAllDropdowns();
     if (!isVisible) {
       viewBoardDropdown.style.display = "block";
@@ -510,7 +508,7 @@ function setupViewBoardDropdown() {
           calendar.refetchEvents();
           console.log("Kích hoạt lịch");
           if (calendar) {
-            calendar.updateSize(); // Adjust calendar size when its container is shown
+            calendar.updateSize();
           }
         }
         closeAllDropdowns();
@@ -537,9 +535,9 @@ function getCalendarEvents() {
     const dueDate = new Date(card.dueDate);
 
     if (card.status === "done") {
-      color = "#28a745"; // Màu xanh lá (đã hoàn thành)
+      color = "#28a745";
     } else if (dueDate < now) {
-      color = "#dc3545"; // Màu đỏ (hết hạn và chưa hoàn thành)
+      color = "#dc3545";
     }
 
     return {
@@ -548,7 +546,6 @@ function getCalendarEvents() {
       start: card.dueDate,
       backgroundColor: color,
       borderColor: color,
-      // Use extendedProps to store metadata
       extendedProps: {
         source: "userId" in card ? "inbox" : "board",
         listId: card.listId,
@@ -564,41 +561,44 @@ function setupFullCalendar() {
   calendar = new FullCalendar.Calendar(calendarEl, {
     height: "100%",
     contentHeight: "auto",
-    locale: "vi", // Set language to Vietnamese
+    locale: "vi",
     headerToolbar: {
       left: "prev,next today",
       center: "title",
-      right: "dayGridMonth",
+      right: "dayGridMonth,timeGridWeek,timeGridDay",
     },
 
     initialView: "dayGridMonth",
-
-    nowIndicator: true, // Hiển thị đường kẻ đỏ chỉ thời gian hiện tại
-    slotMinTime: "06:00:00", // Giờ bắt đầu hiển thị trong ngày (6h sáng)
-    slotMaxTime: "24:00:00", // Giờ kết thúc hiển thị (12h đêm)
+    buttonText: {
+      today: "Hôm nay",
+      month: "Tháng",
+      week: "Tuần",
+      day: "Ngày",
+      list: "Danh sách",
+    },
+    nowIndicator: true,
+    slotMinTime: "00:00:00",
+    slotMaxTime: "24:00:00",
     allDayText: "Cả ngày",
     slotLabelFormat: {
-      // Định dạng giờ cột bên trái (VD: 13:00)
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
     },
-
-    editable: true, // Allow events to be dragged and resized
+    navLinks: true,
+    editable: true,
     events: function (info, successCallback, failureCallback) {
       // Mỗi khi refetchEvents được gọi, dòng này sẽ chạy lại để lấy dữ liệu mới nhất
       const events = getCalendarEvents();
       successCallback(events);
     },
     eventClick: function (info) {
-      // When a calendar event is clicked, open the corresponding card modal
       const cardId = info.event.id;
       const { source, listId } = info.event.extendedProps;
       const context = { source, cardId, listId };
       openCardModal(context);
     },
     eventDrop: function (info) {
-      // When an event is dropped, update the card's due date
       const cardId = info.event.id;
       const { source, listId } = info.event.extendedProps;
       const newDueDate = info.event.start.toISOString();
@@ -607,9 +607,9 @@ function setupFullCalendar() {
       const updatedValues = { dueDate: newDueDate };
 
       if (Actions.updateCard(context, updatedValues)) {
-        renderAll(); // Re-render board to reflect date changes
+        renderAll();
       } else {
-        info.revert(); // Revert the change if the update fails
+        info.revert();
         alert("Không thể cập nhật ngày. Vui lòng thử lại.");
       }
     },
@@ -622,7 +622,6 @@ function setupFullCalendar() {
         e.stopPropagation();
         openCreateInboxCardModal(arg.date);
       };
-      // Using querySelector to be safer, though fc-daygrid-day-frame should exist
       const frame = arg.el.querySelector(".fc-daygrid-day-frame");
       if (frame) {
         frame.appendChild(addButton);
@@ -645,7 +644,6 @@ function setupCardModal() {
     status: document.getElementById("card-status-input"),
   };
 
-  // Auto-resize textarea
   const noteInput = cardModal.inputs.note;
   noteInput.addEventListener("input", () => {
     noteInput.style.height = "auto";
@@ -660,7 +658,7 @@ function setupCardModal() {
     if (!currentCardContext) return;
     const cardRef = Actions.findCardReference(currentCardContext);
     if (cardRef) {
-      cardRef.status = "done"; // Force status to done to allow storing
+      cardRef.status = "done";
       if (Actions.moveCardToStorage(currentCardContext)) {
         calendar?.refetchEvents();
         renderAll();
@@ -678,13 +676,11 @@ function openCardModal(context) {
   cardModal.inputs.title.value = cardRef.title || "";
   cardModal.inputs.note.value = cardRef.note || "";
 
-  // Manually trigger input event to set initial height
   setTimeout(() => {
     cardModal.inputs.note.dispatchEvent(new Event("input"));
   }, 10);
 
   if (cardRef.dueDate) {
-    // Correctly format the date for datetime-local input, accounting for timezone
     const d = new Date(cardRef.dueDate);
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
     cardModal.inputs.dueDate.value = d.toISOString().slice(0, 16);
