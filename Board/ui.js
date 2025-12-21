@@ -37,6 +37,7 @@ export function initializeUI(boardId, user) {
   setupViewBoardDropdown();
   setupInboxDropdown();
   setupArchivedModal();
+  setupExpiredCardsModal();
   setupFullCalendar();
 
   document.addEventListener("click", (e) => {
@@ -438,6 +439,14 @@ function setupHeaderDropdown() {
     });
     themeContainer.appendChild(colorItem);
   });
+
+  dropdown
+    .querySelector("#show-expired-cards-btn")
+    ?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openExpiredCardsModal();
+      closeAllDropdowns();
+    });
 
   dropdown
     .querySelector('[data-action="archived"]')
@@ -1057,4 +1066,91 @@ function openCreateInboxCardModal(date = null) {
     createInboxCardModal.element.style.display = "flex";
     createInboxCardModal.input.focus();
   }
+}
+
+function setupExpiredCardsModal() {
+  const modal = document.getElementById("expired-cards-modal");
+  if (!modal) return;
+  modal.querySelectorAll("[data-modal-close]").forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      modal.classList.remove("is-open");
+    });
+  });
+}
+
+function openExpiredCardsModal() {
+  const modal = document.getElementById("expired-cards-modal");
+  if (!modal) return;
+  renderExpiredCards();
+  modal.classList.add("is-open");
+}
+
+function renderExpiredCards() {
+  const container = document.getElementById("expired-cards-list");
+  if (!container) return;
+  container.innerHTML = "";
+
+  const now = new Date();
+  const expiredBoardCards = cards.filter(
+    (c) =>
+      c.boardId === DEFAULT_BOARD_ID &&
+      !c.storage &&
+      c.dueDate &&
+      new Date(c.dueDate) < now &&
+      c.status !== "done"
+  );
+  const expiredInboxCards = cardsInbox.filter(
+    (c) =>
+      c.userId === currentUser.id &&
+      !c.storage &&
+      c.dueDate &&
+      new Date(c.dueDate) < now &&
+      c.status !== "done"
+  );
+
+  const allExpired = [...expiredBoardCards, ...expiredInboxCards].sort(
+    (a, b) => new Date(a.dueDate) - new Date(b.dueDate)
+  );
+
+  if (allExpired.length === 0) {
+    container.innerHTML =
+      '<div style="text-align: center; padding: 20px; color: #666;">Không có thẻ nào hết hạn.</div>';
+    return;
+  }
+
+  allExpired.forEach((card) => {
+    const isInbox = "userId" in card;
+    const item = document.createElement("div");
+    item.className = "expired-card-item";
+
+    const dateString = new Date(card.dueDate).toLocaleString("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    item.innerHTML = `
+      <div style="flex: 1;">
+        <div class="expired-card-item__title">${card.title}</div>
+        <div class="expired-card-item__due-date">
+          <i class="fa-regular fa-clock"></i> ${dateString}
+          <span style="color: #666; margin-left: 8px; font-weight: normal; font-size: 0.85rem;">• ${
+            isInbox ? "Hộp thư" : "Bảng"
+          }</span>
+        </div>
+      </div>
+      <button class="cta cta--secondary" style="padding: 4px 12px; font-size: 12px; min-width: auto;">Xem</button>
+    `;
+    item.querySelector("button").addEventListener("click", () => {
+      document
+        .getElementById("expired-cards-modal")
+        .classList.remove("is-open");
+      openCardModal({
+        source: isInbox ? "inbox" : "board",
+        cardId: card.id,
+        listId: card.listId,
+      });
+    });
+    container.appendChild(item);
+  });
 }

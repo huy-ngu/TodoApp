@@ -1305,3 +1305,59 @@ hr {
   color: #172b4d;
   transform: scale(1.1);
 }
+
+/* Styles for Expired Cards Modal */
+#expired-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+#expired-cards-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+#expired-cards-list::-webkit-scrollbar-thumb {
+  background-color: #c8d2eb;
+  border-radius: 999px;
+}
+
+#expired-cards-list::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+#expired-cards-list > div:last-child {
+  border-bottom: none !important;
+}
+
+.expired-card-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: #fffafb;
+  border: 1px solid #fde8e8;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.expired-card-item:hover {
+  background-color: #fff5f5;
+  border-color: #fbdada;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(200, 0, 0, 0.07);
+}
+
+.expired-card-item__title {
+  font-weight: 600;
+  color: #4a1c1c;
+}
+
+.expired-card-item__due-date {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #c62828;
+}

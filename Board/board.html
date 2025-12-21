@@ -69,6 +69,8 @@
               <div class="theme-colors board-theme-colors"></div>
             </div>
             <hr />
+            <button class="dropdown-item" id="show-expired-cards-btn">Thẻ đã hết hạn</button>
+            <hr />
             <button class="dropdown-item" data-action="archived">
               Mục đã lưu trữ
             </button>
@@ -198,6 +200,22 @@
         </footer>
       </article>
     </template>
+
+    <!-- Modal Thẻ đã hết hạn -->
+    <div id="expired-cards-modal" class="modal" aria-hidden="true">
+      <div class="modal__backdrop" data-modal-close></div>
+      <div class="modal__dialog" role="dialog" aria-modal="true">
+        <header class="modal__header">
+          <h2 id="expired-cards-modal-title">Thẻ đã hết hạn</h2>
+          <button class="modal__close" type="button" data-modal-close aria-label="Đóng">&times;</button>
+        </header>
+        <div class="modal__body">
+          <div id="expired-cards-list">
+            <!-- Expired cards will be populated here by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
 
     <section class="modal" id="card-modal" aria-hidden="true">
       <div class="modal__backdrop" data-modal-close></div>
