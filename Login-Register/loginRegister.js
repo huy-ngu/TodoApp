@@ -13,6 +13,18 @@ sign_in_btn.addEventListener("click", () => {
   container.classList.remove("sign-up-mode");
 });
 
+// Mở chế độ đăng ký khi URL có ?mode=signup hoặc hash #signup
+(function initModeFromUrl() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("mode") === "signup" || window.location.hash === "#signup") {
+      container.classList.add("sign-up-mode");
+    }
+  } catch (e) {
+    console.warn("Unable to parse URL for mode:", e);
+  }
+})();
+
 console.log(users);
 
 // ----- Validation helpers & UI -----
