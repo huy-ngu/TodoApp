@@ -73,13 +73,17 @@
               Mục đã lưu trữ
             </button>
             <hr />
+            <button class="dropdown-item" id="exportExcelBtn">
+              Xuất Excel
+            </button>
+            <hr />
             <button class="dropdown-item" data-action="delete-board">
               Xóa bảng
             </button>
-            <hr />
+            <!-- <hr />
             <button class="dropdown-item" data-action="logout">
               Đăng xuất
-            </button>
+            </button> -->
           </div>
         </div>
       </div>
@@ -317,5 +321,7 @@
     <script src="./board.js" type="module"></script>
     <script src="../components/layout.js"></script>
     <script src="./changeBoardName.js" type="module"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script src="./exportExcel.js"></script>
   </body>
 </html>

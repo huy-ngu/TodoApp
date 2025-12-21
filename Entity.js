@@ -94,9 +94,8 @@ storage: false,
 theme: "blue",
 title: "CLI Tools",
 
-cards
-
-boardId: "board-1765641884401"
+cards:
+[{boardId: "board-1765641884401"
 dueDate: "2025-12-14T16:05:57.377Z"
 id: "card-1765641957377-5"
 listId: "list-1765641949253-3"
@@ -104,5 +103,6 @@ note: ""
 order: 0
 status: "pending"
 storage: false
-title: "Vite"
+title: "Vite"},]
+
 */

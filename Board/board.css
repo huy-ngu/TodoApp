@@ -159,7 +159,7 @@ hr {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   min-width: 200px;
   z-index: 1000;
-  padding: 15px 15px;
+  padding: 5px 5px;
   border: 1px solid #e6ebf4;
 }
 
@@ -452,7 +452,7 @@ hr {
   border-radius: 18px;
   box-shadow: 0 12px 30px rgb(15 31 56 / 8%);
   border: 1px solid #e3e7f0; /* Màu viền cố định, không phụ thuộc theme */
-  max-height: calc(100vh - 200px);
+  max-height: calc(100vh - 192px);
   /* max-height: 100%; */
 }
 
